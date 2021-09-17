@@ -15,7 +15,7 @@ root_dir <- paste0(getwd(), "/output/")
 # Knit the HTML version
 rmarkdown::render(paste0(root_dir, "my_cv.rmd"),
                   params = list(pdf_mode = FALSE),
-                  output_file = paste0(root_dir, "my_cv.html"))
+                  output_file = paste0(root_dir, "BrendanMillerCV.html"))
 
 # Knit the PDF version to temporary html location
 tmp_html_cv_loc <- fs::file_temp(ext = ".html")
@@ -25,7 +25,7 @@ rmarkdown::render(paste0(root_dir, "my_cv.rmd"),
 
 # Convert to PDF using Pagedown
 pagedown::chrome_print(input = tmp_html_cv_loc,
-                       output = paste0(root_dir, "my_cv.pdf"))
+                       output = paste0(root_dir, "BrendanMillerCV.pdf"))
 
 
 
