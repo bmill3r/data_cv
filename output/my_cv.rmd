@@ -1,0 +1,390 @@
+---
+title: "Brendan Miller's CV"
+author: Brendan Miller
+date: "`r Sys.Date()`"
+params:
+  pdf_mode:
+    value: false
+output:
+  pagedown::html_resume:
+    # css: ['css/dd_cv.css', 'resume']
+    # css: ['css/custom_resume.css', 'css/styles.css', 'resume']
+    css: ['../css/styles.css', 'resume']
+    self_contained: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+library(magrittr) # For the pipe
+
+## important to source my own customized version of these printing functions.
+## I can add other functions I want to in this file in order to reference them later in this rmd when rendered.
+source("../cv_printing_functions.r")
+
+# Read in all data and initialize a CV printer object
+CV <- create_CV_object(
+  data_location = "../my_cv_data/",
+  pdf_mode = params$pdf_mode
+)
+
+```
+
+
+```{r, eval=TRUE}
+# When in pdf export mode the little dots are unaligned, so fix that with some conditional CSS.
+if(params$pdf_mode) {
+    cat("
+<style>
+:root{
+  --decorator-outer-offset-left: -6.5px;
+}
+</style>")
+}
+```
+
+
+Aside
+================================================================================
+
+<!-- This is to insert a picture of me instead -->
+<!-- ![logo](me.jpg){width=100%} -->
+
+```{r, eval=TRUE}
+
+# Build interactive network of positions colored by section
+# and connected if they occurred in the same year
+# datadrivencv::build_network_logo(CV$entries_data)
+
+## use my own so I can control the dimension and borders of 
+## where the logo is placed in the CV
+build_network_logo_custom(CV$entries_data)
+```
+
+```{r, eval=FALSE}
+if(params$pdf_mode){
+  cat("View this CV online with links at __")
+} else {
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV]()")
+}
+```
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %>% print_contact_info()
+```
+
+<br>
+
+
+<!-- Language Skills {#skills} -->
+<!-- -------------------------------------------------------------------------------- -->
+
+```{r, eval=FALSE}
+CV %>% print_skill_bars()
+```
+
+
+
+Proficiencies {#skills}
+--------------------------------------------------------------------------------
+
+```{r, eval=FALSE}
+CV %<>% print_text_block('industy_experience_aside')
+```
+
+**Computational Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`, `R`, `git`, `Unix`
+
+**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell sequencing
+
+**Diagnostics and Sequencing**<br />&nbsp;&nbsp;&nbsp;&nbsp;Droplet-digital PCR<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA
+
+**Molecular Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA methylation<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell culture<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA cloning<br />&nbsp;&nbsp;&nbsp;&nbsp;Nucleic acid purification<br />&nbsp;&nbsp;&nbsp;&nbsp;siRNA knockdowns
+
+
+
+
+<!-- <dl> -->
+<!--   <dt>**Biochemistry**</dt> -->
+<!--   <dd>Column Chromatography</dd> -->
+<!--   <dd>SDS-PAGE</dd> -->
+<!--   <dd>Spectrophotometry</dd> -->
+<!--   <dd>Western Blotting</dd> -->
+<!--   <dt>**Communication**</dt> -->
+<!--   <dd>Grant writing</dd> -->
+<!--   <dd>Microsoft Office Suite</dd> -->
+<!--   <dd>Scientific Presentations</dd> -->
+<!--   <dd>Technical Writing</dd> -->
+<!-- </dl> -->
+
+<!-- **Biochemistry** -->
+
+<!-- - Column Chromatography -->
+<!-- - SDS-PAGE -->
+<!-- - Spectrophotometry -->
+<!-- - Western Blotting -->
+
+<!-- **Communication** -->
+
+<!-- - Grant writing -->
+<!-- - Microsoft Office Suite -->
+<!-- - Scientific Presentations -->
+<!-- - Technical Writing -->
+
+<!-- **Computational Biology** -->
+
+<!-- - Python Data Visualization and Analysis -->
+<!--   - `jupyter`, `matplotlib`, `numpy`, `pandas`, `scipy`  -->
+<!-- - `R` and RStudio -->
+<!-- - Version control (`git`) -->
+
+<!-- Highly experienced in -->
+
+
+<!-- - R  -->
+<!-- - Python -->
+<!-- - Javascript -->
+
+<!-- Experience with -->
+
+
+<!-- - Bash -->
+<!-- - SQL -->
+<!-- - C++ -->
+<!-- - AWK -->
+
+
+
+Main
+================================================================================
+
+Brendan F. Miller {#title}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+# Note the special double pipe so we modify the CV object in place
+CV %<>% print_text_block("intro")
+```
+
+
+
+Current Position {data-icon=user}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+CV %<>% print_section('current_position')
+```
+
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('education')
+```
+
+
+
+Awards and Honors {data-icon=trophy}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('awards_and_honors')
+```
+
+
+
+Research Experience {data-icon=flask}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('research_positions')
+```
+
+
+
+Teaching Experience {data-icon=chalkboard-teacher}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+CV %<>% print_section('teaching_positions')
+```
+
+
+
+Invited Speaker {data-icon=group}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('invited_speaker')
+```
+
+
+
+Selected Poster Presentations {data-icon=object-group}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+CV %<>% print_section('poster_presentations')
+```
+
+
+<!-- I have to specify the fa icon this way if tagging section for specific css formatting via {#...} -->
+<i class="fas fa-paperclip"></i> Preprint Publications {#pubs}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+
+## preprints giving an error about UTF-8 encoded text
+CV %<>% print_section('preprints')
+```
+
+
+
+<i class="fas fa-book"></i> Selected Publications {#pubs}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('academic_articles')
+```
+
+
+
+Software {data-icon=cloud-upload}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('software')
+```
+
+
+
+Service {data-icon=hands-helping}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('service')
+```
+
+
+
+
+References {data-icon=id-card}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('reference')
+```
+
+
+<!-- <br> -->
+<!-- <br> -->
+<!-- ```{r, eval=TRUE} -->
+<!-- CV %<>% print_text_block('references1') -->
+<!-- ``` -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- ```{r, eval=TRUE} -->
+<!-- CV %<>% print_text_block('references2') -->
+<!-- ``` -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- ```{r, eval=TRUE} -->
+<!-- CV %<>% print_text_block('references3') -->
+<!-- ``` -->
+
+<!-- <h3>Dr. Jean Fan</h3> -->
+
+
+<!-- Dr. Jean Fan -->
+<!-- Johns Hopkins University -->
+<!-- Department of Biomedical Engineering -->
+<!-- jeanfan@jhu.edu -->
+
+<!-- Dr. Laura Elnitski -->
+<!-- National Institutes of Health -->
+<!-- National Human Genome Research Institute -->
+<!-- elnitski@mail.nih.gov -->
+
+<!-- Dr. Thomas Pisanic II -->
+<!-- Johns Hopkins University -->
+<!-- Department of Mechanical Engineering -->
+<!-- tpisani1@jhu.edu -->
+
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+
+```{r, eval=FALSE}
+CV %<>% print_links()
+```
+
+
+<!-- Had to hard code in the breaks to get this text down right above the Disclaimer. Also the link doesn't work right now -->
+<!-- Will clean up later -->
+:::aside
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="text-align: right"> *Made using R [`pagedown`](https://github.com/rstudio/pagedown)* </div>
+:::
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+:::aside
+```{r}
+cat(paste0("Last updated on ", Sys.Date() ))
+```
+:::
+
+<!-- Made using R package [**pagedown**](https://github.com/rstudio/pagedown). -->
+
+<!-- The source code is available [on github.com/nstrayer/cv](/Users/brendan/Desktop/Misc Projects/data_cv/datadrivencv/). -->
+
+<!-- Last updated on `r Sys.Date()`. -->
+
+
+
+<!-- Industry Experience {data-icon=suitcase} -->
+<!-- -------------------------------------------------------------------------------- -->
+
+<!-- ::: aside -->
+<!-- ```{r, eval=FALSE} -->
+<!-- CV %<>% print_text_block('industy_experience_aside') -->
+<!-- ``` -->
+<!-- ::: -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- CV %<>% print_section('industry_positions') -->
+<!-- ``` -->
+
+<!-- <!-- These breaks just force a new page so section doesnt get cut off -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+
+
+
+
+
+
+

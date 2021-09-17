@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+author: "Brendan F. Miller"
+date: "9/14/2021"
+output: html_document
+---
+
+```{r}
+
+## install and load the required packages
+
+install.packages("pagedown")
+install.packages("devtools")
+remotes::install_github('mitchelloharawild/icons@v0.1.0')
+devtools::install_github("nstrayer/datadrivencv")
+
+library(datadrivencv)
+
+```
+
+These functions were used to initially construct the `cv_printing_functions.r`, `render.r`, and `cv.rmd` in the "./output/" directory.
+
+However, I have adjustments to these files and moved my versions into the main directory of this repo.
+
+Run these if you want to make a fresh copy of the templates used for the original `datadrivencv` repo.
+
+```{r, eval=FALSE}
+
+use_csv_data_storage(folder_name = "my_cv_data", create_output_dir = TRUE)
+
+```
+
+```{r, eval=FALSE}
+
+datadrivencv::use_datadriven_cv(
+  full_name = "Brendan Miller",
+  data_location = "./my_cv_data/",
+  pdf_location = NULL,
+  html_location = NULL,
+  # source_location = "../datadrivencv/",
+  output_dir = "./output/"
+)
+
+```
+

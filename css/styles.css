@@ -1,0 +1,231 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Playfair+Display&display=swap");
+
+/* Main text, includes the locations and bullets, and timeline text */
+body {
+  font-family: 'Helvetica', 'Arial', sans-serif; /*"Montserrat", sans-serif; */
+  font-weight: 200;
+  line-height: 1.3;
+  color: #444;
+}
+
+/* my name */
+h1 {
+  font-family: "Playfair Display", serif; 
+  color: #000;
+}
+
+/* section titles */
+h2 {
+  font-family: "Playfair Display", serif; 
+  color: #000;
+  font-weight: 900;
+}
+
+/* titles in a section */
+h3 {
+  font-family: "Helvetica", serif; 
+  color: #000;
+}
+
+/* When in PDF export mode make sure superscripts are nice and small and italic */
+sup {
+  font-size: 0.45rem;
+  font-style: italic;
+}
+
+/* Avoid the breaking within a section */
+.blocks {
+  break-inside: avoid;
+}
+
+* {
+  /* Override default right margin for sidebar*/
+  --pagedjs-margin-right: 0.2in;
+  --pagedjs-margin-left: 0.2in;
+}
+
+/* Customize some of the sizing variables */
+:root {
+  --sidebar-width: 10rem; /* Shrink sidebar width  */
+  --sidebar-background-color: #0e6469; /* Make sidebar blue */
+  --sidebar-horizontal-padding: 0.01in; /* Reduce sidebar padding */
+  --decorator-outer-dim: 10px; /* Make position deliniating circles larger */
+  --decorator-border: 2px solid #18c2cc; /* Make timeline a blue as well*/
+}
+
+.details .place {
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.main-block:not(.concise) .details div {
+  padding-top: 0.005rem;
+}
+
+/* center the font awesome icons */
+.fa-laptop {
+  margin-left: -3px;
+}
+
+.fa-user {
+  margin-left: 0.5px;
+}
+
+.fa-trophy {
+  margin-left: -1.1px;
+}
+
+.fa-flask {
+  margin-left: 0.5px;
+}
+
+.fa-group {
+  margin-left: -2.5px;
+}
+
+.fa-handshake-o {
+  margin-left: -2px;
+}
+
+.fa-chalkboard-teacher {
+  margin-left: -2px;
+}
+
+/* not working for software */
+.fa-upload {
+  margin-left: 10px;
+}
+
+/* When we have links at bottom in a list make sure they actually are numbered */
+#links li {
+  list-style-type: decimal;
+}
+
+/* Dont put the little fake list point in front of links */
+/* this is the one that actually did it, I think because I call #links */
+#links li::before {
+  display: none;
+  list-style: none;
+}
+
+/* making conditions for specific subsections. Need to tag via #... */
+/* this removed bullet points in the publications */
+#pubs li::before {
+  display: none;
+  list-style: none;
+}
+
+/* Dont put the little fake list point in front of links */
+.aside li::before {
+  display: none;
+  list-style: none;
+}
+
+/* Move closer to start and up towards header */
+.aside ul {
+  padding-left: 0.2rem;
+}
+
+.aside li::before {
+  position: relative;
+  margin-left: -4.25pt;
+  content: " "; /* content: "• "; */
+  
+}
+
+/* Make sure elements in asside are centered and have a nice small text */
+/* this is the text in the side bar */
+/* Also the line-height is what shifts the text away from "Contact" and gets
+the pagedown disclaimer close to the date at the bottom right now. Probably needs adjustment */
+.aside {
+  width: calc(var(--sidebar-width) + 9px);
+  line-height: 1.8;
+  font-size: 0.8rem;
+  color:#ffffff;
+  font-weight: 200;
+}
+
+/* controls the section titles like "contact" */
+.aside h2 {
+    font-weight: 200;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+/* Make little circle outline be a light blue */
+.decorator::after {
+  background-color: #0e6469;
+}
+
+/* Remove the fake bullets from lists */
+.aside li::before {
+  content: auto;
+}
+
+/* hyperlink colors */
+/* a {
+  text-decoration: solid;
+  color: #243254;
+} */
+
+/* unvisited link */
+a:link {
+  color: #402454;
+}
+
+/* visited link */
+a:visited {
+  color: #402454;
+}
+
+
+ul li ul li {
+    margin-left: 1rem;
+    list-style-type: square;
+    line-height: 1.3;
+}
+
+/* links in the aside */
+/* .aside a {
+  color: #fff;
+} */
+
+.aside a:link {
+  color: #fff;
+  font-style: bold;
+  font-weight: 500;
+}
+
+.aside a:visited {
+  color: #fff;
+  font-style: bold;
+  font-weight: 500;
+}
+
+.main-block:not(.concise) .details div {
+    margin: 0;
+}
+
+.aside img {
+  border-radius:100px;
+  padding-left: 8px;
+  margin-bottom:22px;
+}
+
+/* seems to control the "locations" text */
+.details .location {
+    float: left;
+    margin-top: 4px;
+    margin-left: 10px; /* 8 */
+    font-style:oblique;
+}
+
+
+.aside .level2 {
+  margin-top: 0.25in;
+}
+
+fa {
+    content: "\f3c5";
+    font-style: italic;
+}
