@@ -43,4 +43,4 @@ Otherwise, just run my `render.r` in the root directory of this repo and make su
 
 # Acknowledgements
 
-A huge, huge thanks to [Nick Strayer](https://github.com/nstrayer) for this [amazing tool](http://nickstrayer.me/datadrivencv/). He also has a nice blog post breaking down how it was built, which is pretty useful to understand the inner workings of the code.
+A huge, huge thanks to [Nick Strayer](https://github.com/nstrayer) for this [amazing tool](http://nickstrayer.me/datadrivencv/). He also has a nice [blog post](https://livefreeordichotomize.com/2019/09/04/building_a_data_driven_cv_with_r/) breaking down how it was built, which is pretty useful to understand the inner workings of the code.
