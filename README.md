@@ -39,3 +39,8 @@ Otherwise, just run my `render.r` in the root directory of this repo and make su
 - `./output/my_cv.rmd` is using `./css/styles.css`, and
 
 - `./output/my_cv.rmd` is pointing to the text recorded in the `./my_cv_data/*.csv` files.
+
+
+# Acknowledgements
+
+A huge, huge thanks to [Nick Strayer](https://github.com/nstrayer) for this [amazing tool](http://nickstrayer.me/datadrivencv/). He also has a nice blog post breaking down how it was built, which is pretty useful to understand the inner workings of the code.
