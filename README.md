@@ -30,9 +30,9 @@ If starting from scratch,
 4. Run the `render.r` that was generated in  `output/`. Make sure this `render.r` is pointing to the `cv.rmd` template you want to render.
 
 
-Otherwise, just run my `render.r` in the root directory of this repo and make sure that all paths are pointing to the correct file. For example:
+Otherwise, just run my `render_cv.r` in the root directory of this repo and make sure that all paths are pointing to the correct file. For example:
 
-- my version of `./render.r` is pointing to `./output/my_cv.rmd`,
+- my version of `./render_cv.r` is pointing to `./output/my_cv.rmd`,
 
 - `./output/my_cv.rmd` is sourcing `./cv_printing_functions.r`, 
 
