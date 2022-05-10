@@ -1,0 +1,147 @@
+---
+title: "Brendan Miller's Resume"
+author: Brendan Miller
+date: "`r Sys.Date()`"
+params:
+  pdf_mode:
+    value: false
+output:
+  pagedown::html_resume:
+    # css: ['css/dd_cv.css', 'resume']
+    # css: ['css/custom_resume.css', 'css/styles.css', 'resume']
+    css: ['../css/1_custom_resume.css', '../css/1_styles_html.css', 'resume']
+    self_contained: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+library(magrittr) # For the pipe
+
+## important to source my own customized version of these printing functions.
+## I can add other functions I want to in this file in order to reference them later in this rmd when rendered.
+source("../cv_printing_functions.r")
+
+# Read in all data and initialize a CV printer object
+CV <- create_CV_object(
+  data_location = "../my_resume_data/",
+  pdf_mode = params$pdf_mode
+)
+
+```
+
+
+Aside
+================================================================================
+
+<!-- This is to insert a picture of me instead -->
+<!-- ![logo](me.jpg){width=100%} -->
+
+```{r, eval=TRUE}
+
+# Build interactive network of positions colored by section
+# and connected if they occurred in the same year
+# datadrivencv::build_network_logo(CV$entries_data)
+
+## use my own so I can control the dimension and borders of 
+## where the logo is placed in the CV
+build_network_logo_custom(CV$entries_data)
+```
+
+```{r, eval=FALSE}
+if(params$pdf_mode){
+  cat("View this CV online with links at __")
+} else {
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV]()")
+}
+```
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %>% print_contact_info()
+```
+
+Software Coding {#skills}
+--------------------------------------------------------------------------------
+&nbsp;&nbsp;&nbsp;&nbsp;`R`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux command line`<br />&nbsp;&nbsp;&nbsp;&nbsp;`High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
+
+
+Areas of Expertise {#skills}
+--------------------------------------------------------------------------------
+**Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA<br />&nbsp;&nbsp;&nbsp;&nbsp;Liquid biopsy<br />&nbsp;&nbsp;&nbsp;&nbsp;Cancer diagnostics<br />&nbsp;&nbsp;&nbsp;&nbsp;Epigenetics<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene expression variability
+
+**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell type deconvolution<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Targeted sequencing
+
+**Data Visualization**<br />&nbsp;&nbsp;&nbsp;&nbsp;`ggplot2`<br />&nbsp;&nbsp;&nbsp;&nbsp;`matplotlib`
+
+**Package Development**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bioconductor`<br />&nbsp;&nbsp;&nbsp;&nbsp;`devtools`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Git/GitHub`<br />&nbsp;&nbsp;&nbsp;&nbsp;`PyPI`
+
+**Scientific Communication**<br />&nbsp;&nbsp;&nbsp;&nbsp;High impact publications<br />&nbsp;&nbsp;&nbsp;&nbsp;Invited speaker
+
+
+Main
+================================================================================
+
+Brendan F. Miller {#title}
+--------------------------------------------------------------------------------
+
+### Molecular Biologist | Computational Biology | Statistical Programming
+
+```{r, eval=TRUE}
+# Note the special double pipe so we modify the CV object in place
+CV %<>% print_text_block("company_1")
+```
+
+Current Position {data-icon=user data-concise=true}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+CV %<>% print_section('current_position_company_1')
+```
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('education')
+```
+
+
+Statistical Software {data-icon=laptop data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('software')
+```
+
+
+
+
+```{r, eval=FALSE}
+CV %<>% print_section('reference')
+```
+
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+
+```{r}
+cat(paste0("Last updated on ", Sys.Date() ))
+```
+
+
+<!-- Made using R package [**pagedown**](https://github.com/rstudio/pagedown). -->
+
+<!-- The source code is available [on github.com/nstrayer/cv](/Users/brendan/Desktop/Misc Projects/data_cv/datadrivencv/). -->
+
+<!-- Last updated on `r Sys.Date()`. -->
+
+
+
+
+

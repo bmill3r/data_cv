@@ -146,7 +146,7 @@ print_section <- function(cv, section_id, glue_template = "default"){
 {timeline}
 
 {description_bullets}
-\n\n\n"
+\n\n"
   }
 
   section_data <- dplyr::filter(cv$entries_data, section == section_id)
@@ -301,12 +301,23 @@ build_network_logo_custom <- function(position_data){
   
   viz_script <- readr::read_file(system.file("js/cv_network.js", package = "datadrivencv"))
   
+  # glue::glue(
+  #   "<script id = \"data_for_network\" type = \"application/json\">",
+  #   "{network_data}",
+  #   "</script>",
+  #   "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js\"></script>",
+  #   "<svg style = \"width: 100%; height:25%; margin-top: -100px; margin-bottom: 10px;\" id = \"cv_network_viz\"></svg>",
+  #   "<script>",
+  #   "{viz_script}",
+  #   "</script>"
+  # )
+  
   glue::glue(
     "<script id = \"data_for_network\" type = \"application/json\">",
     "{network_data}",
     "</script>",
     "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js\"></script>",
-    "<svg style = \"width: 100%; height:25%; margin-top: -110px; margin-bottom: 10px;\" id = \"cv_network_viz\"></svg>",
+    "<svg style = \"width: 100%; height:15%; margin-top: -40px; margin-bottom: 0px;\" id = \"cv_network_viz\"></svg>",
     "<script>",
     "{viz_script}",
     "</script>"
