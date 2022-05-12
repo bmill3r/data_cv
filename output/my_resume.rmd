@@ -68,7 +68,7 @@ CV %>% print_contact_info()
 
 Software Coding {#skills}
 --------------------------------------------------------------------------------
-&nbsp;&nbsp;&nbsp;&nbsp;`R`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux command line`<br />&nbsp;&nbsp;&nbsp;&nbsp;`High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
+&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux command line`<br />&nbsp;&nbsp;&nbsp;&nbsp;`High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
 
 
 Areas of Expertise {#skills}
@@ -81,7 +81,7 @@ Areas of Expertise {#skills}
 
 **Package Development**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bioconductor`<br />&nbsp;&nbsp;&nbsp;&nbsp;`devtools`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Git/GitHub`<br />&nbsp;&nbsp;&nbsp;&nbsp;`PyPI`
 
-**Scientific Communication**<br />&nbsp;&nbsp;&nbsp;&nbsp;High impact publications<br />&nbsp;&nbsp;&nbsp;&nbsp;Invited speaker
+**Scientific Communication**<br />&nbsp;&nbsp;&nbsp;&nbsp;High impact publications<br />&nbsp;&nbsp;&nbsp;&nbsp;Invited conference speaker
 
 
 Main
