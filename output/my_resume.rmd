@@ -68,7 +68,7 @@ CV %>% print_contact_info()
 
 Software Coding {#skills}
 --------------------------------------------------------------------------------
-&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux command line`<br />&nbsp;&nbsp;&nbsp;&nbsp;`High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
+&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
 
 
 Areas of Expertise {#skills}
