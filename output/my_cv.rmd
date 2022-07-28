@@ -9,7 +9,7 @@ output:
   pagedown::html_resume:
     # css: ['css/dd_cv.css', 'resume']
     # css: ['css/custom_resume.css', 'css/styles.css', 'resume']
-    css: ['../css/styles.css', 'resume']
+    css: ['../css/1_custom_resume.css', '../css/1_styles_html.css', 'resume']
     self_contained: true
 ---
 
@@ -327,26 +327,26 @@ CV %<>% print_links()
 
 <!-- Had to hard code in the breaks to get this text down right above the Disclaimer. Also the link doesn't work right now -->
 <!-- Will clean up later -->
-:::aside
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div style="text-align: right"> *Made using R [`pagedown`](https://github.com/rstudio/pagedown)* </div>
-:::
+<!-- :::aside -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <div style="text-align: right"> *Made using R [`pagedown`](https://github.com/rstudio/pagedown)* </div> -->
+<!-- ::: -->
 
 Disclaimer {#disclaimer}
 --------------------------------------------------------------------------------
