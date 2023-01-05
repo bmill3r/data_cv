@@ -1,8 +1,10 @@
 Id used for finding text block,Contents of text block. Supports markdown formatting.
 loc,text
-intro,Post-doctoral research fellow developing computational tools for analysis of spatial transcriptomics data. Molecular biologist with strong background in clinical diagnostics and cancer biology.
+intro,Post-doctoral research fellow developing computational tools for analysis of single-cell and spatial transcriptomics data. Molecular biologist with strong background in clinical diagnostics and cancer biology.
 skills,**Biochemistry**<br />Column Chromatography - SDS-PAGE - Spectrophotometry - Western Blotting<br />**Communication**<br />Grant writing - Microsoft Office Suite - Scientific Presentation and Technical Writing
 references1,**Dr. Jean Fan**<br />Johns Hopkins University<br />Department of Biomedical Engineering<br />jeanfan@jhu.edu
 references2,**Dr. Laura Elnitski**<br />National Institutes of Health<br />National Human Genome Research Institute<br />elnitski@nih.gov
 references3,**Dr. Thomas Pisanic II**<br />Johns Hopkins University<br />Department of Mechanical Engineering<br />tpisani1@jhu.edu
-company_1,Post-doctoral research fellow developing computational tools for analysis of single-cell and spatial transcriptomics data. Molecular biologist with strong background in clinical diagnostics.
+company_dropletbiosciences,Post-doctoral research fellow developing computational pipelines for analysis of single-cell and spatial-omics data. Molecular biologist with strong background in <u>circulating cell-free DNA analysis for cancer clinical diagnostics</u>.
+company_ozette,Post-doctoral research fellow developing computational pipelines for analysis of <u>single-cell and spatial-omics data</u>. Molecular biologist with strong background in clinical diagnostics and <u>cancer biology</u>.
+company_merck,Post-doctoral research fellow developing computational pipelines for analysis of <u>single-cell and spatial-omics data</u>. Molecular biologist with strong background in clinical diagnostics and <u>cancer biology</u>.

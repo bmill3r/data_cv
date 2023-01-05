@@ -66,20 +66,22 @@ Contact {#contact}
 CV %>% print_contact_info()
 ```
 
-Software Coding {#skills}
+<!-- Software Coding {#skills} -->
+<!-- -------------------------------------------------------------------------------- -->
+<!-- &nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing` -->
+
+
+Expertise {#skills}
 --------------------------------------------------------------------------------
-&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
+**Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;Assay optimization<br />&nbsp;&nbsp;&nbsp;&nbsp;Cancer diagnostics<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA<br />&nbsp;&nbsp;&nbsp;&nbsp;droplet digital PCR<br />&nbsp;&nbsp;&nbsp;&nbsp;Liquid biopsy<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA Methylation<br />&nbsp;&nbsp;&nbsp;&nbsp;Epigenetics and chromatin<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene expression variability
 
+**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Differential Expression<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell type deconvolution<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene set enrichment analysis<br />&nbsp;&nbsp;&nbsp;&nbsp;Machine learning models<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell multi-omics<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics
 
-Areas of Expertise {#skills}
---------------------------------------------------------------------------------
-**Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA<br />&nbsp;&nbsp;&nbsp;&nbsp;Liquid biopsy<br />&nbsp;&nbsp;&nbsp;&nbsp;Cancer diagnostics<br />&nbsp;&nbsp;&nbsp;&nbsp;Epigenetics<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene expression variability
+**Software/Coding**<br />&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
 
-**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell type deconvolution<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Targeted sequencing
+**Data Visualization**<br />&nbsp;&nbsp;&nbsp;&nbsp;`ggplot2`<br />&nbsp;&nbsp;&nbsp;&nbsp;`jupyter notebook`<br />&nbsp;&nbsp;&nbsp;&nbsp;`markdown`<br />&nbsp;&nbsp;&nbsp;&nbsp;`matplotlib`
 
-**Data Visualization**<br />&nbsp;&nbsp;&nbsp;&nbsp;`ggplot2`<br />&nbsp;&nbsp;&nbsp;&nbsp;`matplotlib`
-
-**Package Development**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bioconductor`<br />&nbsp;&nbsp;&nbsp;&nbsp;`devtools`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Git/GitHub`<br />&nbsp;&nbsp;&nbsp;&nbsp;`PyPI`
+**Package Development**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bioconductor`<br />&nbsp;&nbsp;&nbsp;&nbsp;`git/GitHub`<br />&nbsp;&nbsp;&nbsp;&nbsp;`PyPI`
 
 **Scientific Communication**<br />&nbsp;&nbsp;&nbsp;&nbsp;High impact publications<br />&nbsp;&nbsp;&nbsp;&nbsp;Invited conference speaker
 
@@ -94,7 +96,7 @@ Brendan F. Miller {#title}
 
 ```{r, eval=TRUE}
 # Note the special double pipe so we modify the CV object in place
-CV %<>% print_text_block("company_1")
+CV %<>% print_text_block("intro")
 ```
 
 Current Position {data-icon=user data-concise=true}
@@ -112,7 +114,15 @@ CV %<>% print_section('education')
 ```
 
 
-Statistical Software {data-icon=laptop data-concise=true}
+Additional Research {data-icon=laptop data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('additional_research')
+```
+
+
+Statistical Software {data-icon=cloud-upload data-concise=true}
 --------------------------------------------------------------------------------
 
 ```{r, eval=TRUE}

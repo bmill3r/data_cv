@@ -89,75 +89,23 @@ CV %>% print_contact_info()
 CV %>% print_skill_bars()
 ```
 
-
-
-Proficiencies {#skills}
---------------------------------------------------------------------------------
-
 ```{r, eval=FALSE}
 CV %<>% print_text_block('industy_experience_aside')
 ```
 
-**Computational Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`, `R`, `git`, `Unix`
+Expertise {#skills}
+--------------------------------------------------------------------------------
+**Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;Assay optimization<br />&nbsp;&nbsp;&nbsp;&nbsp;Cancer diagnostics<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA<br />&nbsp;&nbsp;&nbsp;&nbsp;droplet digital PCR<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA Methylation<br />&nbsp;&nbsp;&nbsp;&nbsp;Epigenetics and chromatin<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene expression variability
 
-**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell sequencing
+**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Differential Gene Expression<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell type deconvolution<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene set enrichment analysis<br />&nbsp;&nbsp;&nbsp;&nbsp;Machine learning models<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell multi-omics<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics
 
-**Diagnostics and Sequencing**<br />&nbsp;&nbsp;&nbsp;&nbsp;Droplet-digital PCR<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA
+**Software/Coding**<br />&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
 
-**Molecular Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA methylation<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell culture<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA cloning<br />&nbsp;&nbsp;&nbsp;&nbsp;Nucleic acid purification<br />&nbsp;&nbsp;&nbsp;&nbsp;siRNA knockdowns
+**Data Visualization**<br />&nbsp;&nbsp;&nbsp;&nbsp;`ggplot2`<br />&nbsp;&nbsp;&nbsp;&nbsp;`jupyter notebook`<br />&nbsp;&nbsp;&nbsp;&nbsp;`markdown`<br />&nbsp;&nbsp;&nbsp;&nbsp;`matplotlib`<br />&nbsp;&nbsp;&nbsp;&nbsp;`R Shiny`
 
+**Version Control**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bioconductor`<br />&nbsp;&nbsp;&nbsp;&nbsp;`git/GitHub`<br />&nbsp;&nbsp;&nbsp;&nbsp;`PyPI`
 
-
-
-<!-- <dl> -->
-<!--   <dt>**Biochemistry**</dt> -->
-<!--   <dd>Column Chromatography</dd> -->
-<!--   <dd>SDS-PAGE</dd> -->
-<!--   <dd>Spectrophotometry</dd> -->
-<!--   <dd>Western Blotting</dd> -->
-<!--   <dt>**Communication**</dt> -->
-<!--   <dd>Grant writing</dd> -->
-<!--   <dd>Microsoft Office Suite</dd> -->
-<!--   <dd>Scientific Presentations</dd> -->
-<!--   <dd>Technical Writing</dd> -->
-<!-- </dl> -->
-
-<!-- **Biochemistry** -->
-
-<!-- - Column Chromatography -->
-<!-- - SDS-PAGE -->
-<!-- - Spectrophotometry -->
-<!-- - Western Blotting -->
-
-<!-- **Communication** -->
-
-<!-- - Grant writing -->
-<!-- - Microsoft Office Suite -->
-<!-- - Scientific Presentations -->
-<!-- - Technical Writing -->
-
-<!-- **Computational Biology** -->
-
-<!-- - Python Data Visualization and Analysis -->
-<!--   - `jupyter`, `matplotlib`, `numpy`, `pandas`, `scipy`  -->
-<!-- - `R` and RStudio -->
-<!-- - Version control (`git`) -->
-
-<!-- Highly experienced in -->
-
-
-<!-- - R  -->
-<!-- - Python -->
-<!-- - Javascript -->
-
-<!-- Experience with -->
-
-
-<!-- - Bash -->
-<!-- - SQL -->
-<!-- - C++ -->
-<!-- - AWK -->
-
+**Scientific Communication**<br />&nbsp;&nbsp;&nbsp;&nbsp;High impact publications<br />&nbsp;&nbsp;&nbsp;&nbsp;Invited conference speaker
 
 
 Main
@@ -168,7 +116,7 @@ Brendan F. Miller {#title}
 
 ```{r, eval=TRUE}
 # Note the special double pipe so we modify the CV object in place
-CV %<>% print_text_block("intro")
+CV %<>% print_text_block("company_1")
 ```
 
 
@@ -176,14 +124,13 @@ CV %<>% print_text_block("intro")
 Current Position {data-icon=user}
 --------------------------------------------------------------------------------
 ```{r, eval=TRUE}
-CV %<>% print_section('current_position')
+CV %<>% print_section('current_position_company_1')
 ```
 
 
 
 Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('education')
 ```
@@ -192,7 +139,6 @@ CV %<>% print_section('education')
 
 Awards and Honors {data-icon=trophy}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('awards_and_honors')
 ```
@@ -201,7 +147,6 @@ CV %<>% print_section('awards_and_honors')
 
 Research Experience {data-icon=flask}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('research_positions')
 ```
@@ -216,9 +161,16 @@ CV %<>% print_section('teaching_positions')
 
 
 
+Mentorship {data-icon=chalkboard-teacher}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+CV %<>% print_section('mentorship')
+```
+
+
+
 Invited Speaker {data-icon=group}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('invited_speaker')
 ```
@@ -235,7 +187,6 @@ CV %<>% print_section('poster_presentations')
 <!-- I have to specify the fa icon this way if tagging section for specific css formatting via {#...} -->
 <i class="fas fa-paperclip"></i> Preprint Publications {#pubs}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 
 ## preprints giving an error about UTF-8 encoded text
@@ -246,7 +197,6 @@ CV %<>% print_section('preprints')
 
 <i class="fas fa-book"></i> Selected Publications {#pubs}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('academic_articles')
 ```
@@ -255,7 +205,6 @@ CV %<>% print_section('academic_articles')
 
 Software {data-icon=cloud-upload}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('software')
 ```
@@ -264,7 +213,6 @@ CV %<>% print_section('software')
 
 Service {data-icon=hands-helping}
 --------------------------------------------------------------------------------
-
 ```{r, eval=TRUE}
 CV %<>% print_section('service')
 ```
@@ -272,10 +220,9 @@ CV %<>% print_section('service')
 
 
 
-References {data-icon=id-card}
---------------------------------------------------------------------------------
-
-```{r, eval=TRUE}
+<!-- References {data-icon=id-card} -->
+<!-- -------------------------------------------------------------------------------- -->
+```{r, eval=FALSE}
 CV %<>% print_section('reference')
 ```
 
