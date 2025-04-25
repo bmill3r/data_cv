@@ -1,0 +1,25 @@
+name: cv-env
+channels:
+  - conda-forge
+  - r
+dependencies:
+  - r-base=4.2
+  - r-essentials
+  - r-devtools
+  - r-rmarkdown
+  - r-pagedown
+  - r-fs
+  - r-optparse
+  - r-dplyr
+  - r-tidyr
+  - r-stringr
+  - r-magrittr
+  - r-readr
+  - r-jsonlite
+  - r-purrr
+  - r-glue
+  - r-lubridate
+  - r-remotes
+  - r-webshot
+  - phantomjs
+  - python=3.10

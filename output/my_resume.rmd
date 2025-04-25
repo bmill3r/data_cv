@@ -73,18 +73,56 @@ CV %>% print_contact_info()
 
 Expertise {#skills}
 --------------------------------------------------------------------------------
-**Biology**<br />&nbsp;&nbsp;&nbsp;&nbsp;Assay optimization<br />&nbsp;&nbsp;&nbsp;&nbsp;Cancer diagnostics<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell-free DNA<br />&nbsp;&nbsp;&nbsp;&nbsp;droplet digital PCR<br />&nbsp;&nbsp;&nbsp;&nbsp;Liquid biopsy<br />&nbsp;&nbsp;&nbsp;&nbsp;DNA Methylation<br />&nbsp;&nbsp;&nbsp;&nbsp;Epigenetics and chromatin<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene expression variability
+```{r, eval=TRUE}
+# Use the new function to print the ASIDE section from CSV files
+# Falls back to the existing HTML if CSV files are not available
+if ("aside_sections" %in% names(CV) && "aside_entries" %in% names(CV)) {
+  CV %>% print_aside_section()
+} else {
+  # Original content is preserved as a fallback
+  cat('
+<div class="skill-category">Biology</div>
+<span class="skill-item">Assay optimization</span>
+<span class="skill-item">Cancer diagnostics</span>
+<span class="skill-item">Cell-free DNA</span>
+<span class="skill-item">droplet digital PCR</span>
+<span class="skill-item">Liquid biopsy</span>
+<span class="skill-item">DNA Methylation</span>
+<span class="skill-item">Epigenetics and chromatin</span>
+<span class="skill-item">Gene expression variability</span>
 
-**Data Analysis**<br />&nbsp;&nbsp;&nbsp;&nbsp;Bisulfite sequencing<br />&nbsp;&nbsp;&nbsp;&nbsp;Differential Expression<br />&nbsp;&nbsp;&nbsp;&nbsp;Cell type deconvolution<br />&nbsp;&nbsp;&nbsp;&nbsp;Gene set enrichment analysis<br />&nbsp;&nbsp;&nbsp;&nbsp;Machine learning models<br />&nbsp;&nbsp;&nbsp;&nbsp;Single-cell multi-omics<br />&nbsp;&nbsp;&nbsp;&nbsp;Spatial transcriptomics
+<div class="skill-category">Data Analysis</div>
+<span class="skill-item">Bisulfite sequencing</span>
+<span class="skill-item">Differential Expression</span>
+<span class="skill-item">Cell type deconvolution</span>
+<span class="skill-item">Gene set enrichment analysis</span>
+<span class="skill-item">Machine learning models</span>
+<span class="skill-item">Single-cell multi-omics</span>
+<span class="skill-item">Spatial transcriptomics</span>
 
-**Software/Coding**<br />&nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing`
+<div class="skill-category">Software/Coding</div>
+<span class="skill-item">`R/RStudio`</span>
+<span class="skill-item">`Python`</span>
+<span class="skill-item">`Bash scripting`</span>
+<span class="skill-item">`Linux High-Performance Computing`</span>
 
-**Data Visualization**<br />&nbsp;&nbsp;&nbsp;&nbsp;`ggplot2`<br />&nbsp;&nbsp;&nbsp;&nbsp;`jupyter notebook`<br />&nbsp;&nbsp;&nbsp;&nbsp;`markdown`<br />&nbsp;&nbsp;&nbsp;&nbsp;`matplotlib`
+<div class="skill-category">Data Visualization</div>
+<span class="skill-item">`ggplot2`</span>
+<span class="skill-item">`jupyter notebook`</span>
+<span class="skill-item">`markdown`</span>
+<span class="skill-item">`matplotlib`</span>
 
-**Package Development**<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bioconductor`<br />&nbsp;&nbsp;&nbsp;&nbsp;`git/GitHub`<br />&nbsp;&nbsp;&nbsp;&nbsp;`PyPI`
+<div class="skill-category">Package Development</div>
+<span class="skill-item">`Bioconductor`</span>
+<span class="skill-item">`git/GitHub`</span>
+<span class="skill-item">`PyPI`</span>
 
-**Scientific Communication**<br />&nbsp;&nbsp;&nbsp;&nbsp;High impact publications<br />&nbsp;&nbsp;&nbsp;&nbsp;Invited conference speaker
-
+<div class="skill-category">Scientific Communication</div>
+<span class="skill-item">High impact publications</span>
+<span class="skill-item">Invited conference speaker</span>
+')
+}
+```
 
 Main
 ================================================================================
@@ -150,8 +188,3 @@ cat(paste0("Last updated on ", Sys.Date() ))
 <!-- The source code is available [on github.com/nstrayer/cv](/Users/brendan/Desktop/Misc Projects/data_cv/datadrivencv/). -->
 
 <!-- Last updated on `r Sys.Date()`. -->
-
-
-
-
-

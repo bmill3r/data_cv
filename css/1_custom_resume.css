@@ -47,6 +47,23 @@
   margin-block-end: 0;
 }
 
+/* Skills indentation classes for ASIDE section */
+.skill-category {
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+
+.skill-item {
+  padding-left: 1em;
+  display: block;
+  line-height: 1.4;
+}
+
+/* Specific styling for skill items that are code */
+.skill-item code {
+  font-size: 0.9em;
+}
+
 [data-id="skills"] ul {
   margin: 0.05in 0 0.05in;
 }
