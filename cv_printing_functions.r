@@ -599,8 +599,8 @@ build_network_logo_custom <- function(position_data,
   # Create the plot in a temporary file and convert to base64
   temp_file <- tempfile(fileext = ".png")
   
-  # Generate a much larger image with higher resolution
-  png(temp_file, width = 800, height = 450, bg = "transparent", res = 200)
+  # Generate a portrait-oriented image with higher resolution
+  png(temp_file, width = 600, height = 900, bg = "transparent", res = 300)
   
   # Use a layout that spreads nodes more evenly - with warnings suppressed
   layout <- suppressWarnings(
@@ -614,7 +614,7 @@ build_network_logo_custom <- function(position_data,
        vertex.label = NA,
        edge.width = 1.3,       # Thinner edges
        edge.color = "#666666", # Darker edge color for contrast
-       margin = c(0.05, 0.05, 0.05, 0.05), # Minimal margins
+       margin = c(0.01, 0.01, 0.01, 0.01), # Very minimal margins
        layout = layout)
   dev.off()
   
