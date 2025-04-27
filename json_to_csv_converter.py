@@ -153,23 +153,50 @@ def write_contact_info_csv(data: Dict, output_dir: str) -> None:
     contact_info = data.get('contact_info', {})
     output_file = os.path.join(output_dir, "contact_info.csv")
     
-    # Define headers and create placeholder for the first row of explanations
-    headers = ["id", "value"]
+    # Define headers using the correct format for the render.r script
+    headers = ["loc", "icon", "contact"]
     
     with open(output_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         
-        # Write header explanation row
-        writer.writerow(["Contact information identifier", "Value for the contact information field"])
-        
-        # Write headers
+        # Write headers directly - no explanation row needed for 2.0 format
         writer.writerow(headers)
         
-        # Write data rows
-        for key, value in contact_info.items():
-            writer.writerow([key, value])
+        # Write data rows with full contact info
+        if contact_info:
+            for key, value in contact_info.items():
+                # Extract the loc and icon from the key if it's in the format "loc_icon"
+                loc = key
+                icon = ""
+                
+                if "_" in key and key.count("_") == 1:
+                    parts = key.split("_")
+                    loc = parts[0]
+                    icon = parts[1]
+                
+                # Check if value is a dict with the new format (value + icon)
+                if isinstance(value, dict) and 'value' in value:
+                    # Use the stored icon if available
+                    contact_value = value['value']
+                    icon = value.get('icon', icon)  # Use stored icon or fallback to parsed icon
+                else:
+                    # Handle legacy format where value is just a string
+                    contact_value = value
+                
+                writer.writerow([loc, icon, contact_value])
+        else:
+            # If no contact info found, add placeholders
+            common_fields = [
+                {"loc": "email", "icon": "envelope", "contact": ""},
+                {"loc": "phone", "icon": "phone", "contact": ""},
+                {"loc": "website", "icon": "globe", "contact": ""},
+                {"loc": "github", "icon": "github", "contact": ""},
+                {"loc": "linkedin", "icon": "linkedin", "contact": ""}
+            ]
+            for field in common_fields:
+                writer.writerow([field["loc"], field["icon"], field["contact"]])
     
-    print(f"Created contact info CSV file: {output_file}")
+    print(f"Created contact info CSV file with {len(contact_info) or len(common_fields)} fields: {output_file}")
 
 def write_text_blocks_csv(data: Dict, output_dir: str, doc_type: str) -> None:
     """Write text blocks data to a CSV file."""
@@ -227,39 +254,62 @@ def write_aside_entries_csv(data: Dict, output_dir: str, doc_type: str) -> None:
     Write aside entries data to CSV files.
     This creates both aside_sections.csv and aside_entries.csv.
     """
-    # Check if the JSON has aside_entries and aside_sections
-    # For now, we'll create placeholder files
+    skills_data = data.get('skills', [])
     
-    # Create aside_sections.csv
+    # Check if the JSON has skills data
+    if not skills_data:
+        print("No skills data found in the JSON file.")
+        return
+    
+    # Create aside_sections.csv - with proper format matching the original CSV
     sections_file = os.path.join(output_dir, "aside_sections.csv")
     with open(sections_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(["Section ID", "Section Title"])
-        writer.writerow(["section", "title"])
-        writer.writerow(["skills", "Skills & Expertise"])
-        writer.writerow(["languages", "Languages"])
+        # Original CSV headers
+        writer.writerow(["category", "display_name", "is_code", "sort_order"])
+        
+        # Write each skill category
+        for i, category in enumerate(skills_data):
+            # Default is_code to FALSE
+            is_code = "FALSE"
+            # If the category name contains keywords related to code, mark as TRUE
+            code_keywords = ["software", "coding", "programming", "development", "package", "script"]
+            if any(keyword in category.get('category', '').lower() for keyword in code_keywords):
+                is_code = "TRUE"
+                
+            writer.writerow([
+                # Create slug from category name
+                category.get('category', '').lower().replace(' ', '_').replace('/', '_'),
+                category.get('category', ''),  # display_name is the full category name
+                is_code,
+                i + 1  # sort_order
+            ])
     
-    print(f"Created aside sections CSV file: {sections_file}")
+    print(f"Created aside sections CSV file with {len(skills_data)} categories: {sections_file}")
     
-    # Create aside_entries.csv
+    # Create aside_entries.csv - with proper format matching the original CSV
     entries_file = os.path.join(output_dir, "aside_entries.csv")
     with open(entries_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(["Section ID", "Entry Title", "Entry Details (optional)"])
-        writer.writerow(["section", "title", "detail"])
+        # Original CSV headers
+        writer.writerow(["category", "entry", "sort_order"])
         
-        # Add skills entries based on the skills data
-        skills_data = data.get('skills', [])
+        # Write all skill entries
+        entry_count = 0
         for category_data in skills_data:
-            category = category_data.get('category', '')
-            for skill in category_data.get('skills', []):
+            # Get the category slug
+            category_slug = category_data.get('category', '').lower().replace(' ', '_').replace('/', '_')
+            
+            # Add each skill in this category
+            for i, skill in enumerate(category_data.get('entries', [])):
                 writer.writerow([
-                    "skills",
-                    f"{category}: {skill.get('name', '')}",
-                    f"Level: {skill.get('level', 0)}/5"
+                    category_slug,
+                    skill.get('name', ''),
+                    i + 1  # sort_order within this category
                 ])
+                entry_count += 1
     
-    print(f"Created aside entries CSV file: {entries_file}")
+    print(f"Created aside entries CSV file with {entry_count} skills: {entries_file}")
 
 def convert_json_to_csv(json_path: str, output_dir: str, doc_type: str, 
                        company_filter: Optional[str] = None,

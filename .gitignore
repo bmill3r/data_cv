@@ -11,3 +11,8 @@ output/
 ideas
 test_images/
 temp_output/
+my_cv_data/
+my_resume_data/
+my_resume_data_test/
+my_cv_data_test/
+.env

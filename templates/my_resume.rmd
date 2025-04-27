@@ -22,21 +22,41 @@ output:
   display: block;
   margin: 0 !important;
   padding: 0 !important;
-  height: 0.8em !important; /* Reduced from 1.2em */
-  line-height: 0.8 !important; /* Added to reduce vertical space */
+  height: 0.7em !important; /* Reduced height */
+  line-height: 0.7 !important; /* Reduced line height */
+  margin-bottom: 0 !important; /* No space after category header */
+  break-inside: avoid !important; /* Prevent category from breaking across pages */
+  page-break-inside: avoid !important; /* For older browsers */
 }
 
 /* Space between categories but not at the top */
 .skill-category:not(:first-of-type) {
-  margin-top: 0.4em !important;
-  margin-bottom: -0.2em !important;
+  margin-top: 0.6em !important; /* Space between categories */
+  margin-bottom: 0 !important; /* No space after category header */
+  break-before: auto; /* Allow breaks between categories */
+  page-break-before: auto; /* For older browsers */
+}
+
+/* Group each category with its items */
+.skill-category-group {
+  break-inside: avoid !important; /* Keep the entire group together */
+  page-break-inside: avoid !important; /* For older browsers */
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+/* Ensure individual elements don't break */
+.skill-category, .skill-category ~ .skill-item {
+  break-inside: avoid !important; /* Keep categories and their items together */
+  page-break-inside: avoid !important; /* For older browsers */
 }
 
 .skill-item {
   padding-left: 1em;
   display: block;
-  margin-top: -0.20em !important; /* Increased negative margin to pull up skill items further */
-  line-height: 1.0; /* Reduced from 1.2 */
+  margin-top: -0.35em !important; /* Pull items up closer to category */
+  margin-bottom: 0.35em !important; /* Space between items */
+  line-height: 1.1; /* Slightly increased line height */
 }
 
 /* Category spacing handled by CSS rules on skill-category */
@@ -44,15 +64,44 @@ output:
 .pagedjs_page:first-of-type .aside {
   margin-top: -50px; /* Move content higher */
 }
+
+/* Add spacing between Citations heading and the bar graph */
+#citations {
+  margin-bottom: 5px;
+}
+
+/* Style for the citations section */
+#citations + p {
+  margin-top: 0;
+}
 </style>
 
-```{r, include=FALSE}
+```{r setup, include=FALSE}
+# This is a setup chunk that runs first and controls all other chunks
+# Turn off all warnings globally
+options(warn = -1)
+
+# Set chunk options to suppress all warnings and messages
 knitr::opts_chunk$set(
-  results='asis', 
-  echo = FALSE
+  results = 'asis',
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  error = FALSE,
+  comment = NA
 )
 
-library(magrittr) # For the pipe
+# Create a hook to suppress warnings in all chunks
+knitr::knit_hooks$set(warning = function(x, options) {})
+knitr::knit_hooks$set(message = function(x, options) {})
+knitr::knit_hooks$set(error = function(x, options) {})
+
+# Suppress package startup messages
+suppressPackageStartupMessages({
+  library(magrittr) # For the pipe
+})
+
+# magrittr already loaded in setup chunk
 
 ## important to source my own customized version of these printing functions.
 ## I can add other functions I want to in this file in order to reference them later in this rmd when rendered.
@@ -64,7 +113,6 @@ CV <- create_CV_object(
   pdf_mode = params$pdf_mode,
   custom_image_path = params$custom_image_path
 )
-
 ```
 
 
@@ -74,7 +122,7 @@ Aside
 <!-- This is to insert a picture of me instead -->
 <!-- ![logo](me.jpg){width=100%} -->
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
 # Check if custom image path is provided in params
 if (!is.null(params$custom_image_path) && file.exists(params$custom_image_path)) {
   # Display the custom image directly using markdown
@@ -83,8 +131,23 @@ if (!is.null(params$custom_image_path) && file.exists(params$custom_image_path))
   # Try using the custom_image_path from the CV object instead
   cat(paste0("![](", CV$custom_image_path, "){width=100% height=200px}"))
 } else {
-  # Fall back to network logo if no custom image
-  build_network_logo_custom(CV$entries_data, margin_top = "-10px", margin_bottom = "0px", width = "100%", height = "200px")
+  # Fall back to network logo if no custom image - with all output captured and discarded
+  temp_file <- tempfile()
+  con <- file(temp_file, open = "w")
+  sink(con, type = "output")
+  sink(con, type = "message")
+  tryCatch({
+    suppressWarnings({
+      suppressMessages({
+        build_network_logo_custom(random_data = TRUE, num_nodes = 200, num_edge_factor = 1.8, node_size = 8, margin_top = "-10px", margin_bottom = "0px", width = "100%", height = "200px")
+      })
+    })
+  }, finally = {
+    sink(type = "message")
+    sink(type = "output")
+    close(con)
+    if(file.exists(temp_file)) file.remove(temp_file)
+  })
 }
 ```
 
@@ -99,16 +162,20 @@ if(params$pdf_mode){
 Contact {#contact}
 --------------------------------------------------------------------------------
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
 CV %>% print_contact_info()
 ```
 
 Citations {#citations}
 --------------------------------------------------------------------------------
 
-```{r, eval=TRUE}
-# Replace YOUR_SCHOLAR_ID with your actual Google Scholar ID
-CV %>% print_scholar_citations(scholar_id = "YOUR_SCHOLAR_ID", bar_color = "#4292c6")
+```{r, eval=TRUE, warning=FALSE, message=FALSE, results='asis'}
+# Display Google Scholar citations
+suppressWarnings({
+  suppressMessages({
+    CV %>% print_scholar_citations(scholar_id = "BP7VBw0AAAAJ&hl=en", bar_color = "#4292c6")
+  })
+})
 ```
 
 <!-- Software Coding {#skills} -->
@@ -118,7 +185,7 @@ CV %>% print_scholar_citations(scholar_id = "YOUR_SCHOLAR_ID", bar_color = "#429
 
 Expertise {#skills}
 --------------------------------------------------------------------------------
-```{r, eval=TRUE}
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
 # Use the new function to print the ASIDE section from CSV files
 # Falls back to the existing HTML if CSV files are not available
 if ("aside_sections" %in% names(CV) && "aside_entries" %in% names(CV)) {
@@ -153,89 +220,122 @@ if ("aside_sections" %in% names(CV) && "aside_entries" %in% names(CV)) {
 <span class="skill-item">`Python`</span>
 <span class="skill-item">`Bash scripting`</span>
 <span class="skill-item">`Linux High-Performance Computing`</span>
-
-
-<div class="skill-category">Data Visualization</div>
-<span class="skill-item">`ggplot2`</span>
-<span class="skill-item">`jupyter notebook`</span>
-<span class="skill-item">`markdown`</span>
-<span class="skill-item">`matplotlib`</span>
-
-
-<div class="skill-category">Package Development</div>
-<span class="skill-item">`Bioconductor`</span>
-<span class="skill-item">`git/GitHub`</span>
-<span class="skill-item">`PyPI`</span>
-
-
-<div class="skill-category">Scientific Communication</div>
-<span class="skill-item">High impact publications</span>
-<span class="skill-item">Invited conference speaker</span>
+<span class="skill-item">`Git version control`</span>
+<span class="skill-item">`SQL`</span>
+<span class="skill-item">`AWS cloud computing`</span>
 ')
 }
 ```
 
+
 Main
 ================================================================================
 
-Brendan F. Miller {#title}
+Brendan Miller {#title}
 --------------------------------------------------------------------------------
 
-### Molecular Biologist | Computational Biology | Statistical Programming
-
-```{r, eval=TRUE}
-# Note the special double pipe so we modify the CV object in place
-CV %<>% print_text_block("intro")
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
+# Note the special pipe operator for printing text block
+CV %>% print_text_block("intro")
 ```
-
-Current Position {data-icon=user data-concise=true}
---------------------------------------------------------------------------------
-```{r, eval=TRUE}
-CV %<>% print_section('current_position_company_1')
-```
-
 
 Education {data-icon=graduation-cap data-concise=true}
 --------------------------------------------------------------------------------
 
-```{r, eval=TRUE}
-CV %<>% print_section('education')
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
+# Add error handling to prevent crashes when sections are missing
+tryCatch({
+  CV %>% print_section('education')
+}, error = function(e) {
+  cat("No education data available.")
+})
 ```
 
-
-Additional Research {data-icon=laptop data-concise=true}
+Industry Experience {data-icon=suitcase}
 --------------------------------------------------------------------------------
 
-```{r, eval=TRUE}
-CV %<>% print_section('additional_research')
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
+# Add error handling to prevent crashes when sections are missing
+tryCatch({
+  CV %>% print_section('industry_positions')
+}, error = function(e) {
+  cat("No industry positions data available.")
+})
 ```
 
-
-Statistical Software {data-icon=cloud-upload data-concise=true}
+Research Experience {data-icon=laptop}
 --------------------------------------------------------------------------------
 
-```{r, eval=TRUE}
-CV %<>% print_section('software')
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
+# Add error handling to prevent crashes when sections are missing
+tryCatch({
+  CV %>% print_section('research_positions')
+}, error = function(e) {
+  cat("No research positions data available.")
+})
 ```
 
+<!-- Teaching Experience {data-icon=chalkboard-teacher} -->
+<!-- -------------------------------------------------------------------------------- -->
+
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_section('teaching_positions') -->
+<!-- ``` -->
 
 
+<!-- Selected Data Science Writing {data-icon=chart-line} -->
+<!-- -------------------------------------------------------------------------------- -->
 
-```{r, eval=FALSE}
-CV %<>% print_section('reference')
-```
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_section('data_science_writings') -->
+<!-- ``` -->
 
 
-Disclaimer {#disclaimer}
+<!-- Selected Press (About)  {data-icon=newspaper} -->
+<!-- -------------------------------------------------------------------------------- -->
+
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_section('about_me_press') -->
+<!-- ``` -->
+
+
+<!-- Selected Press (By)  {data-icon=newspaper} -->
+<!-- -------------------------------------------------------------------------------- -->
+
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_section('by_me_press') -->
+<!-- ``` -->
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+
+Selected Publications, Posters, and Patents {data-icon=book}
 --------------------------------------------------------------------------------
 
-```{r}
-cat(paste0("Last updated on ", Sys.Date() ))
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
+# Add error handling to prevent crashes when sections are missing
+tryCatch({
+  CV %>% print_section('academic_articles')
+}, error = function(e) {
+  cat("No publications data available.")
+})
 ```
 
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_text_block('about_me_press') -->
+<!-- ``` -->
 
-<!-- Made using R package [**pagedown**](https://github.com/rstudio/pagedown). -->
+<!-- ::: aside -->
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_text_block('industy_experience_aside') -->
+<!-- ``` -->
+<!-- ::: -->
 
-<!-- The source code is available [on github.com/nstrayer/cv](/Users/brendan/Desktop/Misc Projects/data_cv/datadrivencv/). -->
+<!-- Disclaimer {#disclaimer} -->
+<!-- -------------------------------------------------------------------------------- -->
 
-<!-- Last updated on `r Sys.Date()`. -->
+<!-- ```{r, eval=TRUE, warning=FALSE, message=FALSE} -->
+<!-- CV %>% print_text_block('disclaimer') -->
+<!-- ``` -->

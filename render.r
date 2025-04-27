@@ -21,6 +21,8 @@ render_document <- function(
   output_filename = NULL,
   # Include HTML version? (default: FALSE - only generate PDF)
   html_too = FALSE,
+  # Skip PDF generation? (default: FALSE - generate PDF)
+  skip_pdf = FALSE,
   # Include plain text version for LinkedIn/job applications? (default: FALSE)
   plain_text_too = FALSE,
   # Custom image path (default: NULL - use network logo)
@@ -48,6 +50,18 @@ render_document <- function(
     library(tidyr)
     library(dplyr)
   })
+  
+  # Set global options to suppress warnings and messages
+  options(warn = -1)  # Suppress warnings globally
+  options(knitr.table.format = "html")
+  
+  # Configure knitr to suppress warnings and messages in all chunks
+  knitr::opts_chunk$set(
+    warning = FALSE,
+    message = FALSE,
+    echo = FALSE,
+    results = "asis"
+  )
   
   # Source the CV printing functions
   source(file.path(getwd(), "cv_printing_functions.r"))
@@ -77,11 +91,11 @@ render_document <- function(
   if (is.null(output_filename)) {
     date_suffix <- format(Sys.Date(), "%Y-%m-%d")
     output_filename <- if (is_cv) {
-      paste0("BrendanMiller", doc_type, "_", date_suffix)
+      paste0("BrendanMiller_CV_", date_suffix)
     } else if (is_resume) {
-      paste0("BrendanMiller", doc_type, "_", date_suffix)
+      paste0("BrendanMiller_resume_", date_suffix)
     } else {
-      paste0("BrendanMiller_", doc_type, "_", date_suffix)
+      paste0("BrendanMiller_document_", date_suffix)
     }
   }
   
@@ -164,13 +178,28 @@ render_document <- function(
   # Set environment variable for the template to use
   Sys.setenv(CV_DATA_PATH = cv_rds_path)
   
-  # Render HTML version
-  rmarkdown::render(template_path,
+  # Set global options to suppress warnings
+  oldw <- getOption("warn")
+  options(warn = -1)
+  
+  # Create a simple wrapper function to suppress warnings
+  suppressAll <- function(expr) {
+    suppressWarnings(suppressMessages(expr))
+  }
+  
+  # Render the document with warnings suppressed
+  suppressAll({
+    rmarkdown::render(template_path,
                     params = list(
                       pdf_mode = FALSE,
                       custom_image_path = custom_image_path
                     ),
-                    output_file = html_output)
+                    output_file = html_output,
+                    quiet = TRUE)
+  })
+  
+  # Restore original warning level
+  options(warn = oldw)
   
   if (html_too) {
     cat(paste0("HTML ", doc_type, " created: ", html_output, "\n"))
@@ -179,12 +208,18 @@ render_document <- function(
   # Try to find Chrome on the system
   chrome_path <- NULL
   
-  # Check common locations for Chrome on macOS
+  # Check common locations for Chrome on different operating systems
   possible_paths <- c(
+    # macOS paths
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chrome.app/Contents/MacOS/Chrome",
+    # Linux paths
     "/usr/bin/google-chrome",
-    "/usr/bin/chromium-browser"
+    "/usr/bin/chromium-browser",
+    # Windows paths when running in WSL
+    "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe",
+    "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+    "/mnt/c/Users/brendan/AppData/Local/Google/Chrome/Application/chrome.exe"
   )
   
   for (path in possible_paths) {
@@ -195,25 +230,69 @@ render_document <- function(
     }
   }
   
-  # Generate PDF using Chrome
-  cat("Generating PDF using Chrome...\n")
-  
-  if (!is.null(chrome_path)) {
-    # Set Chrome path explicitly
-    Sys.setenv(PAGEDOWN_CHROME = chrome_path)
+  # Generate PDF using Chrome (unless skip_pdf is TRUE)
+  if (!skip_pdf) {
+    cat("Generating PDF using Chrome...\n")
+    
+    if (!is.null(chrome_path)) {
+      # Set Chrome path explicitly
+      Sys.setenv(PAGEDOWN_CHROME = chrome_path)
+    } else {
+      # If Chrome wasn't found in any of the predefined paths
+      cat("Chrome not found in predefined paths. Checking PAGEDOWN_CHROME environment variable...\n")
+      
+      # Check if PAGEDOWN_CHROME environment variable is set
+      env_chrome <- Sys.getenv("PAGEDOWN_CHROME")
+      if (env_chrome != "") {
+        chrome_path <- env_chrome
+        cat("Using Chrome from PAGEDOWN_CHROME environment variable: ", chrome_path, "\n")
+      } else {
+        # Try to find Chrome using system commands
+        cat("Attempting to locate Chrome using system commands...\n")
+        
+        # Try to find Chrome in Windows using WSL
+        wsl_chrome_cmd <- tryCatch({
+          system("wslpath -u 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'", intern = TRUE)
+        }, error = function(e) NULL)
+        
+        if (!is.null(wsl_chrome_cmd) && length(wsl_chrome_cmd) > 0) {
+          chrome_path <- wsl_chrome_cmd[1]
+          cat("Found Chrome using WSL path conversion: ", chrome_path, "\n")
+        } else {
+          cat("Warning: Chrome not found. PDF generation may fail.\n")
+          cat("Consider setting the PAGEDOWN_CHROME environment variable to the path of your Chrome executable.\n")
+        }
+      }
+    }
+    
+    # Set appropriate Chrome arguments for headless rendering
+    # Use more robust arguments for WSL environment
+    options(pagedown.chrome.args = c(
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-dev-shm-usage"
+    ))
+    
+    # Use pagedown for PDF generation
+    tryCatch({
+      pagedown::chrome_print(
+        input = html_output, 
+        output = pdf_output,
+        browser = chrome_path
+      )
+      cat(paste0("PDF ", doc_type, " created: ", pdf_output, "\n"))
+    }, error = function(e) {
+      cat("Error generating PDF: ", e$message, "\n")
+      cat("HTML version is still available at: ", html_output, "\n")
+      # Force HTML to be kept even if html_too is FALSE
+      html_too <<- TRUE
+    })
+  } else {
+    cat("Skipping PDF generation as requested.\n")
+    # Force HTML to be kept since we're skipping PDF
+    html_too <- TRUE
   }
-  
-  # Set appropriate Chrome arguments for headless rendering
-  options(pagedown.chrome.args = c("--headless", "--disable-gpu"))
-  
-  # Use pagedown for PDF generation
-  pagedown::chrome_print(
-    input = html_output, 
-    output = pdf_output,
-    browser = chrome_path
-  )
-  
-  cat(paste0("PDF ", doc_type, " created: ", pdf_output, "\n"))
   
   # Clean up temporary HTML file if not requested
   if (!html_too) {
@@ -255,6 +334,8 @@ if (!interactive()) {
                 help="Output filename without extension [default: BrendanMiller<DocType>_YYYY-MM-DD]"),
     make_option(c("--html"), action="store_true", default=FALSE,
                 help="Generate HTML version in addition to PDF [default: %default]"),
+    make_option(c("--skip-pdf"), action="store_true", default=FALSE,
+                help="Skip PDF generation and only create HTML [default: %default]"),
     make_option(c("--plaintext"), action="store_true", default=FALSE,
                 help="Generate plain text version for LinkedIn/job applications [default: %default]"),
     make_option(c("-i", "--image"), type="character", default=NULL,
@@ -272,6 +353,7 @@ if (!interactive()) {
     template = opts$template,
     output_filename = opts$output,
     html_too = opts$html,
+    skip_pdf = opts$`skip-pdf`,
     plain_text_too = opts$plaintext,
     custom_image_path = opts$image,
     data_dir = opts$`data-dir`

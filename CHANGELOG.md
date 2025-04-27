@@ -2,7 +2,42 @@
 
 All notable changes to the data_cv project will be documented in this file.
 
-## [2025-04-27]
+## [2025-04-27] - Updated
+
+### Added
+- Added Claude API support to the AI CV Generator:
+  - Support for both OpenAI and Anthropic Claude APIs
+  - New `--ai-service` parameter to choose between `openai` and `claude`
+  - Added `--use-prompt-only` option for efficient one-shot CV tailoring
+  - Created comprehensive prompts for both APIs
+  - Environment variable handling via .env file
+  - Updated package requirements (openai, anthropic, python-dotenv)
+  - Improved error handling and API fallback mechanisms
+
+## [2025-04-25]
+
+### Enhanced
+- Improved CV database editor (cv_database_editor.py):
+  - Added functions to edit skill categories and text blocks
+  - Enhanced section display with numbered, user-friendly formatting
+  - Added explicit options for creating new sections in both add and edit functions
+  - Improved user interface with clear prompts and better error handling
+
+### Added
+- Enhanced contact information handling in CSV/JSON converters:
+  - Improved parsing of contact_info.csv with multiple format support
+  - Preserved icon information during round-trip conversions
+  - Added support for duplicate location types (multiple websites)
+  - Structured JSON storage of contact data with values and icons
+  - Fixed missing entries in contact information
+
+### Changed
+- Tested multiple approaches for clean page breaks in the aside section:
+  - Implemented CSS-based solutions with `page-break-inside: avoid` and `break-inside: avoid`
+  - Tried JavaScript-based PagedJS handlers to control category pagination
+  - Experimented with structural approaches including tables and explicit page containers
+  - Adjusted spacing and formatting in the skill categories for better presentation
+  - Added proper error handling to prevent crashes when sections are missing
 
 ### Added
 - Google Scholar citations visualization:
@@ -12,11 +47,23 @@ All notable changes to the data_cv project will be documented in this file.
   - Error handling for network issues or invalid Scholar IDs
   - Automatic installation of required packages
 - JSON-based CV/resume data management system:
-  - New `cv_data.json` file that consolidates all CV/resume data in one file
+  - New `cv_database.json` file that consolidates all CV/resume data in one file
   - Added tagging system for entries to identify document types and skills
   - Support for company/industry targeting of entries
   - Importance ranking for entries to prioritize the most significant ones
   - Structured skills organization by category with proficiency levels
+- CSV to JSON converter:
+  - New `csv_to_json_converter.py` script to convert CSV data to JSON format
+  - Robust handling of multiple CSV encodings and explanation rows
+  - Support for complex data structures including nested descriptions
+  - Debug output for troubleshooting data conversion issues
+  - Proper parsing of skills/aside data for structured JSON storage
+- CV database editor:
+  - New `cv_database_editor.py` script for interactive JSON editing
+  - Support for adding, editing, and removing entries without manual JSON editing
+  - Guided prompts for all required fields with validation
+  - Skill category and entry management
+  - JSON schema enforcement for data integrity
 - Python converter for JSON to CSV:
   - New `json_to_csv_converter.py` script to convert JSON data to CSV format
   - Support for filtering entries by document type, company, or tag

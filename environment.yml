@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - r
 dependencies:
-  - r-base=4.2
+  - r-base=4.2.0
   - r-essentials
   - r-devtools
   - r-rmarkdown
@@ -30,6 +30,8 @@ dependencies:
   - pip
   - pip:
     - openai>=1.6.0
+    - anthropic>=0.18.0
+    - python-dotenv>=1.0.0
     - argparse
     - typing
     - datetime

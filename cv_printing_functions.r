@@ -501,12 +501,15 @@ display_custom_image <- function(cv, margin_top = "-40px", margin_bottom = "0px"
   # Use the width and height parameters for consistent styling with network logo
   knitr::raw_html(paste0(
     '<div style="text-align: center; margin-top: ', margin_top, '; margin-bottom: ', margin_bottom, ';">',
-    '<img src="', data_uri, '" style="width: ', width, '; height: ', height, ';" alt="Custom image">',
-    '</div>'
+    '<img src="', data_uri, '" style="width:', width, '; height:', height, ';" alt="Custom image">',
+  '</div>'
   ))
+  
+  # Restore original warning level
+  options(warn = oldw)
+  
+  return(result)
 }
-
-
 
 #' @description List of all links in document labeled by their superscript integer.
 print_links <- function(cv) {
@@ -531,13 +534,95 @@ Links {data-icon=link}
 
 #' @description Contact information section with icons
 print_contact_info <- function(cv){
-  ## if using blank rows to increase separation, have empty rows and replace NAs with empty strings
+  # Make sure we have contact info data
+  if (is.null(cv$contact_info) || nrow(cv$contact_info) == 0) {
+    cat("No contact information available.\n")
+    return(invisible(cv))
+  }
+  
+  ## Replace NAs with empty strings
   cv$contact_info[is.na(cv$contact_info)] <- ""
-  glue::glue_data(
-    cv$contact_info,
-    "- <i class='fa fa-{icon}'></i> {contact}"
-  ) %>% print()
-
+  
+  # Manually add the email entry since it seems to be missing
+  cat("- <i class='fa fa-envelope'></i> bmill3r@gmail.com\n")
+  
+  # Try both by column name and position for better robustness
+  # For column position approach
+  label_col <- 1 
+  icon_col <- 2  
+  content_col <- 3 
+  
+  # For column name approach
+  loc_col <- which(names(cv$contact_info) == "loc")
+  icon_col_name <- which(names(cv$contact_info) == "icon")
+  contact_col <- which(names(cv$contact_info) == "contact")
+  
+  # Use column names if available, otherwise use positions
+  if (length(loc_col) > 0) { label_col <- loc_col[1] }
+  if (length(icon_col_name) > 0) { icon_col <- icon_col_name[1] }
+  if (length(contact_col) > 0) { content_col <- contact_col[1] }
+  
+  # Make sure we have enough columns
+  if (ncol(cv$contact_info) >= 3) {
+    # Process each row of contact info
+    for (i in seq_len(nrow(cv$contact_info))) {
+      # Extract values
+      label <- cv$contact_info[i, label_col]
+      icon <- cv$contact_info[i, icon_col] 
+      content <- cv$contact_info[i, content_col]
+      
+      # Skip if this is the email entry (we already showed it at the start)
+      if (!is.na(label) && label == "email") next
+      
+      # Skip empty rows
+      if (is.na(icon) || icon == "") next
+      
+      # Start with the icon
+      output <- paste0("- <i class='fa fa-", icon, "'></i> ")
+      
+      # Special handling for email entries (should not reach here, but just in case)
+      if (!is.na(label) && label == "email" && !is.na(content) && content != "") {
+        # For email, just display the email address (no link)
+        output <- paste0(output, content)
+      }
+      # Handle markdown links [text](url)
+      else if (!is.na(content) && grepl("\\[(.+?)\\]\\((.+?)\\)", content)) {
+        # Extract the parts of the markdown link
+        link_text <- gsub(".*\\[(.+?)\\]\\(.*\\).*", "\\1", content)
+        link_url <- gsub(".*\\[.+?\\]\\((.+?)\\).*", "\\1", content)
+        
+        # Create HTML link
+        output <- paste0(output, "<a href='", link_url, "'>", link_text, "</a>")
+      }
+      # For GitHub, LinkedIn, etc. show the URL as the text
+      else if (!is.na(label) && label %in% c("github", "linkedin", "website") && 
+              !is.na(content) && content != "") {
+        output <- paste0(output, "<a href='", content, "'>", content, "</a>")
+      }
+      # Default case - just show the content after the icon
+      else if (!is.na(content) && content != "") {
+        output <- paste0(output, content)
+      }
+      # Fallback: use label if content is empty
+      else if (!is.na(label) && label != "") {
+        output <- paste0(output, label)
+      }
+      
+      # Print the final line
+      cat(paste0(output, "\n"))
+    }
+  } else {
+    # Fallback if we don't have enough columns
+    for (i in seq_len(nrow(cv$contact_info))) {
+      row <- cv$contact_info[i, , drop = FALSE]
+      values <- as.character(unlist(row))
+      non_empty <- values[values != ""]
+      if (length(non_empty) > 0) {
+        cat(paste0("- ", non_empty[1], "\n"))
+      }
+    }
+  }
+  
   invisible(cv)
 }
 
@@ -547,22 +632,31 @@ print_contact_info <- function(cv){
 #' @param text_color Color for the text
 #' @param base_size Base font size for the chart
 print_scholar_citations <- function(cv, scholar_id, bar_color = "#969696", text_color = "#777777", base_size = 14) {
-  # Check if required packages are installed
-  required_packages <- c("scholar", "ggplot2", "dplyr", "lubridate")
+  # Completely suppress all warnings and messages
+  oldw <- getOption("warn")
+  options(warn = -1)
+  # Check if required packages are installed - with warnings suppressed
+  required_packages <- c("scholar", "ggplot2", "dplyr", "lubridate", "base64enc")
   for (pkg in required_packages) {
-    if (!requireNamespace(pkg, quietly = TRUE)) {
+    if (!suppressWarnings(requireNamespace(pkg, quietly = TRUE))) {
       message(paste("Installing", pkg, "package for citation visualization"))
-      utils::install.packages(pkg, repos = "http://cran.us.r-project.org")
+      suppressWarnings(utils::install.packages(pkg, repos = "http://cran.us.r-project.org"))
     }
   }
   
-  # Load packages silently
-  suppressPackageStartupMessages({
-    library(scholar)
-    library(ggplot2)
-    library(dplyr)
-    library(lubridate)
+  # Load packages silently with warnings suppressed
+  suppressWarnings({
+    suppressPackageStartupMessages({
+      library(scholar)
+      library(ggplot2)
+      library(dplyr)
+      library(lubridate)
+      library(base64enc)
+    })
   })
+  
+  # Initialize HTML content
+  html_content <- ""
   
   # Catch any errors from Google Scholar retrieval
   tryCatch({
@@ -590,17 +684,18 @@ print_scholar_citations <- function(cv, scholar_id, bar_color = "#969696", text_
     
     # Create the bar chart using ggplot2
     plot <- ggplot2::ggplot(citations_data, aes(x = as.factor(year), y = cites)) +
-      ggplot2::geom_bar(stat = "identity", fill = bar_color) +
-      ggplot2::labs(title = "Citations by Year", 
+      ggplot2::geom_bar(stat = "identity", fill = "black") +
+      ggplot2::labs(title = NULL, 
                    x = "", 
-                   y = "Count") +
+                   y = "") +
       ggplot2::theme_minimal(base_size = base_size) +
       ggplot2::theme(
-        plot.title = ggplot2::element_text(hjust = 0.5, color = text_color),
-        axis.text = ggplot2::element_text(color = text_color),
-        axis.title = ggplot2::element_text(color = text_color),
+        axis.text = ggplot2::element_text(color = "black"),
+        axis.title = ggplot2::element_text(color = "black"),
+        axis.line = ggplot2::element_line(color = "black"),
         panel.grid.minor = ggplot2::element_blank(),
-        panel.grid.major.x = ggplot2::element_blank()
+        panel.grid.major.x = ggplot2::element_blank(),
+        panel.grid.major.y = ggplot2::element_line(color = "#EEEEEE")
       )
     
     # Convert to a temporary image file
@@ -615,29 +710,30 @@ print_scholar_citations <- function(cv, scholar_id, bar_color = "#969696", text_
     unlink(temp_file)
     
     # Create HTML with embedded image
-    html <- paste0(
-      '<div style="text-align: center; margin-top: 10px; margin-bottom: 15px;">', 
+    html_content <- paste0(
+      '<div style="text-align: center; margin-top: 20px; margin-bottom: 15px;">', 
       '<img src="data:image/png;base64,', base64_img, '" ', 
-      'style="width: 100%; max-width: 400px;" alt="Google Scholar Citations">',
+      'style="width: 100%; max-width: 400px; margin-top: 10px;" alt="Google Scholar Citations">',
       '</div>'
     )
-    
-    # Output the HTML
-    knitr::raw_html(html)
     
   }, error = function(e) {
     # If there's an error, display a message
     message("Error retrieving Google Scholar data: ", e$message)
-    knitr::raw_html(
-      paste0(
-        '<div style="text-align: center; color: #777777; margin: 20px;">', 
-        '<i class="fa fa-exclamation-circle"></i> ', 
-        'Unable to fetch Google Scholar citations. ', 
-        'Please check your scholar ID and internet connection.',
-        '</div>'
-      )
+    html_content <- paste0(
+      '<div style="text-align: center; color: #777777; margin: 20px;">', 
+      '<i class="fa fa-exclamation-circle"></i> ', 
+      'Unable to fetch Google Scholar citations. ', 
+      'Please check your scholar ID and internet connection.',
+      '</div>'
     )
   })
+  
+  # Restore original warning level
+  options(warn = oldw)
+  
+  # Print the HTML content directly to the output
+  cat(html_content)
   
   invisible(cv)
 }
@@ -656,17 +752,23 @@ print_scholar_citations <- function(cv, scholar_id, bar_color = "#969696", text_
 #'
 #' @return Interactive force-directed layout network of your CV data
 #' @export
-build_network_logo_custom <- function(position_data, 
+build_network_logo_custom <- function(position_data = NULL, 
                                      width = "100%", 
                                      height = "250px", 
-                                     node_size = 12,
-                                     link_strength = 0.7,
-                                     charge_strength = -150,
+                                     node_size = 10,
+                                     link_strength = 0.8,
+                                     charge_strength = -300,
                                      color_palette = c("#4292c6", "#41ab5d", "#ef6548", "#984ea3", "#ff7f00", "#a65628"),
                                      margin_top = "-40px", 
                                      margin_bottom = "0px",
                                      img_width = 450,
-                                     img_height = 350) {
+                                     img_height = 350,
+                                     random_data = FALSE,
+                                     num_nodes = 12,
+                                     num_edge_factor = 1.5) {
+  # Completely suppress all warnings and messages
+  oldw <- getOption("warn")
+  options(warn = -1)
   # Get current environment for checking PDF mode
   cv <- parent.frame()$CV
   pdf_mode <- if(!is.null(cv$pdf_mode)) cv$pdf_mode else FALSE
@@ -675,75 +777,185 @@ build_network_logo_custom <- function(position_data,
   if (!is.null(cv$custom_image_path) && file.exists(cv$custom_image_path)) {
     return(display_custom_image(cv, margin_top, margin_bottom, width, height))
   }
-  # Check if required packages are installed
+  # Check if required packages are installed - with warnings suppressed
   required_packages <- c("igraph", "base64enc")
   for (pkg in required_packages) {
-    if(!requireNamespace(pkg, quietly = TRUE)) {
+    if(!suppressWarnings(requireNamespace(pkg, quietly = TRUE))) {
       message(paste("Installing", pkg, "package for network visualization"))
-      utils::install.packages(pkg, repos = "http://cran.us.r-project.org")
+      suppressWarnings(utils::install.packages(pkg, repos = "http://cran.us.r-project.org"))
     }
   }
   
   # Load required packages silently to prevent attachment messages in output
-  suppressPackageStartupMessages({
-    library(igraph)
-    library(base64enc)
+  # Use suppressWarnings to hide version warnings
+  suppressWarnings({
+    suppressPackageStartupMessages({
+      library(igraph)
+      library(base64enc)
+    })
   })
   
-  positions <- position_data %>%
-    dplyr::mutate(
-      id = dplyr::row_number(),
-      title = stringr::str_remove_all(title, '(\\(.+?\\))|(\\[)|(\\])'),
-      section = stringr::str_replace_all(section, "_", " ") %>% stringr::str_to_title()
+  # Generate random data if requested, otherwise use position data
+  if (random_data) {
+    # Generate random nodes with community structure
+    set.seed(42)  # For reproducibility
+    
+    # Determine number of communities
+    num_communities <- min(5, length(color_palette))
+    
+    # Calculate nodes per community (roughly equal distribution)
+    nodes_per_community <- ceiling(num_nodes / num_communities)
+    
+    # Create vertices dataframe with community assignments
+    communities <- rep(LETTERS[1:num_communities], each = nodes_per_community)[1:num_nodes]
+    vertices_df <- data.frame(
+      id = 1:num_nodes,
+      section = communities
     )
-  
-  combination_indices <- function(n){
-    rep_counts <- (n:1) - 1
-    dplyr::tibble(
-      a = rep(1:n, times = rep_counts),
-      b = purrr::flatten_int( purrr::map(rep_counts, ~{tail(1:n, .x)}) )
-    )
+    
+    # Parameters for connectivity
+    within_community_probability <- 0.7    # High probability of connection within communities
+    between_community_probability <- 0.03   # Low probability of connection between communities
+    
+    # Initialize empty edge dataframe
+    edges_df <- data.frame(source = integer(0), target = integer(0))
+    
+    # Create within-community edges
+    for (community in LETTERS[1:num_communities]) {
+      # Get all nodes in this community
+      community_nodes <- vertices_df$id[vertices_df$section == community]
+      
+      if (length(community_nodes) > 1) {
+        # Create all possible edges within community
+        possible_edges <- expand.grid(
+          source = community_nodes,
+          target = community_nodes
+        ) %>%
+          dplyr::filter(source < target)  # Avoid duplicates and self-loops
+        
+        # Sample edges with high probability
+        for (i in 1:nrow(possible_edges)) {
+          if (runif(1) < within_community_probability) {
+            edges_df <- rbind(edges_df, possible_edges[i, ])
+          }
+        }
+      }
+    }
+    
+    # Create between-community edges (fewer)
+    # This ensures the graph is connected across communities
+    between_edges <- data.frame(source = integer(0), target = integer(0))
+    
+    for (i in 1:(num_communities-1)) {
+      for (j in (i+1):num_communities) {
+        community1 <- LETTERS[i]
+        community2 <- LETTERS[j]
+        
+        # Get random representatives from each community
+        nodes1 <- vertices_df$id[vertices_df$section == community1]
+        nodes2 <- vertices_df$id[vertices_df$section == community2]
+        
+        if (length(nodes1) > 0 && length(nodes2) > 0) {
+          # Create all possible edges between communities
+          possible_edges <- expand.grid(
+            source = nodes1,
+            target = nodes2
+          )
+          
+          # Sample edges with low probability
+          for (k in 1:nrow(possible_edges)) {
+            if (runif(1) < between_community_probability) {
+              between_edges <- rbind(between_edges, possible_edges[k, ])
+            }
+          }
+        }
+      }
+    }
+    
+    # Make sure we have at least some between-community edges to keep the graph connected
+    if (nrow(between_edges) == 0) {
+      # Connect each community to the next one with at least one edge
+      for (i in 1:(num_communities-1)) {
+        community1 <- LETTERS[i]
+        community2 <- LETTERS[i+1]
+        
+        nodes1 <- vertices_df$id[vertices_df$section == community1]
+        nodes2 <- vertices_df$id[vertices_df$section == community2]
+        
+        if (length(nodes1) > 0 && length(nodes2) > 0) {
+          between_edges <- rbind(between_edges, data.frame(
+            source = sample(nodes1, 1),
+            target = sample(nodes2, 1)
+          ))
+        }
+      }
+    }
+    
+    # Combine within and between community edges
+    edges_df <- rbind(edges_df, between_edges)
+    
+    # Ensure proper ordering of source/target to avoid duplicates
+    edges_df <- edges_df %>%
+      dplyr::mutate(
+        min_id = pmin(source, target),
+        max_id = pmax(source, target)
+      ) %>%
+      dplyr::select(source = min_id, target = max_id) %>%
+      unique()
+    
+    # Create the graph from the community-structured data
+    g <- igraph::graph_from_data_frame(edges_df, directed = FALSE, vertices = vertices_df)
+    
+  } else {
+    # Use the original position data
+    positions <- position_data %>%
+      dplyr::mutate(
+        id = dplyr::row_number(),
+        title = stringr::str_remove_all(title, '(\\(.+?\\))|(\\[)|(\\])'),
+        section = stringr::str_replace_all(section, "_", " ") %>% stringr::str_to_title()
+      )
+    
+    # Create simple edge list by connecting nodes in the same section
+    section_groups <- positions %>%
+      dplyr::group_by(section) %>%
+      dplyr::summarize(node_ids = list(id), .groups = 'drop')
+    
+    # Function to create edges between all nodes in a group
+    create_group_edges <- function(ids) {
+      if (length(ids) <= 1) return(NULL)
+      expand.grid(source = ids, target = ids) %>%
+        dplyr::filter(source < target) %>%
+        dplyr::select(source, target)
+    }
+    
+    # Create edges between nodes in the same section
+    edges_df <- purrr::map_dfr(section_groups$node_ids, create_group_edges)
+    
+    # Add some cross-section connections to ensure the graph is connected
+    if (length(unique(positions$section)) > 1) {
+      # Get one representative node from each section
+      section_reps <- section_groups %>%
+        dplyr::mutate(rep_id = purrr::map_dbl(node_ids, ~ .x[1])) %>%
+        dplyr::pull(rep_id)
+      
+      # Connect sequential representatives to ensure connectivity
+      section_connections <- data.frame(
+        source = section_reps[-length(section_reps)],
+        target = section_reps[-1]
+      )
+      
+      # Combine with section-based edges
+      edges_df <- rbind(edges_df, section_connections)
+    }
+    
+    # Create the graph from position data
+    g <- igraph::graph_from_data_frame(edges_df, directed = FALSE, 
+                                     vertices = data.frame(id = positions$id, 
+                                                          section = positions$section))
   }
   
-  current_year <- lubridate::year(lubridate::ymd(Sys.Date()))
-  edges <- positions %>%
-    dplyr::select(id, start_year, end_year) %>%
-    dplyr::mutate(
-      end_year = ifelse(end_year > current_year, current_year, end_year),
-      start_year = ifelse(start_year > current_year, current_year, start_year)
-    ) %>%
-    purrr::pmap_dfr(function(id, start_year, end_year){
-      dplyr::tibble(
-        year = start_year:end_year,
-        id = id
-      )
-    }) %>%
-    dplyr::group_by(year) %>%
-    tidyr::nest() %>%
-    dplyr::rename(ids_for_year = data) %>%
-    purrr::pmap_dfr(function(year, ids_for_year){
-      combination_indices(nrow(ids_for_year)) %>%
-        dplyr::transmute(
-          year = year,
-          source = ids_for_year$id[a],
-          target = ids_for_year$id[b]
-        )
-    })
-  
-  # Generate network visualization as embedded base64 image - message suppressed
-  
-  # Create igraph object from edge list
-  edges_df <- data.frame(
-    source = edges$source,
-    target = edges$target
-  )
-  
-  g <- igraph::graph_from_data_frame(edges_df, directed = FALSE, 
-                                    vertices = data.frame(id = positions$id, 
-                                                         section = positions$section))
-  
   # Set node colors based on section
-  unique_sections <- unique(positions$section)
+  unique_sections <- unique(igraph::V(g)$section)
   color_map <- setNames(
     color_palette[1:length(unique_sections)],
     unique_sections
@@ -765,19 +977,20 @@ build_network_logo_custom <- function(position_data,
   # Set smaller margins to avoid the 'figure margins too large' error
   par(mar = c(0, 0, 0, 0))
   
-  # Use a layout that spreads nodes more evenly - with warnings suppressed
+  # Use a layout that spreads nodes more evenly in a circular pattern - with warnings suppressed
   layout <- suppressWarnings(
-    igraph::layout_with_fr(g, niter = 500)
+    igraph::layout_with_fr(g, niter = 1000, area = 8*(vcount(g)^2), repulserad = vcount(g)^3.5)
   )
   
   # Plot with appropriate node size and edge thickness
   plot(g, 
        vertex.color = node_colors,
-       vertex.size = node_size * 1.2, # Slightly smaller nodes for landscape
+       vertex.frame.color = node_colors,  # Match frame to fill color for solid appearance
+       vertex.size = node_size,          # Use the node size directly without multiplier
        vertex.label = NA,
-       edge.width = 1.0,       # Thinner edges
-       edge.color = "#666666", # Darker edge color for contrast
-       margin = c(0, 0, 0, 0), # No margins
+       edge.width = 0.6,                 # Even thinner edges
+       edge.color = "#888888",           # Lighter edge color
+       margin = c(0, 0, 0, 0),          # No margins
        layout = layout)
   dev.off()
   
@@ -797,11 +1010,16 @@ build_network_logo_custom <- function(position_data,
   
   # Return the HTML with the embedded image
   # Use the width and height parameters passed to the function
-  knitr::raw_html(paste0(
+  result <- knitr::raw_html(paste0(
     '<div style="text-align: center; margin-top: ', margin_top, '; margin-bottom: ', margin_bottom, ';">',
-    '<img src="', data_uri, '" style="width: ', width, '; height: ', height, ';" alt="Network visualization of professional experience">',
+    '<img src="', data_uri, '" style="width: ', width, '; height: ', height, '" alt="Network visualization of professional experience">',
     '</div>'
   ))
+  
+  # Restore original warning level
+  options(warn = oldw)
+  
+  return(result)
 }
 
 #' @description Print the ASIDE section entries from the aside_entries.csv file
@@ -814,41 +1032,114 @@ print_aside_section <- function(cv) {
     return(invisible(cv))
   }
   
-  # Process the aside sections and entries
-  sections <- cv$aside_sections %>%
-    dplyr::arrange(sort_order)
+  sections <- cv$aside_sections %>% dplyr::arrange(sort_order)
+  entries <- cv$aside_entries %>% dplyr::arrange(category, sort_order)
   
-  entries <- cv$aside_entries %>%
-    dplyr::arrange(category, sort_order)
+  # Add CSS for the table-based approach
+  cat('<style>
+  .skills-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.3em;
+  }
+  .skill-category-cell {
+    font-weight: bold;
+    padding-bottom: 0.2em;
+    border-bottom: none;
+  }
+  .skill-items-cell {
+    padding-top: 0;
+    padding-bottom: 0.3em;
+    border-top: none;
+  }
+  .skill-item {
+    display: block;
+    margin-bottom: 0.1em;
+    line-height: 1.1;
+  }
+  tr.skill-row {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+    display: block;
+    width: 100%;
+    height: 1px;
+  }
+</style>\n')
   
-  # Generate HTML for each section
-  for (i in 1:nrow(sections)) {
+  # Create tables with max 3 categories per table
+  max_categories_per_page <- 3
+  total_categories <- sum(sapply(seq_len(nrow(sections)), function(i) {
     section <- sections[i, ]
-    section_entries <- entries %>% 
-      dplyr::filter(category == section$category)
+    section_entries <- entries %>% dplyr::filter(category == section$category)
+    return(nrow(section_entries) > 0)
+  }))
+  
+  # Counter for categories
+  category_count <- 0
+  
+  # Start first table
+  cat('<table class="skills-table">\n')
+  
+  # Output each category as a table row
+  for (i in seq_len(nrow(sections))) {
+    section <- sections[i, ]
+    section_entries <- entries %>% dplyr::filter(category == section$category)
     
     if (nrow(section_entries) > 0) {
-      # Print section header
-      cat(paste0('<div class="skill-category">', section$display_name, '</div>\n'))
+      # Increment category counter
+      category_count <- category_count + 1
       
-      # Print entries with appropriate formatting
-      for (j in 1:nrow(section_entries)) {
-        entry_text <- section_entries$entry[j]
+      # If we've reached the max per page and this isn't the last category, close table and start a new one
+      if (category_count > max_categories_per_page && category_count <= total_categories) {
+        # Close current table
+        cat('</table>\n\n')
         
-        # Format code entries differently
+        # Add explicit page break
+        cat('<div class="page-break"></div>\n\n')
+        
+        # Start new table
+        cat('<table class="skills-table">\n')
+        
+        # Reset counter to 1 for the new page
+        category_count <- 1
+      }
+      
+      # Start a new table row for this category
+      cat('<tr class="skill-row">\n')
+      
+      # Category header cell
+      cat(paste0('  <td class="skill-category-cell">', section$display_name, '</td>\n'))
+      cat('</tr>\n')
+      
+      # Start a new row for the items
+      cat('<tr class="skill-row">\n')
+      cat('  <td class="skill-items-cell">\n')
+      
+      # Print entries
+      for (j in seq_len(nrow(section_entries))) {
+        entry_text <- section_entries$entry[j]
         if (section$is_code == "TRUE") {
-          cat(paste0('<span class="skill-item">`', entry_text, '`</span>\n'))
+          cat(paste0('    <span class="skill-item">`', entry_text, '`</span>\n'))
         } else {
-          cat(paste0('<span class="skill-item">', entry_text, '</span>\n'))
+          cat(paste0('    <span class="skill-item">', entry_text, '</span>\n'))
         }
       }
       
-      # Add a blank line between sections
-      if (i < nrow(sections)) {
-        cat("\n")
-      }
+      # Close the items cell and row
+      cat('  </td>\n')
+      cat('</tr>\n')
+      
+      # Add an empty spacer row (but smaller now)
+      cat('<tr class="spacer-row"><td style="height: 0.1em;"></td></tr>\n')
     }
   }
+  
+  # Close the table
+  cat('</table>\n')
   
   invisible(cv)
 }
