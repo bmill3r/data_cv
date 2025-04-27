@@ -22,5 +22,14 @@ dependencies:
   - r-remotes
   - r-webshot
   - r-igraph
+  - r-scholar
+  - r-ggplot2
+  - r-base64enc
   - phantomjs
   - python=3.10
+  - pip
+  - pip:
+    - openai>=1.6.0
+    - argparse
+    - typing
+    - datetime

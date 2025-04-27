@@ -26,6 +26,43 @@ This repository allows you to create beautifully formatted, data-driven CVs and 
   - `aside_sections.csv` - Defines categories for the skills/expertise in the ASIDE section
   - `aside_entries.csv` - Individual skills/expertise items for each category
 
+## Google Scholar Integration
+
+The CV/resume now supports displaying a bar chart of your Google Scholar citations for the last 5 years in the aside section.
+
+### Adding Citations Chart to Your CV/Resume
+
+1. Find your Google Scholar ID from your profile URL: `https://scholar.google.com/citations?user=YOUR_ID`
+
+2. In your template file (e.g., `templates/my_resume.rmd`), the following code is already included in the Aside section:
+
+   ```r
+   # Replace 'YOUR_SCHOLAR_ID' with your actual Google Scholar ID
+   CV %>% print_scholar_citations(scholar_id = "YOUR_SCHOLAR_ID", bar_color = "#4292c6")
+   ```
+
+3. Replace `"YOUR_SCHOLAR_ID"` with your actual Google Scholar ID.
+
+### Customizing the Citations Chart
+
+You can customize the appearance of the chart with these parameters:
+
+- `bar_color` - The color of the citation bars (default: "#969696")
+- `text_color` - The color of the text labels (default: "#777777")
+- `base_size` - Base font size for the chart (default: 14)
+
+Example with custom colors:
+
+```r
+CV %>% print_scholar_citations(
+  scholar_id = "YOUR_SCHOLAR_ID",
+  bar_color = "#41ab5d",  # Green bars
+  text_color = "#333333"  # Darker text
+)
+```
+
+To disable the citations chart, simply comment out or remove the code block from your template.
+
 ## Usage Instructions
 
 ### From R Console
@@ -165,6 +202,112 @@ Adding the `--plaintext` flag or setting `plain_text_too = TRUE` will generate a
 - Copy-pasting into LinkedIn Easy Apply forms
 - Online job application systems
 - ATS (Applicant Tracking Systems)
+
+## JSON-Based CV/Resume Management
+
+The new JSON-based system offers a more flexible and maintainable way to manage your professional information.
+
+### JSON Structure
+
+The `cv_data.json` file uses this structure:
+
+```json
+{
+  "meta": { "version": "1.0", "last_updated": "2025-04-27" },
+  "contact_info": { ... },
+  "entries": [
+    {
+      "id": "unique_entry_id",
+      "section": "current_position",
+      "title": "Post-doctoral Research Fellow",
+      "descriptions": [ ... ],
+      "tags": ["resume", "cv", "bioinformatics", ...],
+      "importance": 10,
+      "companies": ["academic", "biotech"]
+    },
+    ...
+  ],
+  "skills": [ ... ],
+  "text_blocks": [ ... ]
+}
+```
+
+### Benefits of the JSON System
+
+- **Unified Storage**: All data in one file instead of multiple CSVs
+- **Tagging System**: Each entry has tags to identify which documents it belongs to (cv, resume) and skills
+- **Company Targeting**: Entries can be associated with specific companies or industries
+- **Importance Ranking**: Entries have an importance score to prioritize them
+- **Structured Skills**: Skills are organized by category with proficiency levels
+
+### Converting JSON to CSV
+
+To generate the CSV files needed by render.r:
+
+```bash
+# For CV
+python json_to_csv_converter.py --json cv_data.json --output-dir my_cv_data --type cv
+
+# For Resume
+python json_to_csv_converter.py --json cv_data.json --output-dir my_resume_data --type resume
+
+# For Resume targeting a specific company
+python json_to_csv_converter.py --json cv_data.json --output-dir my_resume_data --type resume --filter-company biotech
+
+# For CV filtering by a specific tag
+python json_to_csv_converter.py --json cv_data.json --output-dir my_cv_data --type cv --filter-tag machine_learning
+```
+
+## AI-Powered CV/Resume Generation
+
+The `ai_cv_generator.py` script uses OpenAI's API to analyze job postings and generate tailored CVs/resumes that highlight your most relevant experience.
+
+### Prerequisites
+
+1. Install the OpenAI Python package:
+```bash
+pip install openai
+```
+
+2. Set your OpenAI API key as an environment variable:
+```bash
+export OPENAI_API_KEY='your-api-key'
+```
+
+### Usage
+
+```bash
+# Basic usage
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "Company_Resume" --type resume
+
+# With AI-enhanced descriptions
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "Company_Resume" --type resume --improve-descriptions
+
+# Generate only HTML (no PDF)
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "Company_Resume" --type resume --html-only
+```
+
+### How It Works
+
+1. **Analyzes the job posting** with OpenAI to extract key skills and requirements
+2. **Scores your CV/resume entries** based on relevance to the job (0-10)
+3. **Creates a tailored professional summary** highlighting relevant skills
+4. **Selects the most relevant entries** for each section
+5. **Optionally improves descriptions** to better match the job requirements
+6. **Generates the final document** by running the converter and render scripts
+
+### Sample Flow
+
+1. Save a job posting as a text file (e.g., `job_posting.txt`)
+2. Run the AI generator:
+   ```bash
+   python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" --type resume
+   ```
+3. The script will:
+   - Analyze the job posting
+   - Select your most relevant entries
+   - Generate a tailored resume in both PDF and HTML formats
+   - Store the output in the `output` directory
 
 ## Docker/Podman Container Support
 

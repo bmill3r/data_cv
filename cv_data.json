@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "version": "1.0",
+    "last_updated": "2025-04-27"
+  },
+  "contact_info": {
+    "name": "Brendan Miller",
+    "title": "Post-doctoral Research Fellow",
+    "email": "bmill3r@jhu.edu",
+    "phone": "+1 123-456-7890",
+    "website": "https://github.com/bmill3r",
+    "twitter": "@brenmillr",
+    "github": "bmill3r",
+    "linkedin": "brendan-miller",
+    "address": "Johns Hopkins University, Baltimore, MD"
+  },
+  "entries": [
+    {
+      "id": "current_position_1",
+      "section": "current_position",
+      "title": "Post-doctoral Research Fellow",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[<i class=\"fa fa-link\"></i>&nbsp;JEFworks Lab](https://jef.works/team)",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Supervisor: **Dr. Jean Fan**",
+        "Project: \"Reference-free deconvolution of multi-cellular spatially resolved transcriptomics data\""
+      ],
+      "tags": ["resume", "cv", "bioinformatics", "computational_biology", "spatial_transcriptomics"],
+      "importance": 10,
+      "companies": ["academic", "biotech"]
+    },
+    {
+      "id": "current_position_2",
+      "section": "current_position",
+      "title": "Post-Doctoral Fellow in Computational Biology",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[<i class=\"fa fa-link\"></i>&nbsp;JEFworks Lab](https://jef.works/team)<br />Supervisor - Dr. Jean Fan",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Development of <u>open-source computational pipelines and statistical software</u> to characterize and <u>visualize</u> cell type <u>spatial organizational patterns</u> in tissues.",
+        "Directly analyzed and extracted meaningful cell type spatial relationships from leading-edge technologies such as <u>Visium, MERSCOPE, Slide-Seq, DBiT-Seq</u>.",
+        "Annotated cell types and quantified their spatial co-localization changes across <u>immune tissues using CODEX highly multiplexed spatial protein expression data</u>.",
+        "Applied <u>convolutional neural networks to segment cells in H&E images</u> to increase the resolution of Visium datasets.",
+        "Developed statistical software packages in <u>`R` and `Python`</u>. Performed extensive high-throughput analyses with a <u>high-performance `Linux` cluster</u>.",
+        "**Characterizing spatial gene expression heterogeneity in spatially resolved single-cell transcriptomic data with nonuniform cellular densities** | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Genome Res 2021*</span>](https://doi.org/10.1101/gr.271288.120)",
+        "**Reference-free cell type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data** | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Nat Commun 2022*</span>](https://doi.org/10.1038/s41467-022-30033-z)"
+      ],
+      "tags": ["resume", "cv", "bioinformatics", "machine_learning", "deep_learning", "spatial_transcriptomics", "convolutional_neural_networks", "r", "python", "linux", "high_performance_computing"],
+      "importance": 9,
+      "companies": ["biotech", "software"]
+    },
+    {
+      "id": "education_1",
+      "section": "education",
+      "title": "Ph.D., Molecular Biology",
+      "loc": "Johns Hopkins University<br />National Institutes of Health Graduate Partnership Program<br />Advisor - Dr. Laura Elnitski",
+      "institution": "Baltimore, MD",
+      "start": "2014",
+      "end": "2020",
+      "descriptions": [
+        "Dissertation: [<i class=\"fa fa-link\"></i>&nbsp;Investigating Blood-based Biomarkers and Patterns of DNA Methylation in Tumors](https://jscholarship.library.jhu.edu/handle/1774.2/62531)",
+        "Optimized <u>single molecule detection assay</u> to quantify rare fragments of <u>methylated cell-free DNA in patient plasma</u>. Developed <u>computational machine learning algorithms</u> leveraging heterogeneous methylation patterns to optimize <u>liquid biopsy cancer diagnostics</u>.",
+        "Developed pipeline to process cell-free DNA from hundreds of patient plasma samples. Samples were analyzed using <u>ddPCR and qPCR</u>.",
+        "Bisulfite sequencing analysis of extracted cell-free DNA to <u>detect rare methylated DNA variants</u>.",
+        "Assessing ZNF154 methylation in patient plasma as a multicancer marker in liquid biopsies from colon, liver, ovarian and pancreatic cancer patients | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Sci Reports 2021*</span>](https://doi.org/10.1038/s41598-020-80345-7)",
+        "Leveraging locus-specific epigenetic heterogeneity to improve the performance of blood-based DNA methylation biomarkers | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Clin Epigenetics 2020*</span>](https://doi.org/10.1186/s13148-020-00939-w)",
+        "The emergence of pan-cancer CIMP and its elusive interpretation | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Biomolecules 2016 *</span>](https://doi.org/10.3390/biom6040045)"
+      ],
+      "tags": ["resume", "cv", "molecular_biology", "bioinformatics", "machine_learning", "dna_methylation", "cancer", "biomarkers", "liquid_biopsy", "sequencing"],
+      "importance": 8,
+      "companies": ["biotech", "healthcare", "diagnostics"]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Programming",
+      "skills": [
+        {"name": "R", "level": 5, "tags": ["data_analysis", "statistics", "visualization"]},
+        {"name": "Python", "level": 4, "tags": ["machine_learning", "data_analysis", "bioinformatics"]},
+        {"name": "Bash/Shell", "level": 4, "tags": ["automation", "pipeline"]},
+        {"name": "SQL", "level": 3, "tags": ["database"]}
+      ]
+    },
+    {
+      "category": "Bioinformatics",
+      "skills": [
+        {"name": "RNA-seq Analysis", "level": 5, "tags": ["transcriptomics", "gene_expression"]},
+        {"name": "Spatial Transcriptomics", "level": 5, "tags": ["spatial_biology", "single_cell"]},
+        {"name": "DNA Methylation Analysis", "level": 5, "tags": ["epigenetics", "biomarkers"]},
+        {"name": "Machine Learning for Genomics", "level": 4, "tags": ["ml", "classification"]}
+      ]
+    }
+  ],
+  "text_blocks": [
+    {
+      "id": "professional_summary",
+      "content": "Computational biologist with expertise in developing statistical methods and software tools for analyzing spatial transcriptomics and DNA methylation data. Experienced in machine learning approaches for biomarker discovery and cell-type deconvolution in complex tissues.",
+      "tags": ["header", "resume", "cv", "bioinformatics"]
+    },
+    {
+      "id": "research_interests",
+      "content": "Spatial transcriptomics, single-cell genomics, computational oncology, epigenetic biomarkers, and machine learning for biological data.",
+      "tags": ["cv", "academic"]
+    }
+  ]
+}

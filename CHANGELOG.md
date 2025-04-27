@@ -2,6 +2,33 @@
 
 All notable changes to the data_cv project will be documented in this file.
 
+## [2025-04-27]
+
+### Added
+- Google Scholar citations visualization:
+  - New `print_scholar_citations()` function to display citation data as a bar chart
+  - Integration with Google Scholar API to fetch citation counts for the last 5 years
+  - Customizable styling options including bar color and text appearance
+  - Error handling for network issues or invalid Scholar IDs
+  - Automatic installation of required packages
+- JSON-based CV/resume data management system:
+  - New `cv_data.json` file that consolidates all CV/resume data in one file
+  - Added tagging system for entries to identify document types and skills
+  - Support for company/industry targeting of entries
+  - Importance ranking for entries to prioritize the most significant ones
+  - Structured skills organization by category with proficiency levels
+- Python converter for JSON to CSV:
+  - New `json_to_csv_converter.py` script to convert JSON data to CSV format
+  - Support for filtering entries by document type, company, or tag
+  - Automatic formatting of CSV files compatible with the render.r script
+- AI-powered CV/resume generator:
+  - New `ai_cv_generator.py` script using OpenAI API to analyze job postings
+  - Automated scoring and selection of entries based on job relevance
+  - Job-specific professional summary generation
+  - Optional AI enhancement of entry descriptions
+  - End-to-end pipeline from job posting to final document
+- Sample job posting for testing the AI generator
+
 ## [2025-04-26]
 
 ### Added

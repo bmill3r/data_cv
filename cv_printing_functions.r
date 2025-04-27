@@ -541,6 +541,107 @@ print_contact_info <- function(cv){
   invisible(cv)
 }
 
+#' @description Create a bar chart showing Google Scholar citations for the last 5 years
+#' @param scholar_id Your Google Scholar ID
+#' @param bar_color Color for the citation bars
+#' @param text_color Color for the text
+#' @param base_size Base font size for the chart
+print_scholar_citations <- function(cv, scholar_id, bar_color = "#969696", text_color = "#777777", base_size = 14) {
+  # Check if required packages are installed
+  required_packages <- c("scholar", "ggplot2", "dplyr", "lubridate")
+  for (pkg in required_packages) {
+    if (!requireNamespace(pkg, quietly = TRUE)) {
+      message(paste("Installing", pkg, "package for citation visualization"))
+      utils::install.packages(pkg, repos = "http://cran.us.r-project.org")
+    }
+  }
+  
+  # Load packages silently
+  suppressPackageStartupMessages({
+    library(scholar)
+    library(ggplot2)
+    library(dplyr)
+    library(lubridate)
+  })
+  
+  # Catch any errors from Google Scholar retrieval
+  tryCatch({
+    # Get citation data for the last 5 years
+    current_year <- lubridate::year(lubridate::today())
+    years <- (current_year - 4):current_year
+    
+    # Get citation history
+    citation_history <- scholar::get_citation_history(scholar_id)
+    
+    # Filter for last 5 years and ensure all years are present
+    citations_data <- citation_history %>%
+      dplyr::filter(year %in% years)
+    
+    # Add any missing years with zero citations
+    missing_years <- setdiff(years, citations_data$year)
+    if (length(missing_years) > 0) {
+      missing_data <- data.frame(year = missing_years, cites = 0)
+      citations_data <- rbind(citations_data, missing_data)
+    }
+    
+    # Sort by year
+    citations_data <- citations_data %>%
+      dplyr::arrange(year)
+    
+    # Create the bar chart using ggplot2
+    plot <- ggplot2::ggplot(citations_data, aes(x = as.factor(year), y = cites)) +
+      ggplot2::geom_bar(stat = "identity", fill = bar_color) +
+      ggplot2::labs(title = "Citations by Year", 
+                   x = "", 
+                   y = "Count") +
+      ggplot2::theme_minimal(base_size = base_size) +
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(hjust = 0.5, color = text_color),
+        axis.text = ggplot2::element_text(color = text_color),
+        axis.title = ggplot2::element_text(color = text_color),
+        panel.grid.minor = ggplot2::element_blank(),
+        panel.grid.major.x = ggplot2::element_blank()
+      )
+    
+    # Convert to a temporary image file
+    temp_file <- tempfile(fileext = ".png")
+    ggplot2::ggsave(temp_file, plot, width = 6, height = 4, dpi = 100)
+    
+    # Read the image and convert to base64
+    img_data <- readBin(temp_file, "raw", file.info(temp_file)$size)
+    base64_img <- base64enc::base64encode(img_data)
+    
+    # Clean up temp file
+    unlink(temp_file)
+    
+    # Create HTML with embedded image
+    html <- paste0(
+      '<div style="text-align: center; margin-top: 10px; margin-bottom: 15px;">', 
+      '<img src="data:image/png;base64,', base64_img, '" ', 
+      'style="width: 100%; max-width: 400px;" alt="Google Scholar Citations">',
+      '</div>'
+    )
+    
+    # Output the HTML
+    knitr::raw_html(html)
+    
+  }, error = function(e) {
+    # If there's an error, display a message
+    message("Error retrieving Google Scholar data: ", e$message)
+    knitr::raw_html(
+      paste0(
+        '<div style="text-align: center; color: #777777; margin: 20px;">', 
+        '<i class="fa fa-exclamation-circle"></i> ', 
+        'Unable to fetch Google Scholar citations. ', 
+        'Please check your scholar ID and internet connection.',
+        '</div>'
+      )
+    )
+  })
+  
+  invisible(cv)
+}
+
 
 
 ## remake function to change the dimensions of the graphic directly

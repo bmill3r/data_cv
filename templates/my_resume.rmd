@@ -103,6 +103,14 @@ Contact {#contact}
 CV %>% print_contact_info()
 ```
 
+Citations {#citations}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+# Replace YOUR_SCHOLAR_ID with your actual Google Scholar ID
+CV %>% print_scholar_citations(scholar_id = "YOUR_SCHOLAR_ID", bar_color = "#4292c6")
+```
+
 <!-- Software Coding {#skills} -->
 <!-- -------------------------------------------------------------------------------- -->
 <!-- &nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing` -->
