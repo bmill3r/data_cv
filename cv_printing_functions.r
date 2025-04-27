@@ -12,12 +12,18 @@
 #' @return A new `CV_Printer` object.
 create_CV_object <-  function(data_location,
                               pdf_mode = FALSE,
-                              sheet_is_publicly_readable = TRUE) {
+                              sheet_is_publicly_readable = TRUE,
+                              custom_image_path = NULL) {
+
+  # Set custom image path in CV object
 
   cv <- list(
     pdf_mode = pdf_mode,
-    links = c()
+    links = c(),
+    custom_image_path = custom_image_path
   )
+
+
 
   is_google_sheets_location <- stringr::str_detect(data_location, "docs\\.google\\.com")
 
@@ -456,6 +462,50 @@ print_skill_bars <- function(cv, out_of = 5, bar_color = "#969696", bar_backgrou
   invisible(cv)
 }
 
+#' @description Display a custom image in the aside section
+#' @param cv The CV object
+#' @param margin_top Top margin for the image
+#' @param margin_bottom Bottom margin for the image
+display_custom_image <- function(cv, margin_top = "-40px", margin_bottom = "0px", width = "100%", height = "250px") {
+  # Function to display custom image instead of network logo
+  
+  # Check if the CV object has a custom image path
+  if (is.null(cv$custom_image_path) || !file.exists(cv$custom_image_path)) {
+    # If no custom image or file doesn't exist, return NULL
+    return(NULL)
+  }
+  
+  # Get the file extension to determine the image type
+  file_ext <- tolower(tools::file_ext(cv$custom_image_path))
+  
+  # Only process supported image types
+  if (!(file_ext %in% c("png", "jpg", "jpeg"))) {
+    message("Unsupported image format. Please use PNG or JPEG.")
+    return(NULL)
+  }
+  
+  # Determine MIME type
+  mime_type <- switch(file_ext,
+                      "png" = "image/png",
+                      "jpg" = "image/jpeg",
+                      "jpeg" = "image/jpeg")
+  
+  # Read the image file and encode to base64
+  img_data <- readBin(cv$custom_image_path, "raw", file.info(cv$custom_image_path)$size)
+  base64_img <- base64enc::base64encode(img_data)
+  
+  # Create the data URI
+  data_uri <- paste0("data:", mime_type, ";base64,", base64_img)
+  
+  # Return the HTML with the embedded image
+  # Use the width and height parameters for consistent styling with network logo
+  knitr::raw_html(paste0(
+    '<div style="text-align: center; margin-top: ', margin_top, '; margin-bottom: ', margin_bottom, ';">',
+    '<img src="', data_uri, '" style="width: ', width, '; height: ', height, ';" alt="Custom image">',
+    '</div>'
+  ))
+}
+
 
 
 #' @description List of all links in document labeled by their superscript integer.
@@ -479,8 +529,6 @@ Links {data-icon=link}
   invisible(cv)
 }
 
-
-
 #' @description Contact information section with icons
 print_contact_info <- function(cv){
   ## if using blank rows to increase separation, have empty rows and replace NAs with empty strings
@@ -492,6 +540,7 @@ print_contact_info <- function(cv){
 
   invisible(cv)
 }
+
 
 
 ## remake function to change the dimensions of the graphic directly
@@ -514,12 +563,17 @@ build_network_logo_custom <- function(position_data,
                                      charge_strength = -150,
                                      color_palette = c("#4292c6", "#41ab5d", "#ef6548", "#984ea3", "#ff7f00", "#a65628"),
                                      margin_top = "-40px", 
-                                     margin_bottom = "0px"){
-  
+                                     margin_bottom = "0px",
+                                     img_width = 450,
+                                     img_height = 350) {
   # Get current environment for checking PDF mode
   cv <- parent.frame()$CV
   pdf_mode <- if(!is.null(cv$pdf_mode)) cv$pdf_mode else FALSE
   
+  # Check if custom image should be used instead of network logo
+  if (!is.null(cv$custom_image_path) && file.exists(cv$custom_image_path)) {
+    return(display_custom_image(cv, margin_top, margin_bottom, width, height))
+  }
   # Check if required packages are installed
   required_packages <- c("igraph", "base64enc")
   for (pkg in required_packages) {
@@ -599,8 +653,16 @@ build_network_logo_custom <- function(position_data,
   # Create the plot in a temporary file and convert to base64
   temp_file <- tempfile(fileext = ".png")
   
+  # Extract numeric dimensions from width and height if they're percentages
+  # Default to 600x800 (portrait) if we can't parse the dimensions
+  img_width <- 600
+  img_height <- 800
+  
   # Generate a portrait-oriented image with higher resolution
-  png(temp_file, width = 600, height = 900, bg = "transparent", res = 300)
+  png(temp_file, width = img_width, height = img_height, bg = "transparent", res = 300)
+  
+  # Set smaller margins to avoid the 'figure margins too large' error
+  par(mar = c(0, 0, 0, 0))
   
   # Use a layout that spreads nodes more evenly - with warnings suppressed
   layout <- suppressWarnings(
@@ -610,11 +672,11 @@ build_network_logo_custom <- function(position_data,
   # Plot with appropriate node size and edge thickness
   plot(g, 
        vertex.color = node_colors,
-       vertex.size = node_size * 1.5, # Moderate node size
+       vertex.size = node_size * 1.2, # Slightly smaller nodes for landscape
        vertex.label = NA,
-       edge.width = 1.3,       # Thinner edges
+       edge.width = 1.0,       # Thinner edges
        edge.color = "#666666", # Darker edge color for contrast
-       margin = c(0.01, 0.01, 0.01, 0.01), # Very minimal margins
+       margin = c(0, 0, 0, 0), # No margins
        layout = layout)
   dev.off()
   
@@ -633,10 +695,10 @@ build_network_logo_custom <- function(position_data,
   # Network visualization embedded as base64 data URI - message suppressed
   
   # Return the HTML with the embedded image
-  # Display the visualization at a much larger size
+  # Use the width and height parameters passed to the function
   knitr::raw_html(paste0(
     '<div style="text-align: center; margin-top: ', margin_top, '; margin-bottom: ', margin_bottom, ';">',
-    '<img src="', data_uri, '" style="width: 90%; height: auto; min-height: 400px;" alt="Network visualization of professional experience">',
+    '<img src="', data_uri, '" style="width: ', width, '; height: ', height, ';" alt="Network visualization of professional experience">',
     '</div>'
   ))
 }

@@ -2,6 +2,16 @@
 
 All notable changes to the data_cv project will be documented in this file.
 
+## [2025-04-26]
+
+### Added
+- Custom image support for the ASIDE section:
+  - New `--image` command-line flag to specify a custom image path
+  - New `custom_image_path` parameter in `render_document()` function
+  - Support for PNG and JPEG image formats
+  - Configurable height and positioning for both custom images and network logo
+  - CSS adjustments for optimal positioning of images relative to other content
+
 ## [2025-04-24]
 
 ### Added

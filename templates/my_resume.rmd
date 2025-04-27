@@ -1,0 +1,233 @@
+---
+title: "Brendan Miller's Resume"
+author: Brendan Miller
+date: "`r Sys.Date()`"
+params:
+  pdf_mode:
+    value: false
+  custom_image_path:
+    value: null
+output:
+  pagedown::html_resume:
+    # css: ['css/dd_cv.css', 'resume']
+    # css: ['css/custom_resume.css', 'css/styles.css', 'resume']
+    css: ['../css/1_custom_resume.css', '../css/1_styles_html.css', 'resume']
+    self_contained: true
+---
+
+<style>
+/* Custom styles for the ASIDE section skills */
+.skill-category {
+  font-weight: bold;
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0.8em !important; /* Reduced from 1.2em */
+  line-height: 0.8 !important; /* Added to reduce vertical space */
+}
+
+/* Space between categories but not at the top */
+.skill-category:not(:first-of-type) {
+  margin-top: 0.4em !important;
+  margin-bottom: -0.2em !important;
+}
+
+.skill-item {
+  padding-left: 1em;
+  display: block;
+  margin-top: -0.20em !important; /* Increased negative margin to pull up skill items further */
+  line-height: 1.0; /* Reduced from 1.2 */
+}
+
+/* Category spacing handled by CSS rules on skill-category */
+
+.pagedjs_page:first-of-type .aside {
+  margin-top: -50px; /* Move content higher */
+}
+</style>
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+library(magrittr) # For the pipe
+
+## important to source my own customized version of these printing functions.
+## I can add other functions I want to in this file in order to reference them later in this rmd when rendered.
+source("../cv_printing_functions.r")
+
+# Read in all data and initialize a CV printer object
+CV <- create_CV_object(
+  data_location = "../my_resume_data/",
+  pdf_mode = params$pdf_mode,
+  custom_image_path = params$custom_image_path
+)
+
+```
+
+
+Aside
+================================================================================
+
+<!-- This is to insert a picture of me instead -->
+<!-- ![logo](me.jpg){width=100%} -->
+
+```{r, eval=TRUE, echo=FALSE}
+# Check if custom image path is provided in params
+if (!is.null(params$custom_image_path) && file.exists(params$custom_image_path)) {
+  # Display the custom image directly using markdown
+  cat(paste0("![](", params$custom_image_path, "){width=100% height=200px}"))
+} else if (!is.null(CV$custom_image_path) && file.exists(CV$custom_image_path)) {
+  # Try using the custom_image_path from the CV object instead
+  cat(paste0("![](", CV$custom_image_path, "){width=100% height=200px}"))
+} else {
+  # Fall back to network logo if no custom image
+  build_network_logo_custom(CV$entries_data, margin_top = "-10px", margin_bottom = "0px", width = "100%", height = "200px")
+}
+```
+
+```{r, eval=FALSE}
+if(params$pdf_mode){
+  cat("View this CV online with links at __")
+} else {
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV]()")
+}
+```
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %>% print_contact_info()
+```
+
+<!-- Software Coding {#skills} -->
+<!-- -------------------------------------------------------------------------------- -->
+<!-- &nbsp;&nbsp;&nbsp;&nbsp;`R/RStudio`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Python`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Bash scripting`<br />&nbsp;&nbsp;&nbsp;&nbsp;`Linux High-Performance`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Computing` -->
+
+
+Expertise {#skills}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+# Use the new function to print the ASIDE section from CSV files
+# Falls back to the existing HTML if CSV files are not available
+if ("aside_sections" %in% names(CV) && "aside_entries" %in% names(CV)) {
+  CV %>% print_aside_section()
+} else {
+  # Original content is preserved as a fallback
+  cat('
+
+<div class="skill-category">Biology</div>
+<span class="skill-item">Assay optimization</span>
+<span class="skill-item">Cancer diagnostics</span>
+<span class="skill-item">Cell-free DNA</span>
+<span class="skill-item">droplet digital PCR</span>
+<span class="skill-item">Liquid biopsy</span>
+<span class="skill-item">DNA Methylation</span>
+<span class="skill-item">Epigenetics and chromatin</span>
+<span class="skill-item">Gene expression variability</span>
+
+
+<div class="skill-category">Data Analysis</div>
+<span class="skill-item">Bisulfite sequencing</span>
+<span class="skill-item">Differential Expression</span>
+<span class="skill-item">Cell type deconvolution</span>
+<span class="skill-item">Gene set enrichment analysis</span>
+<span class="skill-item">Machine learning models</span>
+<span class="skill-item">Single-cell multi-omics</span>
+<span class="skill-item">Spatial transcriptomics</span>
+
+
+<div class="skill-category">Software/Coding</div>
+<span class="skill-item">`R/RStudio`</span>
+<span class="skill-item">`Python`</span>
+<span class="skill-item">`Bash scripting`</span>
+<span class="skill-item">`Linux High-Performance Computing`</span>
+
+
+<div class="skill-category">Data Visualization</div>
+<span class="skill-item">`ggplot2`</span>
+<span class="skill-item">`jupyter notebook`</span>
+<span class="skill-item">`markdown`</span>
+<span class="skill-item">`matplotlib`</span>
+
+
+<div class="skill-category">Package Development</div>
+<span class="skill-item">`Bioconductor`</span>
+<span class="skill-item">`git/GitHub`</span>
+<span class="skill-item">`PyPI`</span>
+
+
+<div class="skill-category">Scientific Communication</div>
+<span class="skill-item">High impact publications</span>
+<span class="skill-item">Invited conference speaker</span>
+')
+}
+```
+
+Main
+================================================================================
+
+Brendan F. Miller {#title}
+--------------------------------------------------------------------------------
+
+### Molecular Biologist | Computational Biology | Statistical Programming
+
+```{r, eval=TRUE}
+# Note the special double pipe so we modify the CV object in place
+CV %<>% print_text_block("intro")
+```
+
+Current Position {data-icon=user data-concise=true}
+--------------------------------------------------------------------------------
+```{r, eval=TRUE}
+CV %<>% print_section('current_position_company_1')
+```
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('education')
+```
+
+
+Additional Research {data-icon=laptop data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('additional_research')
+```
+
+
+Statistical Software {data-icon=cloud-upload data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r, eval=TRUE}
+CV %<>% print_section('software')
+```
+
+
+
+
+```{r, eval=FALSE}
+CV %<>% print_section('reference')
+```
+
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+
+```{r}
+cat(paste0("Last updated on ", Sys.Date() ))
+```
+
+
+<!-- Made using R package [**pagedown**](https://github.com/rstudio/pagedown). -->
+
+<!-- The source code is available [on github.com/nstrayer/cv](/Users/brendan/Desktop/Misc Projects/data_cv/datadrivencv/). -->
+
+<!-- Last updated on `r Sys.Date()`. -->
