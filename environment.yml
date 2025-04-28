@@ -1,0 +1,40 @@
+name: cv-env
+channels:
+  - conda-forge
+  - r
+dependencies:
+  - r-base=4.2.0
+  - r-essentials
+  - r-devtools
+  - r-rmarkdown
+  - r-pagedown
+  - r-fs
+  - r-optparse
+  - r-dplyr
+  - r-tidyr
+  - r-stringr
+  - r-magrittr
+  - r-readr
+  - r-jsonlite
+  - r-purrr
+  - r-glue
+  - r-lubridate
+  - r-remotes
+  - r-webshot
+  - r-igraph
+  - r-scholar
+  - r-ggplot2
+  - r-base64enc
+  - r-crayon
+  - phantomjs
+  - python=3.10
+  - pip
+  - pip:
+    - openai>=1.6.0
+    - anthropic>=0.18.0
+    - python-dotenv>=1.0.0
+    - argparse
+    - typing
+    - datetime
+    - demjson3
+    - rich

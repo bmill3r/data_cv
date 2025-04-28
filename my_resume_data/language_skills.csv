@@ -1,4 +1,2 @@
-Name of language,Relative numeric level of skill
-skill,level
-R,4
-Python,4
+Category,Skill name,Level (1-5)
+category,skill,level

@@ -1,0 +1,1293 @@
+{
+  "meta": {
+    "last_updated": "2025-04-27",
+    "generated_by": "csv_to_json_converter.py"
+  },
+  "contact_info": {
+    "email": {
+      "value": "bmill3r@gmail.com",
+      "icon": "envelope"
+    },
+    "github": {
+      "value": "https://github.com/bmill3r",
+      "icon": "github"
+    },
+    "website": {
+      "value": "https://bmill3r.github.io/",
+      "icon": "globe"
+    },
+    "linkedin": {
+      "value": "[brendan-f-miller](https://www.linkedin.com/in/brendan-f-miller)",
+      "icon": "linkedin"
+    },
+    "website_book": {
+      "value": "[Google Scholar](https://scholar.google.com/citations?user=BP7VBw0AAAAJ&hl=en)",
+      "icon": "book"
+    }
+  },
+  "entries": [
+    {
+      "section": "education",
+      "title": "Ph.D., Molecular Biology",
+      "loc": "Johns Hopkins University<br />National Institutes of Health Graduate Partnership Program<br />Advisor - Dr. Laura Elnitski",
+      "institution": "Baltimore, MD",
+      "start": "2014",
+      "end": "2020",
+      "descriptions": [
+        "Dissertation: [<i class=\"fa fa-link\"></i>&nbsp;Investigating Blood-based Biomarkers and Patterns of DNA Methylation in Tumors](https://jscholarship.library.jhu.edu/handle/1774.2/62531)",
+        "Assessing ZNF154 methylation in patient plasma as a multicancer marker in liquid biopsies from colon, liver, ovarian and pancreatic cancer patients | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Sci Reports 2021*</span>](https://doi.org/10.1038/s41598-020-80345-7)",
+        "Leveraging locus-specific epigenetic heterogeneity to improve the performance of blood-based DNA methylation biomarkers | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Clin Epigenetics 2020*</span>](https://doi.org/10.1186/s13148-020-00939-w)",
+        "The emergence of pan-cancer CIMP and its elusive interpretation | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Biomolecules 2016 *</span>](https://doi.org/10.3390/biom6040045)"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "education"
+      ],
+      "importance": 57
+    },
+    {
+      "section": "education_dropletbiosciences",
+      "title": "Ph.D., Molecular Biology",
+      "loc": "Johns Hopkins University<br />National Institutes of Health Graduate Partnership Program<br />Advisor - Dr. Laura Elnitski",
+      "institution": "Baltimore, MD",
+      "start": "2014",
+      "end": "2020",
+      "descriptions": [
+        "Optimized <u>single molecule detection assay</u> to quantify rare fragments of <u>methylated cell-free DNA in patient plasma</u>. Developed <u>computational machine learning algorithms</u> leveraging heterogeneous methylation patterns to optimize <u>liquid biopsy cancer diagnostics</u>.",
+        "Developed pipeline to process cell-free DNA from hundreds of patient plasma samples. Sample quality and locus capture efficiency were quantified using <u>ddPCR and qPCR</u>.",
+        "Bisulfite sequencing analysis of extracted cell-free DNA to <u>detect rare methylated DNA variants</u>.",
+        "**Assessing ZNF154 methylation in patient plasma as a multicancer marker in liquid biopsies from colon, liver, ovarian and pancreatic cancer patients** | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Sci Reports 2021*</span>](https://doi.org/10.1038/s41598-020-80345-7)",
+        "**Leveraging locus-specific epigenetic heterogeneity to improve the performance of blood-based DNA methylation biomarkers** | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Clin Epigenetics 2020*</span>](https://doi.org/10.1186/s13148-020-00939-w)"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "education_dropletbiosciences"
+      ],
+      "importance": 56
+    },
+    {
+      "section": "education_merck",
+      "title": "Ph.D., Molecular Biology",
+      "loc": "Johns Hopkins University<br />National Institutes of Health Graduate Partnership Program<br />Advisor - Dr. Laura Elnitski",
+      "institution": "Baltimore, MD",
+      "start": "2014",
+      "end": "2020",
+      "descriptions": [
+        "Optimized <u>single molecule detection assay</u> to quantify rare fragments of <u>methylated cell-free DNA in patient plasma</u>. Developed <u>computational machine learning algorithms</u> leveraging heterogeneous methylation patterns to optimize <u>liquid biopsy cancer diagnostics</u>.",
+        "Developed pipeline to process cell-free DNA from hundreds of patient plasma samples. Samples were analyzed using <u>ddPCR and qPCR</u>.",
+        "Bisulfite sequencing analysis of extracted cell-free DNA to <u>detect rare methylated DNA variants</u>.",
+        "Assessing ZNF154 methylation in patient plasma as a multicancer marker in liquid biopsies from colon, liver, ovarian and pancreatic cancer patients | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Sci Reports 2021*</span>](https://doi.org/10.1038/s41598-020-80345-7)",
+        "Leveraging locus-specific epigenetic heterogeneity to improve the performance of blood-based DNA methylation biomarkers | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Clin Epigenetics 2020*</span>](https://doi.org/10.1186/s13148-020-00939-w)"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "education_merck"
+      ],
+      "importance": 55
+    },
+    {
+      "section": "education_",
+      "title": "B.S., Biochemistry | Pharmacology minor",
+      "loc": "University of Vermont",
+      "institution": "Burlington, VT",
+      "start": "2008",
+      "end": "2012",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "education_"
+      ],
+      "importance": 54
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "[National Human Genome Research Institute Intramural Research Award](https://www.genome.gov/about-nhgri/Division-of-Intramural-Research/Scientific-Director-Office/Intramural-Training-Office/research-award)",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2020",
+      "descriptions": [
+        "Project: \"Detection of Methylated Cancer Biomarkers in Cell-free DNA\""
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 53
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "[National Institutes of Health Fellows Award for Research Excellence](https://www.training.nih.gov/felcom_-_fare_past_winners)",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2020",
+      "descriptions": [
+        "Abstract: \"A Methylation Density Binary Classifier for Predicting and Optimizing the Performance of Methylation Biomarkers in Clinical Samples\""
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 52
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "[National Institutes of Health Graduate Student Research Award](https://www.training.nih.gov/gsc/symposium/15th/awards)",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2019",
+      "descriptions": [
+        "15th Annual NIH Graduate Student Research Symposium",
+        "Section: Pharmacology and. Clinical and Translational Science"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 51
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "[National Institutes of Health Fellows Award for Research Excellence](https://www.training.nih.gov/felcom_-_fare_past_winners)",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2017",
+      "descriptions": [
+        "Abstract: \"Digital Droplet PCR Liquid Biopsy Assay for Detecting Circulating Tumor DNA in Patient Plasma\""
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 50
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "National Institutes of Health Post-Baccalaureate Outstanding Poster Award",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2013",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 49
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "National Institutes of Health Post-Baccalaureate Training Award",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2012",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 48
+    },
+    {
+      "section": "awards_and_honors",
+      "title": "John Thanassi Research Award for Outstanding Achievements in Biochemistry",
+      "loc": "University of Vermont",
+      "institution": "Burlington, VT",
+      "start": "",
+      "end": "2012",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "awards_and_honors"
+      ],
+      "importance": 47
+    },
+    {
+      "section": "research_positions",
+      "title": "Graduate Research Fellow",
+      "loc": "Research Rotation<br />Carnegie Instituion of Washington<br />Department of Embryology",
+      "institution": "Baltimore, MD",
+      "start": "",
+      "end": "2014",
+      "descriptions": [
+        "Advisor: **Dr. Alex Bortvin**",
+        "Project: \"Quantitation of transposable element abundance in RNA-seq data\"",
+        "Comparison and benchmarking of multiple bioinformatic pipelines for identification of transosable elements",
+        "Preprocessing, alignment, and filtering of NGS RNA-seq reads followed by quantitation of genomic feature overlaps using combination of `bowtie`, `bedtools`, and custom Python scripts"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "research_positions"
+      ],
+      "importance": 46
+    },
+    {
+      "section": "research_positions",
+      "title": "Graduate Research Fellow",
+      "loc": "Translational and Functional Genomics Branch",
+      "institution": "Bethesda, MD",
+      "start": "2014",
+      "end": "2020",
+      "descriptions": [
+        "Advisor: **Dr. Laura Elnitski**",
+        "Project 1: \"Detection of Methylated Cancer Biomarkers in Cell-free DNA\"",
+        "Project 2: \"Elucidation of Molecular Commonalities in CpG Island Methylator Phenotype Tumors Across Cancer-types\""
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "research_positions"
+      ],
+      "importance": 45
+    },
+    {
+      "section": "research_positions",
+      "title": "Post-Baccalaureate Research Fellow",
+      "loc": "Genomic Structure and Function Section",
+      "institution": "Bethesda, MD",
+      "start": "2012",
+      "end": "2014",
+      "descriptions": [
+        "Advisor: **Dr. Anthony Furano**",
+        "Project: \"Factors that Determine Strand Selection During Repair of T/G Mismatches\""
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "research_positions"
+      ],
+      "importance": 44
+    },
+    {
+      "section": "research_positions",
+      "title": "Undergraduate Researcher",
+      "loc": "Department of Pharmacology",
+      "institution": "University of Vermont",
+      "start": "2011",
+      "end": "2012",
+      "descriptions": [
+        "Advisor: **Dr. Wolfgang Dostmann**",
+        "Project: \"Purification and Long-term Storage of Toxoplasma gondii PKGII Protein\""
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "research_positions"
+      ],
+      "importance": 43
+    },
+    {
+      "section": "research_positions",
+      "title": "Undergraduate Researcher",
+      "loc": "Department of Biochemistry",
+      "institution": "University of Vermont",
+      "start": "",
+      "end": "2011",
+      "descriptions": [
+        "Advisor: **Dr. Anne B. Mason**",
+        "Project: \"Identification of Key Residues of Human Transferrin and Transferrin Receptor\""
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "research_positions"
+      ],
+      "importance": 42
+    },
+    {
+      "section": "research_positions",
+      "title": "Research Assistant",
+      "loc": "Department of Biological Sciences",
+      "institution": "University of Massachusetts, Lowell, MA",
+      "start": "",
+      "end": "2007",
+      "descriptions": [
+        "Advisor: **Dr. Brian Bettencourt**",
+        "Project: \"Variation inn Hsp70 Expression During Natural Thermal Stress Drives Differential Suppression of poly-Q Toxicity\""
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "research_positions"
+      ],
+      "importance": 41
+    },
+    {
+      "section": "teaching_positions",
+      "title": "Lecturer - Research Tools for Studying Disease",
+      "loc": "National Institutes of Health",
+      "institution": "Bethesda, MD",
+      "start": "2015",
+      "end": "2016",
+      "descriptions": [
+        "Developed syllabus, overall course structure, and administered grades for \"Proteins I\" and \"Computational Biology\" lectures"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "teaching_positions"
+      ],
+      "importance": 40
+    },
+    {
+      "section": "teaching_positions",
+      "title": "Teaching Assistant - General Biology",
+      "loc": "Johns Hopkins University",
+      "institution": "Baltimore, MD",
+      "start": "",
+      "end": "2015",
+      "descriptions": [
+        "Managed laboratory section, which included experimental setup, development of instructional lectures, and adminstration of assignments and exams"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "teaching_positions"
+      ],
+      "importance": 39
+    },
+    {
+      "section": "teaching_positions",
+      "title": "Program Leader",
+      "loc": "Health Education Outreach Program",
+      "institution": "Bethesda, MD",
+      "start": "2012",
+      "end": "2014",
+      "descriptions": [
+        "Taught topics in medicine and healthcare to underpriviledged and underrepresented communities"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "teaching_positions"
+      ],
+      "importance": 38
+    },
+    {
+      "section": "teaching_positions",
+      "title": "Tutor - General Chemistry and Organic Chemistry",
+      "loc": "University of Vermont",
+      "institution": "Burlington, VT",
+      "start": "2010",
+      "end": "2012",
+      "descriptions": [
+        "Established and oversaw individual and group tutoring sessions"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "teaching_positions"
+      ],
+      "importance": 37
+    },
+    {
+      "section": "invited_speaker",
+      "title": "Reference-free cell-type deconvolution of multi-cellular pixel resolution spatially resolved transcriptomics data",
+      "loc": "[CNS Research Showcase at Indiana University](https://cns.iu.edu/)",
+      "institution": "Virtual",
+      "start": "",
+      "end": "2022",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "invited_speaker"
+      ],
+      "importance": 36
+    },
+    {
+      "section": "invited_speaker",
+      "title": "Reference-free cell-type deconvolution of multi-cellular pixel resolution spatially resolved transcriptomics data",
+      "loc": "[University of Sydney Bioinformatics Seminar Series](https://www.maths.usyd.edu.au/u/SemConf/StatisticalBioinformatics.html)",
+      "institution": "Virtual",
+      "start": "",
+      "end": "2021",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "invited_speaker"
+      ],
+      "importance": 35
+    },
+    {
+      "section": "invited_speaker",
+      "title": "A methylation density binary classifier for predicting and optimizing the performance of methylation biomarkers in clinical samples",
+      "loc": "Circulating Nucleic Acids/Liquid Biopsy Interest Group",
+      "institution": "Virtual",
+      "start": "",
+      "end": "2019",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "invited_speaker"
+      ],
+      "importance": 34
+    },
+    {
+      "section": "invited_speaker",
+      "title": "Advancement in ovarian carcinoma detection using circulating cell-free DNA from patient plasma samples",
+      "loc": "National Human Genome Research Institute Symposium",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2018",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "invited_speaker"
+      ],
+      "importance": 33
+    },
+    {
+      "section": "invited_speaker",
+      "title": "Detecting DNA methylation patterns in patient plasma to improve cancer diagnostics",
+      "loc": "NIEHS Inflammation Faculty Workshop",
+      "institution": "Research Triangle Park, NC",
+      "start": "",
+      "end": "2018",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "invited_speaker"
+      ],
+      "importance": 32
+    },
+    {
+      "section": "invited_speaker",
+      "title": "Detecting DNA methylation patterns in patient plasma to improve cancer diagnostics",
+      "loc": "3rd Annual Liquid Biopsy Summit",
+      "institution": "San Francisco, CA",
+      "start": "",
+      "end": "2018",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "invited_speaker"
+      ],
+      "importance": 31
+    },
+    {
+      "section": "poster_presentations",
+      "title": "A methylation density binary classifier for predicting and optimizing the performance of methylation biomarkers in clinical samples",
+      "loc": "Advances in Genome Biology and Technology",
+      "institution": "Marco Island, FL",
+      "start": "",
+      "end": "2020",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "poster_presentations"
+      ],
+      "importance": 30
+    },
+    {
+      "section": "poster_presentations",
+      "title": "Detecting DNA methylation in blood for cancer diagnostics",
+      "loc": "Next Generation Diagnostics Summit",
+      "institution": "Washington, DC",
+      "start": "",
+      "end": "2017",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "poster_presentations"
+      ],
+      "importance": 29
+    },
+    {
+      "section": "poster_presentations",
+      "title": "Detecting DNA methylation in blood for cancer diagnostics",
+      "loc": "EMBO Chromatin and Epigenetics Meeting",
+      "institution": "Heidelberg, Germany",
+      "start": "",
+      "end": "2017",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "poster_presentations"
+      ],
+      "importance": 28
+    },
+    {
+      "section": "poster_presentations",
+      "title": "Factors that determine strand selection during repair of T/G mismatches",
+      "loc": "13th Annual Postbac Poster Day",
+      "institution": "Bethesda, MD",
+      "start": "",
+      "end": "2013",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "poster_presentations"
+      ],
+      "importance": 27
+    },
+    {
+      "section": "preprints",
+      "title": "Building genomic analysis pipelines in a hackathon setting with bioinformatician teams: DNA-Seq, Epigenomics, Metagenomics, and RNA-Seq",
+      "loc": "[bioRxiv 018085](https://www.biorxiv.org/content/10.1101/018085v2)",
+      "institution": "",
+      "start": "",
+      "end": "2015",
+      "descriptions": [
+        "Ben Busby, Allissa Dillman, Claire L. Simpson, Ian Fingerman, Sijung Yun, David M. Kristensen, Lisa Federer, Naisha Shah, Matthew C. LaFave, Laura Jimenez-Barron, Manjusha Pande, Wen Luo, **Brendan Miller**, Cem Mayden, Dhruva Chandramohan, Kipper Fletez-Brant, Paul W. Bible, Sergej Nowoshilow, Alfred Chan, Eric JC Galvez, Jeremy Chignell, Joseph N. Paulson, Manoj Kandpal, Suhyeon Yoon, Esther Asaki, Abhinav Nellore, Adam Stine, Robert Sanders, Jesse Becker, Matt Lesko, Mordechai Abzug, Eugene Yaschenko"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "preprints"
+      ],
+      "importance": 26
+    },
+    {
+      "section": "academic_articles",
+      "title": "Reference-free cellÊtype deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data",
+      "loc": "[Nat Commun 13, 2339 (2022)](https://doi.org/10.1038/s41467-022-30033-z)",
+      "institution": "",
+      "start": "",
+      "end": "2022",
+      "descriptions": [
+        "**Brendan F. Miller**, Feiyang Huang, Lyla Atta, Arpan Sahoo, Jean Fan",
+        "Software: [STdeconvolve](https://jef.works/STdeconvolve/)"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 25
+    },
+    {
+      "section": "academic_articles",
+      "title": "Characterizing spatial gene expression heterogeneity in spatially resolved single-cell transcriptomics data with nonuniform cellular densities",
+      "loc": "[Genome Res. 2021. 31: 1843-1855](https://doi.org/10.1101/gr.271288.120)",
+      "institution": "",
+      "start": "",
+      "end": "2021",
+      "descriptions": [
+        "**Brendan F. Miller**, Dhananjay Bambah-Mukku, Catherine Dulac, Xiaowei Zhuang, Jean Fan",
+        "Software: [MERINGUE](https://jef.works/MERINGUE/)"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 24
+    },
+    {
+      "section": "academic_articles",
+      "title": "Assessing ZNF154 methylation in patient plasma as a multicancer marker in liquid biopsies from colon, liver, ovarian and pancreatic cancer patients",
+      "loc": "[Sci Rep 11, 221 (2021)](https://doi.org/10.1038/s41598-020-80345-7)",
+      "institution": "",
+      "start": "",
+      "end": "2021",
+      "descriptions": [
+        "**Brendan F. Miller**, Hanna M. Petrykowska, Laura Elnitski"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 23
+    },
+    {
+      "section": "academic_articles",
+      "title": "Leveraging locus-specific epigenetic heterogeneity to improve the performance of blood-based DNA methylation biomarkers",
+      "loc": "[Clin Epigenet 12, 154 (2020)](https://doi.org/10.1186/s13148-020-00939-w)",
+      "institution": "",
+      "start": "",
+      "end": "2020",
+      "descriptions": [
+        "**Brendan F. Miller**, Thomas R. Pisanic II, Gennady Margolin, Hanna M. Petrykowska, Pornpat Athamanolap, Akosua Osei-Tutu, Tza-Huei Wang, Christina Annunziata, Laura Elnitski",
+        "Software: [EpiClass](https://pypi.org/project/EpiClass/)"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 22
+    },
+    {
+      "section": "academic_articles",
+      "title": "Identification of human silencers by correlating cross-tissue epigenetic profiles and gene expression",
+      "loc": "[Genome Research. 2019 March; 29(3):1-11](https://doi.org/10.1101/gr.247007.118)",
+      "institution": "",
+      "start": "",
+      "end": "2019",
+      "descriptions": [
+        "Di Huang, Hanna M. Petrykowska, **Brendan F. Miller**, Laura Elnitski, Ivan Ovcharenko"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 21
+    },
+    {
+      "section": "academic_articles",
+      "title": "Transient reduction of DNA methylation at the onset of meiosis in male mice",
+      "loc": "[Epigenetics and Chromatin. 2018 April; 11:15](https://doi.org/10.1186/s13072-018-0186-0)",
+      "institution": "",
+      "start": "",
+      "end": "2018",
+      "descriptions": [
+        "Valeriya Gaysinskaya, **Brendan F. Miller**, Godfried W. van der Heijden, Kasper D. Hansen, Alex Bortvin"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 20
+    },
+    {
+      "section": "academic_articles",
+      "title": "The emergence of pan-cancer CIMP and its elusive interpretation",
+      "loc": "[Biomolecules. 2016 Nov; 6(4):45](https://doi.org/10.3390/biom6040045)",
+      "institution": "",
+      "start": "",
+      "end": "2016",
+      "descriptions": [
+        "**Brendan F. Miller**, Francisco Sanchez-Vega, Laura Elnitski"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 19
+    },
+    {
+      "section": "academic_articles",
+      "title": "Repair of naturally occurring mispairs can induce mutations in flanking DNA",
+      "loc": "[eLife 2014;3:e02001](https://doi.org/10.7554/eLife.02001)",
+      "institution": "",
+      "start": "",
+      "end": "2014",
+      "descriptions": [
+        "Jia Chen, **Brendan F. Miller**, Anthony V. Furano"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 18
+    },
+    {
+      "section": "academic_articles",
+      "title": "Structure-based Mutagenesis Reveals Critical Residues in the Transferrin Receptor Participating in the Mechanism of pH-induced Release of Iron from Human Serum Transferrin",
+      "loc": "[Biochemistry. 2012 Feb; 51(10):2113-21](https://doi.org/10.1021/bi3001038)",
+      "institution": "",
+      "start": "",
+      "end": "2012",
+      "descriptions": [
+        "Ashley N. Steere, N. Dennis Chasteen, **Brendan F. Miller**, Valerie C. Smith, Ross T. A. MacGillivray, Anne B. Mason"
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 17
+    },
+    {
+      "section": "academic_articles",
+      "title": "Ionic Residues of Human Serum Transferrin that Affect Binding to the Transferrin Receptor and Iron Release from the Complex",
+      "loc": "[Biochemistry. 2012 Dec; 51(2):686-94](https://doi.org/10.1021/bi201661g)",
+      "institution": "",
+      "start": "",
+      "end": "2012",
+      "descriptions": [
+        "Ashley N. Steere, **Brendan F. Miller**, Samantha E. Roberts, Shaina L. Byrne, N. Dennis Chasteen, Valerie C. Smith, Ross T. A. MacGillivray, Anne B. Mason."
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "academic_articles"
+      ],
+      "importance": 16
+    },
+    {
+      "section": "software",
+      "title": "STdeconvolve",
+      "loc": "[https://jef.works/STdeconvolve/](https://jef.works/STdeconvolve/)<br />[<i class=\"fa fa-link\"></i>&nbsp;Available on Bioconductor](https://bioconductor.org/packages/devel/bioc/html/STdeconvolve.html)",
+      "institution": "",
+      "start": "",
+      "end": "2022",
+      "descriptions": [
+        "Unsupervised machine learning approach to deconvolve multi-cellular pixel resolution spatial transcriptomics datasets in order to recover the putative transcriptomic profiles of cell-types and their proportional representation within spatially resolved pixels without reliance on external single-cell transcriptomics references."
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "software"
+      ],
+      "importance": 15
+    },
+    {
+      "section": "software",
+      "title": "MERINGUE",
+      "loc": "[https://jef.works/MERINGUE/](https://jef.works/MERINGUE/)",
+      "institution": "",
+      "start": "",
+      "end": "2021",
+      "descriptions": [
+        "MERINGUE characterizes spatial gene expression heterogeneity in spatially resolved single-cell transcriptomics data with non-uniform cellular densities."
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "software"
+      ],
+      "importance": 14
+    },
+    {
+      "section": "software",
+      "title": "EpiClass",
+      "loc": "[https://pypi.org/project/EpiClass/](https://pypi.org/project/EpiClass/)",
+      "institution": "",
+      "start": "",
+      "end": "2020",
+      "descriptions": [
+        "Optimizing and predicting performance of DNA methylation biomarkers using sequence methylation density information."
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "software"
+      ],
+      "importance": 13
+    },
+    {
+      "section": "service",
+      "title": "Journal Reviewer - Nature Protocols",
+      "loc": "[Prioritization of cell-types responsive to biological perturbations in single-cell data with Augur. Nat Protoc 16, 3836-3873 (2021)](https://doi.org/10.1038/s41596-021-00561-x)",
+      "institution": "",
+      "start": "",
+      "end": "2021",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "service"
+      ],
+      "importance": 12
+    },
+    {
+      "section": "service",
+      "title": "Journal Reviewer - Epigenomics",
+      "loc": "",
+      "institution": "",
+      "start": "",
+      "end": "2019",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "service"
+      ],
+      "importance": 11
+    },
+    {
+      "section": "service",
+      "title": "The Liquid Biopsies (LB) Scientific Interest Group (SIG)",
+      "loc": "[Research Webinar Committee Co-Leader](https://oir.nih.gov/sigs/circulating-nucleic-acidsliquid-biopsy-interest-group)",
+      "institution": "",
+      "start": "2019",
+      "end": "Current",
+      "descriptions": [
+        "The aims of the Liquid Biopsies Interest Group are to: (1) foster scientific exchange; (2) communication of research (3); working towards establishing standard practices for circulating nucleic acids studies; (4) sharing and optimization of techniques."
+      ],
+      "companies": [],
+      "tags": [
+        "cv",
+        "service"
+      ],
+      "importance": 10
+    },
+    {
+      "section": "reference",
+      "title": "Dr. Jean Fan",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />jeanfan@jhu.edu",
+      "institution": "",
+      "start": "",
+      "end": "",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "reference"
+      ],
+      "importance": 9
+    },
+    {
+      "section": "reference",
+      "title": "Dr. Laura Elniski",
+      "loc": "National Institutes of Health<br />National Human Genome Research Institute<br />elnitski@nih.gov",
+      "institution": "",
+      "start": "",
+      "end": "",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "reference"
+      ],
+      "importance": 8
+    },
+    {
+      "section": "reference",
+      "title": "Dr. Thomas Pisanic II",
+      "loc": "Johns Hopkins University<br />Department of Mechanical Engineering<br />tpisani1@jhu.edu",
+      "institution": "",
+      "start": "",
+      "end": "",
+      "descriptions": [],
+      "companies": [],
+      "tags": [
+        "cv",
+        "reference"
+      ],
+      "importance": 7
+    },
+    {
+      "section": "current_position",
+      "title": "Post-Doctoral Research Fellow",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[JEFworks Lab](https://jef.works/team)",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Supervisor: Dr. Jean Fan",
+        "Project: \"Reference-free deconvolution of multi-cellular spatially resolved transcriptomics data\""
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "current_position"
+      ],
+      "importance": 6
+    },
+    {
+      "section": "current_position_company_1",
+      "title": "Post-Doctoral Research Fellow",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[<i class=\"fa fa-link\"></i>&nbsp;JEFworks Lab](https://jef.works/team)<br />Supervisor - Dr. Jean Fan",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Development of open-source computational pipelines and statistical software to characterize, cluster, and visualize cell type spatial organizational patterns in tissues.",
+        "Characterizing spatial gene expression heterogeneity in spatially resolved single-cell transcriptomic data with nonuniform cellular densities | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Genome Res 2021*</span>](https://doi.org/10.1101/gr.271288.120)",
+        "Reference-free cell type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Nat Commun 2022*</span>](https://doi.org/10.1038/s41467-022-30033-z)",
+        "Cell type annotation and quantitation of co-localization changes across immune tissues using CODEX protein expression data | ***in progress***"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "current_position_company_1"
+      ],
+      "importance": 5
+    },
+    {
+      "section": "current_position_dropletbiosciences",
+      "title": "Post-Doctoral Fellow in Computational Biology",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[<i class=\"fa fa-link\"></i>&nbsp;JEFworks Lab](https://jef.works/team)<br />Supervisor - Dr. Jean Fan",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Development of <u>open-source computational pipelines and statistical software</u> to characterize, <u>cluster data</u>, and <u>visualize</u> cell type spatial organizational patterns in tissues.",
+        "Characterizing spatial gene expression heterogeneity in spatially resolved single-cell transcriptomic data with nonuniform cellular densities | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Genome Res 2021*</span>](https://doi.org/10.1101/gr.271288.120)",
+        "Reference-free cell type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Nat Commun 2022*</span>](https://doi.org/10.1038/s41467-022-30033-z)",
+        "Cell type annotation and quantitation of co-localization changes across immune tissues using CODEX protein expression data | ***in progress***"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "current_position_dropletbiosciences"
+      ],
+      "importance": 4
+    },
+    {
+      "section": "current_position_ozette",
+      "title": "Post-Doctoral Fellow in Computational Biology",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[<i class=\"fa fa-link\"></i>&nbsp;JEFworks Lab](https://jef.works/team)<br />Supervisor - Dr. Jean Fan",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Development of <u>open-source computational pipelines and statistical software</u> to characterize, <u>cluster data</u>, and <u>visualize</u> cell type <u>spatial organizational patterns</u> in tissues.",
+        "Characterizing spatial gene expression heterogeneity in spatially resolved single-cell transcriptomic data with nonuniform cellular densities | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Genome Res 2021*</span>](https://doi.org/10.1101/gr.271288.120)",
+        "Reference-free cell type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Nat Commun 2022*</span>](https://doi.org/10.1038/s41467-022-30033-z)",
+        "Cell type annotation and quantitation of co-localization changes across <u>immune tissues using CODEX protein expression data</u> | ***in progress***"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "current_position_ozette"
+      ],
+      "importance": 3
+    },
+    {
+      "section": "current_position_merck",
+      "title": "Post-Doctoral Fellow in Computational Biology",
+      "loc": "Johns Hopkins University<br />Department of Biomedical Engineering<br />[<i class=\"fa fa-link\"></i>&nbsp;JEFworks Lab](https://jef.works/team)<br />Supervisor - Dr. Jean Fan",
+      "institution": "Baltimore, MD",
+      "start": "2020",
+      "end": "Current",
+      "descriptions": [
+        "Development of <u>open-source computational pipelines and statistical software</u> to characterize and <u>visualize</u> cell type <u>spatial organizational patterns</u> in tissues.",
+        "Directly analyzed and extracted meaningful cell type spatial relationships from leading-edge technologies such as <u>Visium, MERSCOPE, Slide-Seq, DBiT-Seq</u>.",
+        "Annotated cell types and quantified their spatial co-localization changes across <u>immune tissues using CODEX highly multiplexed spatial protein expression data</u>.",
+        "Applied <u>convolutional neural networks to segment cells in H&E images</u> to increase the resolution of Visium datasets.",
+        "Developed statistical software packages in <u>`R` and `Python`</u>. Performed extensive high-throughput analyses with a <u>high-performance `Linux` cluster</u>.",
+        "**Characterizing spatial gene expression heterogeneity in spatially resolved single-cell transcriptomic data with nonuniform cellular densities** | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Genome Res 2021*</span>](https://doi.org/10.1101/gr.271288.120)",
+        "**Reference-free cell type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data** | [<span style=\"color:red\">*<i class=\"fa fa-link\"></i>&nbsp;Nat Commun 2022*</span>](https://doi.org/10.1038/s41467-022-30033-z)"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "current_position_merck"
+      ],
+      "importance": 2
+    },
+    {
+      "section": "additional_research",
+      "title": "Graduate Research Fellow",
+      "loc": "Research Rotation<br />Carnegie Institution of Washington<br />Department of Embryology<br />Advisor - Dr. Alex Bortvin",
+      "institution": "Baltimore, MD",
+      "start": "",
+      "end": "2014",
+      "descriptions": [
+        "Project: \"Quantitation of transposable element abundance in RNA-seq data\"",
+        "Comparison and <u>benchmarking of multiple bioinformatic pipelines</u> for <u>taxonomic classification and quantification</u> of DNA transposable elements in biological samples.",
+        "Preprocessing, alignment, and filtering of <u>NGS RNA-seq</u> reads followed by quantitation of genomic feature overlaps using combination of `bowtie`, `bedtools`, and custom `Python` scripts"
+      ],
+      "companies": [],
+      "tags": [
+        "resume",
+        "cv",
+        "additional_research"
+      ],
+      "importance": 1
+    },
+    {
+      "section": "test",
+      "title": "This is a test added section",
+      "institution": "Baltimore, MD",
+      "loc": "Johns Hopkins",
+      "start": "2025",
+      "end": "2025",
+      "descriptions": [
+        "This is testing the functionality of cv_database_editor.py"
+      ],
+      "companies": [
+        "resume",
+        "cv"
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ],
+      "importance": 10
+    }
+  ],
+  "text_blocks": [
+    {
+      "id": "intro",
+      "content": "Post-doctoral research fellow developing computational tools for analysis of single-cell and spatial transcriptomics data. Molecular biologist with strong background in clinical diagnostics and cancer biology.",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "skills",
+      "content": "**Biochemistry**<br />Column Chromatography - SDS-PAGE - Spectrophotometry - Western Blotting<br />**Communication**<br />Grant writing - Microsoft Office Suite - Scientific Presentation and Technical Writing",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "references1",
+      "content": "**Dr. Jean Fan**<br />Johns Hopkins University<br />Department of Biomedical Engineering<br />jeanfan@jhu.edu",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "references2",
+      "content": "**Dr. Laura Elnitski**<br />National Institutes of Health<br />National Human Genome Research Institute<br />elnitski@nih.gov",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "references3",
+      "content": "**Dr. Thomas Pisanic II**<br />Johns Hopkins University<br />Department of Mechanical Engineering<br />tpisani1@jhu.edu",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "company_dropletbiosciences",
+      "content": "Post-doctoral research fellow developing computational pipelines for analysis of single-cell and spatial-omics data. Molecular biologist with strong background in <u>circulating cell-free DNA analysis for cancer clinical diagnostics</u>.",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "company_ozette",
+      "content": "Post-doctoral research fellow developing computational pipelines for analysis of <u>single-cell and spatial-omics data</u>. Molecular biologist with strong background in clinical diagnostics and <u>cancer biology</u>.",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "id": "company_merck",
+      "content": "Post-doctoral research fellow developing computational pipelines for analysis of <u>single-cell and spatial-omics data</u>. Molecular biologist with strong background in clinical diagnostics and <u>cancer biology</u>.",
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Biology",
+      "entries": [
+        {
+          "name": "Assay optimization",
+          "level": ""
+        },
+        {
+          "name": "Cancer diagnostics",
+          "level": ""
+        },
+        {
+          "name": "Cell-free DNA",
+          "level": ""
+        },
+        {
+          "name": "droplet digital PCR",
+          "level": ""
+        },
+        {
+          "name": "Liquid biopsy",
+          "level": ""
+        },
+        {
+          "name": "DNA Methylation",
+          "level": ""
+        },
+        {
+          "name": "Epigenetics and chromatin",
+          "level": ""
+        },
+        {
+          "name": "Gene expression variability",
+          "level": ""
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "category": "Data Analysis",
+      "entries": [
+        {
+          "name": "Bisulfite sequencing",
+          "level": ""
+        },
+        {
+          "name": "Differential Expression",
+          "level": ""
+        },
+        {
+          "name": "Cell type deconvolution",
+          "level": ""
+        },
+        {
+          "name": "Gene set enrichment analysis",
+          "level": ""
+        },
+        {
+          "name": "Machine learning models",
+          "level": ""
+        },
+        {
+          "name": "Single-cell multi-omics",
+          "level": ""
+        },
+        {
+          "name": "Spatial transcriptomics",
+          "level": ""
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "category": "Software/Coding",
+      "entries": [
+        {
+          "name": "R/RStudio",
+          "level": ""
+        },
+        {
+          "name": "Python",
+          "level": ""
+        },
+        {
+          "name": "Bash scripting",
+          "level": ""
+        },
+        {
+          "name": "Linux High-Performance Computing",
+          "level": ""
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "category": "Data Visualization",
+      "entries": [
+        {
+          "name": "ggplot2",
+          "level": ""
+        },
+        {
+          "name": "jupyter notebook",
+          "level": ""
+        },
+        {
+          "name": "markdown",
+          "level": ""
+        },
+        {
+          "name": "matplotlib",
+          "level": ""
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "category": "Package Development",
+      "entries": [
+        {
+          "name": "Bioconductor",
+          "level": ""
+        },
+        {
+          "name": "git/GitHub",
+          "level": ""
+        },
+        {
+          "name": "PyPI",
+          "level": ""
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "category": "Scientific Communication",
+      "entries": [
+        {
+          "name": "High impact publications",
+          "level": ""
+        },
+        {
+          "name": "Invited conference speaker",
+          "level": ""
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    },
+    {
+      "category": "Test",
+      "entries": [
+        {
+          "name": "test1",
+          "level": "5"
+        },
+        {
+          "name": "test2",
+          "level": "3"
+        }
+      ],
+      "tags": [
+        "cv",
+        "resume"
+      ]
+    }
+  ]
+}

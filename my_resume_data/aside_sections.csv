@@ -1,0 +1,8 @@
+category,display_name,is_code,sort_order
+biology,Biology,FALSE,1
+data_analysis,Data Analysis,FALSE,2
+software_coding,Software/Coding,TRUE,3
+data_visualization,Data Visualization,FALSE,4
+package_development,Package Development,TRUE,5
+scientific_communication,Scientific Communication,FALSE,6
+test,Test,FALSE,7

@@ -1,0 +1,38 @@
+Senior Computational Biologist - Spatial Transcriptomics Team
+
+About Us:
+BioSpatial Technologies is a leading biotech company focused on developing cutting-edge spatial biology tools for disease research and precision medicine. Our mission is to revolutionize our understanding of disease progression through spatially resolved genomics approaches.
+
+Job Description:
+We are seeking a Senior Computational Biologist to join our Spatial Transcriptomics team. In this role, you will develop novel computational methods for analyzing spatial transcriptomics data and lead projects to characterize spatial patterns in complex tissues. You will collaborate with biologists, data scientists, and software engineers to build algorithms that extract meaningful insights from our proprietary spatial biology platform.
+
+Key Responsibilities:
+- Develop and implement computational methods for analyzing high-dimensional spatial genomics data
+- Design and build statistical and machine learning models to identify cell types and their spatial relationships
+- Create visualization tools to help biologists interpret complex spatial data
+- Optimize computational pipelines for processing large datasets efficiently
+- Author scientific publications and present findings at conferences
+- Collaborate with wet-lab scientists to design experiments and analyze results
+- Mentor junior computational biologists and contribute to team growth
+
+Requirements:
+- PhD in Computational Biology, Bioinformatics, Computer Science, or related field
+- Strong experience in single-cell or spatial transcriptomics data analysis
+- Proficiency in R and Python programming
+- Experience with machine learning and statistical modeling
+- Track record of developing computational methods for genomics data
+- Strong publication record in computational genomics or related field
+- Experience with large-scale data analysis and high-performance computing
+
+Desired Skills:
+- Experience with cell type deconvolution approaches
+- Familiarity with image analysis and computer vision techniques
+- Experience with technologies such as Visium, MERSCOPE, Slide-seq, or similar platforms
+- Knowledge of epigenetics and gene regulation
+- Experience with cloud computing platforms (AWS, GCP)
+- Experience developing open-source bioinformatics tools
+- Strong communication skills and ability to explain complex methods to diverse audiences
+
+We offer a competitive salary, excellent benefits, and the opportunity to work at the forefront of spatial biology research. BioSpatial Technologies is an equal opportunity employer committed to diversity in the workplace.
+
+Location: Boston, MA (Hybrid work arrangement possible)
