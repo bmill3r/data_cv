@@ -1,6 +1,61 @@
 # data_cv
 Generate custom CV using R and CSS based on `datadrivencv`
 
+## Quick Start Guide
+
+This system provides a flexible, data-driven approach to creating tailored CVs and resumes. Here's how it works:
+
+1. **Central Database**: Everything starts with `cv_database.json`, your master database containing all CV/resume entries with tags.
+
+2. **Filtering Process**: You can subset entries from this database in two ways:
+   - **Manual**: Use `json_to_csv_converter.py` with tag/company filters to select entries
+   - **AI-Powered**: Let `ai_cv_generator.py` analyze a job posting and select the best entries for you
+
+3. **CSV Generation**: Selected entries are converted into CSV files in a subdirectory (e.g., `my_resume_data/`)
+
+4. **Document Rendering**: The `render.r` script combines these CSV files with a template RMD file to create beautiful HTML and PDF outputs
+
+5. **Customization**: Create different CSV subdirectories and customized RMD templates for various job applications
+
+With this workflow, you can maintain a single source of truth (your database) while generating tailored documents for different purposes. The system can be fully automated (AI selects entries and renders documents in one step) or manually controlled for precise customization.
+
+### Updating Your Database
+
+To efficiently maintain your CV database without manually editing JSON files:
+
+```bash
+# Add a new entry interactively
+python cv_database_editor.py add-entry --database cv_database.json
+
+# List all entries with their IDs
+python cv_database_editor.py list-entries --database cv_database.json
+
+# Edit an existing entry by ID
+python cv_database_editor.py edit-entry --database cv_database.json --entry-id 5
+
+# Add a new skill category
+python cv_database_editor.py add-skill-category --database cv_database.json
+
+# List all skill categories
+python cv_database_editor.py list-skill-categories --database cv_database.json
+
+# Edit a skill category
+python cv_database_editor.py edit-skill-category --database cv_database.json --category-id 0
+
+# List all text blocks (summaries, introductions, etc.)
+python cv_database_editor.py list-text-blocks --database cv_database.json
+
+# Edit an existing text block
+python cv_database_editor.py edit-text-block --database cv_database.json --block-id 0
+
+# Update contact information
+python cv_database_editor.py edit-contact --database cv_database.json
+```
+
+**Note**: For editing text blocks, you need to use the numeric ID shown by the list-text-blocks command, not the text block name.
+
+The database editor provides interactive prompts for all fields, making it easy to maintain your CV data without dealing with JSON syntax directly.
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -352,8 +407,9 @@ Converts a structured JSON file containing resume/CV data into the CSV format ex
 | `--json` | Path to the JSON file | Yes | None |
 | `--output-dir` | Directory to write CSV files | Yes | None |
 | `--type` | Type of document (`cv` or `resume`) | Yes | None |
-| `--company-filter` | Filter entries by company | No | None |
-| `--filter-tag` | Filter entries by tag | No | None |
+| `--filter-company` | Filter entries by company. Use comma-separated values for multiple companies | No | None |
+| `--filter-tag` | Filter entries by tag. Use comma-separated values for multiple tags | No | None |
+| `--filter-logic` | Logic to apply for filtering (`and` or `or`). With `and`, entries must match all filters; with `or`, entries must match any filter | No | `and` |
 
 #### Usage Examples
 
@@ -362,10 +418,19 @@ Converts a structured JSON file containing resume/CV data into the CSV format ex
 python json_to_csv_converter.py --json cv_data.json --output-dir my_resume_data --type resume
 
 # Convert JSON to CSV files for a CV with company filter
-python json_to_csv_converter.py --json cv_data.json --output-dir my_cv_data --type cv --company-filter biotech
+python json_to_csv_converter.py --json cv_data.json --output-dir my_cv_data --type cv --filter-company biotech
 
 # Convert JSON to CV and filter by tag
 python json_to_csv_converter.py --json tailored_CompanyX.json --output-dir my_cv_data --type cv --filter-tag machine_learning
+
+# Filter with multiple tags using OR logic
+python json_to_csv_converter.py --json cv_data.json --output-dir my_resume_data --type resume --filter-tag bioinformatics,machine_learning --filter-logic or
+
+# Filter with multiple companies using AND logic
+python json_to_csv_converter.py --json cv_data.json --output-dir my_cv_data --type cv --filter-company biotech,academic --filter-logic and
+
+# Combine tag and company filters
+python json_to_csv_converter.py --json cv_data.json --output-dir my_resume_data --type resume --filter-tag bioinformatics --filter-company biotech
 ```
 
 ### CSV to JSON Converter (`csv_to_json_converter.py`)
@@ -802,11 +867,45 @@ The following happens:
 1. The `--type resume` parameter acts as a filter
 2. Only entries with the `"resume"` tag are included in the output CSV files
 3. If using `--type cv` instead, only entries with the `"cv"` tag would be included
-4. Additional tag filtering is possible with the `--filter-tag` parameter:
+
+#### Enhanced Filtering with Multiple Tags and Companies
+
+The system supports filtering by multiple tags and companies with flexible logic:
+
+1. **Multiple Tags**: You can filter by multiple tags using comma-separated values:
    ```bash
-   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics,machine_learning
    ```
-   This would only include entries tagged with both `"resume"` AND `"bioinformatics"`
+
+2. **Multiple Companies**: You can filter by multiple companies using comma-separated values:
+   ```bash
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-company biotech,academic
+   ```
+
+3. **AND/OR Logic**: You can specify whether entries must match ALL filters (AND logic) or ANY filter (OR logic):
+   ```bash
+   # AND logic (default): Entry must have ALL specified tags
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics,machine_learning --filter-logic and
+   
+   # OR logic: Entry must have ANY of the specified tags
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics,machine_learning --filter-logic or
+   ```
+
+4. **Combining Tags and Companies**: You can combine tag and company filters:
+   ```bash
+   # Default AND logic: Entry must have the "resume" tag AND the "bioinformatics" tag AND be in the "biotech" company category
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics --filter-company biotech
+   
+   # OR logic: Entry must have the "resume" tag AND either the "bioinformatics" tag OR be in the "biotech" company category
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics --filter-company biotech --filter-logic or
+   ```
+
+The filtering logic works as follows:
+
+- **Base Filter**: The document type (--type) is ALWAYS required. All entries must have this tag regardless of other filters.
+- **Multiple Tags**: When specifying multiple tags with AND logic, entries must have ALL specified tags. With OR logic, entries must have AT LEAST ONE of the specified tags.
+- **Multiple Companies**: When specifying multiple companies with AND logic, entries must be associated with ALL specified companies. With OR logic, entries must be associated with AT LEAST ONE of the specified companies.
+- **Combining Filters**: The same logic (AND/OR) applies across both tag and company filters when both are specified.
 
 #### Tags in Tailored JSON Files
 

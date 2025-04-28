@@ -5,6 +5,13 @@ All notable changes to the data_cv project will be documented in this file.
 ## [2025-04-28] - Updated
 
 ### Added
+- Enhanced filtering capabilities in JSON to CSV converter:
+  - Added support for multiple tags with comma-separated values: `--filter-tag bioinformatics,machine_learning`
+  - Added support for multiple companies with comma-separated values: `--filter-company biotech,academic`
+  - Added `--filter-logic` parameter to choose between AND/OR operations
+  - With `and` logic (default), entries must match ALL specified filters
+  - With `or` logic, entries must match ANY specified filter
+  - Updated documentation with comprehensive examples
 - Added temperature parameter to AI CV Generator:
   - Control AI creativity with `--temperature` parameter (0.0-1.0)
   - Lower values (0.0-0.3) for more deterministic outputs

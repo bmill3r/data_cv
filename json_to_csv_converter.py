@@ -35,8 +35,9 @@ def ensure_output_dir(output_dir: str) -> None:
         print(f"Created output directory: {output_dir}")
 
 def write_entries_csv(data: Dict, output_dir: str, doc_type: str, 
-                     company_filter: Optional[str] = None, 
-                     tag_filter: Optional[str] = None) -> None:
+                     company_filters: Optional[List[str]] = None, 
+                     tag_filters: Optional[List[str]] = None,
+                     filter_logic: str = 'and') -> None:
     """
     Write entries data to a CSV file.
     
@@ -44,28 +45,47 @@ def write_entries_csv(data: Dict, output_dir: str, doc_type: str,
         data: The JSON data
         output_dir: Directory to write the CSV file
         doc_type: Type of document ('cv' or 'resume')
-        company_filter: Optional filter for company
-        tag_filter: Optional filter for tag
+        company_filters: Optional list of company filters
+        tag_filters: Optional list of tag filters
+        filter_logic: Logic to apply for filtering ('and' or 'or')
     """
     entries = data.get('entries', [])
     
-    # Filter entries based on document type, company, and tag
+    # Filter entries based on document type, companies, and tags
     filtered_entries = []
     for entry in entries:
         entry_tags = set(entry.get('tags', []))
         entry_companies = set(entry.get('companies', []))
         
-        # Check if entry is valid for the document type
-        if doc_type in entry_tags:
-            # Apply company filter if specified
-            if company_filter and company_filter not in entry_companies:
+        # Always check if entry is valid for the document type
+        if doc_type not in entry_tags:
+            continue
+            
+        # Apply company filters if specified
+        if company_filters:
+            # Check if any companies match (OR logic) or all companies match (AND logic)
+            company_matches = []
+            for company in company_filters:
+                company_matches.append(company in entry_companies)
+                
+            if filter_logic.lower() == 'and' and not all(company_matches):
+                continue
+            elif filter_logic.lower() == 'or' and not any(company_matches):
                 continue
                 
-            # Apply tag filter if specified
-            if tag_filter and tag_filter not in entry_tags:
+        # Apply tag filters if specified
+        if tag_filters:
+            # Check if any tags match (OR logic) or all tags match (AND logic)
+            tag_matches = []
+            for tag in tag_filters:
+                tag_matches.append(tag in entry_tags)
+                
+            if filter_logic.lower() == 'and' and not all(tag_matches):
+                continue
+            elif filter_logic.lower() == 'or' and not any(tag_matches):
                 continue
                 
-            filtered_entries.append(entry)
+        filtered_entries.append(entry)
     
     # Sort entries by importance and then by end date (most recent first)
     filtered_entries.sort(key=lambda x: (
@@ -355,8 +375,9 @@ def write_aside_entries_csv(data: Dict, output_dir: str, doc_type: str) -> None:
     print(f"Created aside entries CSV file with {entry_count} skills: {entries_file}")
 
 def convert_json_to_csv(json_path: str, output_dir: str, doc_type: str, 
-                       company_filter: Optional[str] = None,
-                       tag_filter: Optional[str] = None) -> None:
+                       company_filters: Optional[List[str]] = None,
+                       tag_filters: Optional[List[str]] = None,
+                       filter_logic: str = 'and') -> None:
     """
     Convert the JSON data to CSV files.
     
@@ -364,8 +385,9 @@ def convert_json_to_csv(json_path: str, output_dir: str, doc_type: str,
         json_path: Path to the JSON file
         output_dir: Directory to write CSV files
         doc_type: Type of document ('cv' or 'resume')
-        company_filter: Optional filter for company
-        tag_filter: Optional filter for tag
+        company_filters: Optional filter for company
+        tag_filters: Optional filter for tag
+        filter_logic: Logic to apply for filtering multiple tags/companies: "and" requires all filters to match, "or" requires any filter to match
     """
     # Load JSON data
     data = load_json_data(json_path)
@@ -374,7 +396,7 @@ def convert_json_to_csv(json_path: str, output_dir: str, doc_type: str,
     ensure_output_dir(output_dir)
     
     # Write CSV files
-    write_entries_csv(data, output_dir, doc_type, company_filter, tag_filter)
+    write_entries_csv(data, output_dir, doc_type, company_filters, tag_filters, filter_logic)
     write_contact_info_csv(data, output_dir)
     write_text_blocks_csv(data, output_dir, doc_type)
     write_skills_csv(data, output_dir)
@@ -389,17 +411,29 @@ def main():
     parser.add_argument('--output-dir', required=True, help='Directory to output CSV files')
     parser.add_argument('--type', choices=['cv', 'resume'], required=True, 
                        help='Type of document to generate (cv or resume)')
-    parser.add_argument('--filter-company', help='Filter entries by company')
-    parser.add_argument('--filter-tag', help='Filter entries by tag')
+    parser.add_argument('--filter-company', help='Filter entries by company. Use comma-separated values for multiple companies')
+    parser.add_argument('--filter-tag', help='Filter entries by tag. Use comma-separated values for multiple tags')
+    parser.add_argument('--filter-logic', choices=['and', 'or'], default='and',
+                       help='Logic to apply for filtering multiple tags/companies: "and" requires all filters to match, "or" requires any filter to match')
     
     args = parser.parse_args()
+    
+    # Convert comma-separated filters to lists if provided
+    company_filters = None
+    if args.filter_company:
+        company_filters = [company.strip() for company in args.filter_company.split(',')]
+        
+    tag_filters = None
+    if args.filter_tag:
+        tag_filters = [tag.strip() for tag in args.filter_tag.split(',')]
     
     convert_json_to_csv(
         args.json, 
         args.output_dir, 
         args.type,
-        args.filter_company,
-        args.filter_tag
+        company_filters,
+        tag_filters,
+        args.filter_logic
     )
 
 if __name__ == "__main__":
