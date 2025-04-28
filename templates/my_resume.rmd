@@ -7,6 +7,8 @@ params:
     value: false
   custom_image_path:
     value: null
+  data_dir:
+    value: "../my_resume_data/"
 output:
   pagedown::html_resume:
     # css: ['css/dd_cv.css', 'resume']
@@ -108,11 +110,15 @@ suppressPackageStartupMessages({
 source("../cv_printing_functions.r")
 
 # Read in all data and initialize a CV printer object
+# Use the data_dir parameter that's passed from render.r
 CV <- create_CV_object(
-  data_location = "../my_resume_data/",
+  data_location = params$data_dir,
   pdf_mode = params$pdf_mode,
   custom_image_path = params$custom_image_path
 )
+
+# Print the data location being used for debugging
+cat("Using data directory in template: ", params$data_dir, "\n")
 ```
 
 

@@ -7,11 +7,20 @@
 # Load required packages
 suppressPackageStartupMessages({
   if(!require("optparse")) install.packages("optparse", repos = "http://cran.us.r-project.org")
+  if(!require("crayon")) install.packages("crayon", repos = "http://cran.us.r-project.org")
   library(optparse)
+  library(crayon)
 })
 
 # Clear the environment
 rm(list = ls())
+
+# Set up colorful output functions
+header <- function(text) cat(bold(blue(paste0("\n=== ", text, " ===\n"))))
+success <- function(text) cat(green(paste0("✓ ", text, "\n")))
+info <- function(text) cat(cyan(paste0("ℹ ", text, "\n")))
+warning_msg <- function(text) cat(yellow(paste0("⚠ ", text, "\n")))
+error_msg <- function(text) cat(red(bold(paste0("✗ ", text, "\n"))))
 
 # Create a function with parameters for customization
 render_document <- function(
@@ -55,6 +64,18 @@ render_document <- function(
   options(warn = -1)  # Suppress warnings globally
   options(knitr.table.format = "html")
   
+  # Create a function to specifically suppress the libxml warning
+  withoutLibXmlWarning <- function(expr) {
+    withCallingHandlers(
+      expr,
+      warning = function(w) {
+        if (grepl("libxml", w$message)) {
+          invokeRestart("muffleWarning")
+        }
+      }
+    )
+  }
+  
   # Configure knitr to suppress warnings and messages in all chunks
   knitr::opts_chunk$set(
     warning = FALSE,
@@ -64,7 +85,23 @@ render_document <- function(
   )
   
   # Source the CV printing functions
+  # This file contains important functions: 
+  # - create_CV_object: Creates a CV object from CSV data files
+  # - generate_plain_text_cv: Creates a plain text version of the CV
   source(file.path(getwd(), "cv_printing_functions.r"))
+  
+  # The linter doesn't see these imported functions, so explicitly check they exist
+  
+  # Check if necessary functions are available after sourcing
+  if (!exists("create_CV_object")) {
+    error_msg("Function 'create_CV_object' not found in cv_printing_functions.r")
+    stop("Missing required function 'create_CV_object'")
+  }
+  
+  if (!exists("generate_plain_text_cv")) {
+    error_msg("Function 'generate_plain_text_cv' not found in cv_printing_functions.r")
+    stop("Missing required function 'generate_plain_text_cv'")
+  }
   
   # Suppress readr messages about column specifications
   options(readr.show_col_types = FALSE)
@@ -97,6 +134,14 @@ render_document <- function(
     } else {
       paste0("BrendanMiller_document_", date_suffix)
     }
+  } else {
+    # If output_filename was provided (from Python), preserve it including its date
+    # But ensure it has today's date if not already present
+    today_date <- format(Sys.Date(), "%Y-%m-%d")
+    if (!grepl(today_date, output_filename)) {
+      output_filename <- paste0(output_filename, "_", today_date)
+    }
+    cat("Using provided output filename: ", output_filename, "\n")
   }
   
   # Determine data directory based on template if not provided
@@ -142,17 +187,64 @@ render_document <- function(
     }
   }
   
+  # Handle path for data location
+  # Check if data_dir is an absolute path or a relative path
+  if (dir.exists(data_dir)) {
+    # If the directory exists as provided, use it directly
+    data_location <- normalizePath(file.path(data_dir, "/"))
+  } else if (dir.exists(file.path(repo_dir, data_dir))) {
+    # Try prepending the repo directory
+    data_location <- normalizePath(file.path(repo_dir, data_dir, "/"))
+  } else {
+    # Log the issue and fall back to a default
+    cat("WARNING: Data directory not found at", data_dir, "or", file.path(repo_dir, data_dir), "\n")
+    cat("Current working directory:", getwd(), "\n")
+    cat("Falling back to checking various possible paths...\n")
+    
+    # Try several possible path combinations
+    possible_paths <- c(
+      data_dir,
+      file.path(repo_dir, data_dir),
+      file.path(getwd(), data_dir),
+      # Extra variants with and without trailing slash
+      paste0(data_dir, "/"),
+      file.path(repo_dir, paste0(data_dir, "/")),
+      file.path(getwd(), paste0(data_dir, "/"))
+    )
+    
+    # Check each path
+    found_path <- FALSE
+    for (path in possible_paths) {
+      info(paste0("Checking path: ", path, "..."))  # Using cyan for checking paths
+      if (dir.exists(path)) {
+        data_location <- normalizePath(path)
+        success(" FOUND!")  # Success in green bold
+        found_path <- TRUE
+        break
+      }
+      warning_msg(" not found")  # Not found in yellow
+    }
+    
+    if (!found_path) {
+      # As a last resort, use default path
+      warning_msg("Could not find data directory, using default path")  # Warning in yellow
+      data_location <- file.path(repo_dir, data_dir, "/")
+    }
+  }
+  
+  info(paste0("Using data location: ", data_location))
+  
   # Create CV object with custom image if provided
   CV <- create_CV_object(
-    data_location = file.path(repo_dir, data_dir, "/"),
+    data_location = data_location,
     pdf_mode = FALSE,
     custom_image_path = custom_image_path
   )
   
-  cat(paste0("Rendering ", doc_type, " from template: ", template, "\n"))
+  header(paste0("Rendering ", doc_type, " from template: ", template))
   
   # Knit the HTML version
-  cat("Generating HTML version...\n")
+  info("Generating HTML version...")
   
   # Use the modified template in the templates directory if it exists
   template_name <- basename(template)
@@ -160,15 +252,16 @@ render_document <- function(
   
   if (file.exists(modified_template_path)) {
     template_path <- modified_template_path
-    cat("Using modified template at: ", template_path, "\n")
+    info(paste0("Using modified template at: ", template_path))
   } else {
     template_path <- file.path(root_dir, template)
     
     if (!file.exists(template_path)) {
-      stop("Template file not found: ", template_path, "\nPlease check the template name and path.")
+      error_msg(paste0("Template file not found: ", template_path, "\nPlease check the template name and path."))
+      stop()
     }
     
-    cat("Using template at: ", template_path, "\n")
+    info(paste0("Using template at: ", template_path))
   }
   
   # Save CV object to a temporary RDS file for use in the template
@@ -178,31 +271,44 @@ render_document <- function(
   # Set environment variable for the template to use
   Sys.setenv(CV_DATA_PATH = cv_rds_path)
   
-  # Set global options to suppress warnings
+  # Set global option to suppress warnings
   oldw <- getOption("warn")
   options(warn = -1)
   
-  # Create a simple wrapper function to suppress warnings
-  suppressAll <- function(expr) {
-    suppressWarnings(suppressMessages(expr))
+  # Render the HTML version of resume or CV
+  if (html_too || skip_pdf) {
+    info("Generating HTML version...")
+    
+    # Check for custom template in templates directory
+    template_path <- file.path(repo_dir, "templates", template)
+    if (file.exists(template_path)) {
+      info(paste0("Using modified template at: ", template_path))
+      template <- template_path
+    } else {
+      info(paste0("Using default template: ", template))
+    }
+    
+    # We need to tell the template where to find data
+    info(paste0("Passing data directory to template: ", data_location))
+    
+    # Render HTML version
+    rmarkdown::render(
+      input = template,
+      params = list(
+        pdf_mode = FALSE,
+        data_dir = data_location,
+        custom_image_path = custom_image_path
+      ),
+      output_file = html_output,
+      quiet = TRUE
+    )
   }
-  
-  # Render the document with warnings suppressed
-  suppressAll({
-    rmarkdown::render(template_path,
-                    params = list(
-                      pdf_mode = FALSE,
-                      custom_image_path = custom_image_path
-                    ),
-                    output_file = html_output,
-                    quiet = TRUE)
-  })
   
   # Restore original warning level
   options(warn = oldw)
   
   if (html_too) {
-    cat(paste0("HTML ", doc_type, " created: ", html_output, "\n"))
+    success(paste0("HTML ", doc_type, " created: ", html_output))
   }
   
   # Try to find Chrome on the system
@@ -218,37 +324,36 @@ render_document <- function(
     "/usr/bin/chromium-browser",
     # Windows paths when running in WSL
     "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe",
-    "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-    "/mnt/c/Users/brendan/AppData/Local/Google/Chrome/Application/chrome.exe"
+    "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
   )
   
   for (path in possible_paths) {
     if (file.exists(path)) {
       chrome_path <- path
-      cat("Found Chrome at: ", chrome_path, "\n")
+      success(paste0("Found Chrome at: ", chrome_path))
       break
     }
   }
   
   # Generate PDF using Chrome (unless skip_pdf is TRUE)
   if (!skip_pdf) {
-    cat("Generating PDF using Chrome...\n")
+    info("Generating PDF using Chrome...")
     
     if (!is.null(chrome_path)) {
       # Set Chrome path explicitly
       Sys.setenv(PAGEDOWN_CHROME = chrome_path)
     } else {
       # If Chrome wasn't found in any of the predefined paths
-      cat("Chrome not found in predefined paths. Checking PAGEDOWN_CHROME environment variable...\n")
+      warning_msg("Chrome not found in predefined paths. Checking PAGEDOWN_CHROME environment variable...")
       
       # Check if PAGEDOWN_CHROME environment variable is set
       env_chrome <- Sys.getenv("PAGEDOWN_CHROME")
       if (env_chrome != "") {
         chrome_path <- env_chrome
-        cat("Using Chrome from PAGEDOWN_CHROME environment variable: ", chrome_path, "\n")
+        info(paste0("Using Chrome from PAGEDOWN_CHROME environment variable: ", chrome_path))
       } else {
         # Try to find Chrome using system commands
-        cat("Attempting to locate Chrome using system commands...\n")
+        info("Attempting to locate Chrome using system commands...")
         
         # Try to find Chrome in Windows using WSL
         wsl_chrome_cmd <- tryCatch({
@@ -257,10 +362,10 @@ render_document <- function(
         
         if (!is.null(wsl_chrome_cmd) && length(wsl_chrome_cmd) > 0) {
           chrome_path <- wsl_chrome_cmd[1]
-          cat("Found Chrome using WSL path conversion: ", chrome_path, "\n")
+          info(paste0("Found Chrome using WSL path conversion: ", chrome_path))
         } else {
-          cat("Warning: Chrome not found. PDF generation may fail.\n")
-          cat("Consider setting the PAGEDOWN_CHROME environment variable to the path of your Chrome executable.\n")
+          warning_msg("Warning: Chrome not found. PDF generation may fail.")
+          warning_msg("Consider setting the PAGEDOWN_CHROME environment variable to the path of your Chrome executable.")
         }
       }
     }
@@ -281,15 +386,15 @@ render_document <- function(
         output = pdf_output,
         browser = chrome_path
       )
-      cat(paste0("PDF ", doc_type, " created: ", pdf_output, "\n"))
+      success(paste0("PDF ", doc_type, " created: ", pdf_output))
     }, error = function(e) {
-      cat("Error generating PDF: ", e$message, "\n")
-      cat("HTML version is still available at: ", html_output, "\n")
+      error_msg(paste0("Error generating PDF: ", e$message))
+      info(paste0("HTML version is still available at: ", html_output))
       # Force HTML to be kept even if html_too is FALSE
       html_too <<- TRUE
     })
   } else {
-    cat("Skipping PDF generation as requested.\n")
+    info("Skipping PDF generation as requested")
     # Force HTML to be kept since we're skipping PDF
     html_too <- TRUE
   }
@@ -308,9 +413,9 @@ render_document <- function(
     plain_text_output <- file.path(root_dir, paste0(output_filename, ".txt"))
     
     # Write the plain text content to a file
-    cat(paste0("Generating plain text version for LinkedIn/job applications...\n"))
+    info("Generating plain text version...")
     writeLines(plain_text_content, plain_text_output)
-    cat(paste0("Plain text ", doc_type, " created: ", plain_text_output, "\n"))
+    success(paste0("Plain text ", doc_type, " created: ", plain_text_output))
     
     # Return paths to all generated files
     return(list(

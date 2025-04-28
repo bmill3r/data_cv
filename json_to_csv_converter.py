@@ -202,24 +202,67 @@ def write_text_blocks_csv(data: Dict, output_dir: str, doc_type: str) -> None:
     """Write text blocks data to a CSV file."""
     text_blocks = data.get('text_blocks', [])
     
-    # Filter text blocks based on document type
-    filtered_blocks = [block for block in text_blocks 
-                      if doc_type in block.get('tags', [])]
+    # First, identify essential blocks (intro and professional_summary)
+    essential_blocks = []
+    essential_ids = ['intro', 'professional_summary']
+    
+    # Then get blocks filtered by document type
+    type_filtered_blocks = []
+    
+    # Process all blocks
+    for block in text_blocks:
+        block_id = block.get('id', '')
+        # Check if it's an essential block
+        if block_id in essential_ids:
+            essential_blocks.append(block)
+        # Check if it has the right document type tag
+        elif doc_type in block.get('tags', []):
+            type_filtered_blocks.append(block)
+    
+    # Combine the lists, with essential blocks first
+    # Use a dictionary to eliminate duplicates (in case an essential block also has the right tag)
+    combined_blocks = {}
+    for block in essential_blocks + type_filtered_blocks:
+        block_id = block.get('id', '')
+        if block_id and block_id not in combined_blocks:
+            combined_blocks[block_id] = block
+    
+    # Convert back to a list
+    filtered_blocks = list(combined_blocks.values())
+    
+    # Log what blocks we're including
+    print(f"Including text blocks: {', '.join([block.get('id', 'Unknown') for block in filtered_blocks])}")
     
     output_file = os.path.join(output_dir, "text_blocks.csv")
     
     with open(output_file, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         
-        # Write header explanation row
-        writer.writerow(["Text block identifier", "The actual text content of the block"])
-        
-        # Write headers
+        # Skip explanation row, just write direct headers
+        # The R code expects 'loc' and 'text' as column names
         writer.writerow(["loc", "text"])
         
-        # Write data rows
+        # Write data rows with lots of validation
         for block in filtered_blocks:
-            writer.writerow([block.get('id', ''), block.get('content', '')])
+            # Map 'id' to 'loc' and 'content' to 'text' to match what the R code expects
+            loc = block.get('id', '')
+            text_content = block.get('content', '')
+            
+            # Ensure we have valid data
+            if not loc:
+                print(f"WARNING: Block missing ID/loc value: {block}")
+                continue
+                
+            if not text_content:
+                print(f"WARNING: Block '{loc}' has empty content")
+                text_content = "(No content provided)"
+                
+            writer.writerow([loc, text_content])
+            print(f"  - Added block '{loc}' with {len(text_content)} chars of content")
+            
+        print(f"Text blocks conversion details:")
+        for block in filtered_blocks:
+            print(f"  - Block ID '{block.get('id', '')}': {len(block.get('content', ''))} characters")
     
     print(f"Created text blocks CSV file: {output_file}")
 

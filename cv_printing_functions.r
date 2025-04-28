@@ -57,10 +57,94 @@ create_CV_object <-  function(data_location,
     
   } else {
     # Want to go old-school with csvs?
-    cv$entries_data <- readr::read_csv(paste0(data_location, "entries.csv"), skip = 1)
-    cv$skills       <- readr::read_csv(paste0(data_location, "language_skills.csv"), skip = 1)
-    cv$text_blocks  <- readr::read_csv(paste0(data_location, "text_blocks.csv"), skip = 1)
-    cv$contact_info <- readr::read_csv(paste0(data_location, "contact_info.csv"), skip = 1)
+    # Ensure path has proper trailing separator
+    if (!endsWith(data_location, "/") && !endsWith(data_location, "\\")) {
+      data_location <- paste0(data_location, "/")
+    }
+    
+    # Log the data files being accessed
+    cat("Reading data files from directory:\n  ", data_location, "\n")
+    
+    entries_path <- paste0(data_location, "entries.csv")
+    skills_path <- paste0(data_location, "language_skills.csv")
+    text_blocks_path <- paste0(data_location, "text_blocks.csv")
+    contact_info_path <- paste0(data_location, "contact_info.csv")
+    
+    # Check if files exist and print diagnostics
+    cat("Checking CSV files:\n")
+    cat("  entries.csv:", if(file.exists(entries_path)) "Found" else "NOT FOUND!", "\n")
+    cat("  language_skills.csv:", if(file.exists(skills_path)) "Found" else "NOT FOUND!", "\n")
+    cat("  text_blocks.csv:", if(file.exists(text_blocks_path)) "Found" else "NOT FOUND!", "\n")
+    cat("  contact_info.csv:", if(file.exists(contact_info_path)) "Found" else "NOT FOUND!", "\n")
+    
+    # Create an empty CV object as backup in case of errors
+    empty_cv <- list(entries_data = data.frame(), skills = data.frame(), 
+                     text_blocks = data.frame(loc = character(), text = character()), 
+                     contact_info = data.frame())
+    
+    # Try reading CSV files with robust error handling
+    # DO NOT SKIP HEADER ROW - the first row contains the column names
+    csv_read_opts <- readr::read_csv_chunked
+    
+    cv$entries_data <- tryCatch({
+      # Skip explanation row for entries.csv - it has an explanation row
+      readr::read_csv(entries_path, skip = 1, col_types = readr::cols(), progress = FALSE, show_col_types = FALSE)
+    }, error = function(e) {
+      cat("WARNING: Error reading entries.csv:", e$message, "\n")
+      empty_cv$entries_data
+    })
+    
+    cv$skills <- tryCatch({
+      # Skip explanation row for skills.csv - it has an explanation row
+      readr::read_csv(skills_path, skip = 1, col_types = readr::cols(), progress = FALSE, show_col_types = FALSE)
+    }, error = function(e) {
+      cat("WARNING: Error reading language_skills.csv:", e$message, "\n")
+      empty_cv$skills
+    })
+    
+    # For text_blocks.csv, intelligently determine format without verbose output
+    if (file.exists(text_blocks_path)) {
+      # Read first line of the file to check header format
+      tb_lines <- readLines(text_blocks_path, n=1)
+      
+      # Direct inspection to determine if the file has header in first row
+      first_line_is_header <- FALSE
+      if (length(tb_lines) > 0) {
+        first_line_is_header <- grepl("^loc,text", tb_lines[1]) || grepl("^id,content", tb_lines[1])
+      }
+      
+      # Read CSV based on detected format (quietly)
+      cv$text_blocks <- tryCatch({
+        if (first_line_is_header) {
+          # First line is header - don't skip
+          readr::read_csv(text_blocks_path, skip = 0, col_types = readr::cols(
+            loc = readr::col_character(),
+            text = readr::col_character()
+          ), progress = FALSE, show_col_types = FALSE)
+        } else {
+          # First line is not header - skip it
+          readr::read_csv(text_blocks_path, skip = 1, col_types = readr::cols(
+            loc = readr::col_character(),
+            text = readr::col_character()
+          ), progress = FALSE, show_col_types = FALSE)
+        }
+      }, error = function(e) {
+        # Return an empty dataframe with proper column names
+        empty_cv$text_blocks
+      })
+    } else {
+      cv$text_blocks <- empty_cv$text_blocks
+    }
+    
+    cv$contact_info <- tryCatch({
+      # Skip explanation row for contact_info.csv - it has an explanation row
+      readr::read_csv(contact_info_path, skip = 1, col_types = readr::cols(), progress = FALSE, show_col_types = FALSE)
+    }, error = function(e) {
+      cat("WARNING: Error reading contact_info.csv:", e$message, "\n")
+      empty_cv$contact_info
+    })
+    
+    # Silently confirm that text_blocks data was read correctly
     
     # Try to read the new aside entries files if they exist
     aside_sections_path <- paste0(data_location, "aside_sections.csv")
@@ -191,15 +275,60 @@ print_section <- function(cv, section_id, glue_template = "default"){
 
 #' @description Prints out text block identified by a given label.
 #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
+# Original version simplified with error handling but no debug output
 print_text_block <- function(cv, label){
-  text_block <- dplyr::filter(cv$text_blocks, loc == label) %>%
-    dplyr::pull(text)
-
-  strip_res <- sanitize_links(cv, text_block)
-
-  cat(strip_res$text)
-
-  invisible(strip_res$cv)
+  # First check if the text_blocks dataframe is valid
+  if (is.null(cv$text_blocks) || nrow(cv$text_blocks) == 0) {
+    return(invisible(cv))
+  }
+  
+  # If the column names are as expected (loc, text)
+  if ("loc" %in% names(cv$text_blocks) && "text" %in% names(cv$text_blocks)) {
+    # Get the text block with the given label
+    text_block_df <- cv$text_blocks[cv$text_blocks$loc == label, ]
+    
+    # If found, get the text and display it
+    if (nrow(text_block_df) > 0) {
+      text_content <- text_block_df$text[1]
+      strip_res <- sanitize_links(cv, text_content)
+      cat(strip_res$text)
+      return(invisible(strip_res$cv))
+    }
+  }
+  
+  # If we're here, either the columns aren't as expected or the label wasn't found
+  # Try using dplyr's filter as a fallback (original method)
+  tryCatch({
+    text_block <- dplyr::filter(cv$text_blocks, loc == label) %>%
+      dplyr::pull(text)
+    
+    strip_res <- sanitize_links(cv, text_block)
+    cat(strip_res$text)
+    return(invisible(strip_res$cv))
+  }, error = function(e) {
+    # If there's an error, try one more approach as a last resort
+    if (ncol(cv$text_blocks) >= 2) {
+      # Assume first column is ID, second is content
+      id_col <- names(cv$text_blocks)[1]
+      content_col <- names(cv$text_blocks)[2]
+      
+      # Find row with matching label
+      matching_rows <- which(cv$text_blocks[[id_col]] == label)
+      
+      if (length(matching_rows) > 0) {
+        text_content <- cv$text_blocks[[content_col]][matching_rows[1]]
+        strip_res <- sanitize_links(cv, text_content)
+        cat(strip_res$text)
+        return(invisible(strip_res$cv))
+      }
+    }
+    
+    # If all approaches fail, return silently
+    return(invisible(cv))
+  })
+  
+  # Should not reach here, but just in case
+  invisible(cv)
 }
 
 

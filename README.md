@@ -19,19 +19,29 @@ Generate custom CV using R and CSS based on `datadrivencv`
   - [CV Database Editor](#cv-database-editor-cv_database_editorpy)
     - [Commands](#commands)
   - [Render Script](#render-script-renderr)
+- [Tagging System and Data Flow](#tagging-system-and-data-flow)
 - [CV Data Structure](#cv-data-structure)
 - [Citation Metrics](#citation-metrics)
 - [Page Customization](#page-customization)
 - [JSON Format Examples](#json-format-examples)
+- [Entry Selection and AI Processing](#entry-selection-and-ai-processing)
+  - [Entry Selection Guide](./entry_selection_guide.md)
 - [AI CV Generator Details](#ai-cv-generator-details)
 
 ## Overview
 
 This repository allows you to create beautifully formatted, data-driven CVs and resumes using R, CSS, and a collection of CSV files. The system is built on top of the `datadrivencv` framework with custom modifications.
 
-## AI-Powered CV Generation Workflow
+## CV Generation Workflows
 
-The repository now includes an AI-powered workflow for automatically tailoring your CV/resume to specific job postings using OpenAI GPT-4 or Anthropic Claude APIs:
+This system supports two primary workflows for generating tailored CVs and resumes:
+
+1. **AI-Powered Workflow** - Uses AI to automatically analyze job postings and select the most relevant entries
+2. **Manual Filtering Workflow** - Manually filter your CV database using tags and company filtering
+
+### AI-Powered CV Generation Workflow
+
+The repository includes an AI-powered workflow for automatically tailoring your CV/resume to specific job postings using OpenAI GPT-4 or Anthropic Claude APIs. **This approach automates the entire process** - from analyzing the job posting to generating the final PDF/HTML document in a single command:
 
 ```
 +------------------------+     +-------------------------+
@@ -44,20 +54,48 @@ The repository now includes an AI-powered workflow for automatically tailoring y
 +------------------------------------------------+
 |              AI CV Generator                    |
 |             ai_cv_generator.py                  |
-+------------------------+-------------------------+
++------------------------------------------------+
                          |
-                         | OUTPUT: /tailored_[NAME].json
+                         | STEP 1: ALWAYS PERFORMED
                          v
 +------------------------------------------------+
 |                Tailored CV Data                 |
 |              tailored_[NAME].json               |
-+------------------------+-------------------------+
++------------------------------------------------+
                          |
-                         | INPUT: /tailored_[NAME].json
+                         | STEP 2: SKIPPED IF --json-only FLAG IS USED
                          v
++------------------------------------------------+
+|                   CSV Files                     |
+|            [NAME]_data directory                |
++------------------------------------------------+
+                         |
+                         | STEP 3: SKIPPED IF --json-only FLAG IS USED
+                         v
++------------------------------------------------+
+|              Final CV/Resume Output             |
+|                                                 |
+|          - /output/[NAME].pdf                   |
+|          - /output/[NAME].html (if --html-too)  |
++------------------------------------------------+
+```
+
+### Manual Filtering Workflow
+
+Alternatively, you can manually filter your CV database using tags or company filters without AI assistance:
+
+```
++------------------------+
+|   Master CV Database   |
+|                        |
++----------+-------------+
+           |
+           | INPUT: /cv_database.json
+           v
 +------------------------------------------------+
 |             JSON to CSV Converter               |
 |           json_to_csv_converter.py              |
+|       with --filter-tag or --filter-company     |
 +------------------------+-------------------------+
                          |
                          | OUTPUT: /my_[TYPE]_data/*.csv
@@ -93,6 +131,30 @@ The repository now includes an AI-powered workflow for automatically tailoring y
                            +------------------------------+
 ```
 
+In this workflow:
+
+1. You directly filter your CV database using one or more of these filters:
+   - Document type (--type): Filter by `cv` or `resume` tags (required)
+   - Tag filter (--filter-tag): Filter by skill areas like `bioinformatics`, `machine_learning`, etc.
+   - Company filter (--filter-company): Filter by company categories like `academic`, `biotech`, etc.
+
+2. Examples of filtering commands:
+   ```bash
+   # Basic filtering by document type
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume
+   
+   # Filter by tag (only entries with both "resume" and "bioinformatics" tags)
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics
+   
+   # Filter by company (only entries in the "biotech" company category)
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-company biotech
+   ```
+
+3. After filtering, render the CV/resume as usual:
+   ```bash
+   Rscript render.r --template my_resume.rmd --output CompanyX_Resume --html --data-dir my_resume_data
+   ```
+
 ### Step-by-Step Workflow for Beginners
 
 1. **Prepare Your Master CV Database**
@@ -105,25 +167,41 @@ The repository now includes an AI-powered workflow for automatically tailoring y
 3. **Run the AI CV Generator**
    - This analyzes the job posting and filters your master CV data to create a tailored JSON file.
    ```bash
-   python ai_cv_generator.py --job-posting sample_job_posting.txt --output-name "CompanyX_Resume" --json-db cv_database.json
+   python ai_cv_generator.py --job-posting sample_job_posting.txt --output-name "CompanyX_Resume" --cv-data cv_database.json
    ```
-   - The generator will create a tailored JSON file (e.g., `tailored_CompanyX_Resume.json`).
+   - The generator will create a tailored JSON file in the `tailored_json` directory (e.g., `tailored_json/CompanyX_Resume.json`).
+   - **By default, the generator automatically runs all steps**:
+     - Analyzes the job posting with AI
+     - Creates a tailored JSON file
+     - Converts the JSON to CSV files
+     - Renders the final PDF document
+   - Key arguments that control the workflow:
+     - `--json-only`: Stop after generating the tailored JSON (don't create CSV files or render the document)
+     - `--html-too`: Generate HTML version in addition to PDF
+     - `--improve-descriptions`: Use AI to improve entry descriptions (enabled by default)
 
-4. **Convert JSON to CSV**
-   - Convert the tailored JSON to the CSV files needed by the R renderer.
+4. **Convert JSON to CSV** (automated by the generator)
+   - This step is automatically performed by the AI CV Generator, but you can run it manually if needed:
    ```bash
-   python json_to_csv_converter.py --json tailored_CompanyX_Resume.json --output-dir my_resume_data --type resume
+   python json_to_csv_converter.py --json tailored_json/CompanyX_Resume.json --output-dir CompanyX_Resume_data --type resume
    ```
+   - CSV files will be created in a directory named after your output name: `CompanyX_Resume_data/`
 
-5. **Render the Final CV/Resume**
-   - Generate the final PDF and/or HTML version using the R script.
+5. **Render the Final CV/Resume** (automated by the generator)
+   - This step is also automatically performed by the AI CV Generator unless you use the `--json-only` flag.
+   - If you want to re-render manually, use:
    ```bash
    Rscript render.r --template my_resume.rmd --output CompanyX_Resume --html
    ```
 
 6. **Review and Submit**
    - Your tailored CV/resume is now ready to review and submit!
-   - The files will be in the `output` directory.
+   - The output files will be organized in these directories:
+     - Final PDF/HTML: `output/CompanyX_Resume.pdf`, `output/CompanyX_Resume.html`
+     - Tailored JSON: `tailored_json/CompanyX_Resume.json`
+     - CSV files: `CompanyX_Resume_data/*.csv`
+     - API interaction logs: `logs/api_interactions_TIMESTAMP.log`
+     - Main process logs: `logs/cv_generator_TIMESTAMP.log`
 
 ## Tool Documentation
 
@@ -141,9 +219,99 @@ Automatically analyzes job postings with OpenAI's GPT models and filters your CV
 | `--output-dir` | Directory to save the output files | No | `output` |
 | `--type` | Type of document to generate (`cv` or `resume`) | No | `resume` |
 | `--ai-service` | AI service to use (`openai` or `claude`) | No | `openai` |
+| `--openai-model` | OpenAI model to use | No | `gpt-4o` |
+| `--claude-model` | Claude model to use | No | `claude-3-7-sonnet-20250219` |
+| `--temperature` | Temperature setting for AI models (0.0-1.0). Lower values are more deterministic, higher values more creative | No | 0.7 |
 | `--use-prompt-only` | Use direct prompt for CV tailoring instead of entry-by-entry analysis | No | False |
-| `--improve-descriptions` | Use AI to improve descriptions | No | False |
+| `--improve-descriptions` | Use AI to improve entry descriptions to better match job requirements | No | **True** |
 | `--json-only` | Only generate the JSON file, not the document | No | False |
+| `--html-too` | Generate HTML version in addition to PDF | No | False |
+| `--verbose` | Enable detailed logging of AI interactions | No | False |
+| `--entries-per-section` | JSON string defining maximum entries per section | No | See below |
+
+#### Entry Selection Process
+
+The AI CV Generator automatically selects the most relevant entries from your CV database through a smart scoring and filtering process:
+
+1. **Scoring**: Each entry is scored from 0-10 based on relevance to the job posting
+2. **Grouping**: Entries are grouped by section (education, experience, etc.)
+3. **Sorting**: Within each section, entries are sorted by relevance score (highest first)
+4. **Selection**: Top-scoring entries are selected based on the maximum allowed per section
+5. **Minimum Quality**: Only entries with a score ≥ 3 are included, regardless of maximum entries
+
+**Default Maximum Entries Per Section:**
+
+```json
+{
+  "current_position": 2,
+  "education": 2,
+  "research_positions": 3,
+  "awards_and_honors": 3,
+  "teaching_positions": 2,
+  "academic_articles": 3,
+  "software": 3,
+  "invited_speaker": 2,
+  "mentorship": 2
+}
+```
+
+**Customizing Maximum Entries per Section:**
+
+Use the `--entries-per-section` parameter with a JSON string:
+
+```bash
+# Allow more education entries but fewer research positions
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" \
+  --entries-per-section '{"education": 3, "research_positions": 1}'
+```
+
+#### Detailed Entry Scoring Example
+
+Here's how entry scoring and selection works in practice:
+
+1. **Job Analysis**: The AI first analyzes the job posting to extract key requirements:
+   - Required skills and technologies
+   - Desired experience areas
+   - Key responsibilities
+   - Industry knowledge requirements
+   - Soft skills emphasized
+
+2. **Entry Scoring**: Each CV entry is scored with reasoning:
+
+   ```
+   Entry: "Senior Data Scientist at TechCorp"
+   Score: 8/10
+   Reasoning: "Highly relevant - demonstrates experience with machine learning models 
+              and large dataset analysis mentioned in job requirements."
+   ```
+
+3. **Section-Based Selection**: Entries are filtered by relevance with a practical example:
+
+   Example for "experience" section with max_entries=2:
+   ```
+   1. Data Scientist at AI Company (Score: 9/10) ✓ SELECTED
+   2. ML Engineer at Tech Startup (Score: 7/10) ✓ SELECTED
+   3. Software Developer at Web Company (Score: 5/10) ✗ NOT SELECTED
+   4. IT Support at University (Score: 2/10) ✗ NOT SELECTED (below threshold)
+   ```
+
+#### Path Handling and Output Directories
+
+**IMPORTANT**: Always use relative paths rather than absolute paths to avoid permission issues:
+
+- ✓ Use: `./output` or `output` (relative to current directory)
+- ✗ Avoid: `/output` (absolute path from root)
+
+The script creates these directories relative to your current working directory:
+
+```
+./output/         - For final PDF/HTML documents
+./tailored_json/  - For tailored JSON files
+./logs/           - For logging files
+./{output-name}_data/ - For CSV files
+```
+
+If files seem to be missing after running the script, verify that you're not using absolute paths that might be writing to locations requiring elevated permissions.
 
 #### Usage Examples
 
@@ -155,11 +323,22 @@ python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_
 # Specify a custom CV database file
 python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" --cv-data my_custom_cv.json
 
-# Generate a tailored CV with improved descriptions using Claude
-python ai_cv_generator.py --job-posting academic_position.txt --output-name "University_CV" --type cv --improve-descriptions --ai-service claude
+# Disable AI-improved descriptions (enabled by default)
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" --type resume --improve-descriptions=False
 
-# Generate a tailored CV using the prompt-only approach with Claude
-python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" --type resume --ai-service claude --use-prompt-only
+# Generate a tailored CV using Claude with custom section entry limits
+python ai_cv_generator.py --job-posting academic_position.txt --output-name "University_CV" --type cv \
+  --ai-service claude --entries-per-section '{"education": 2, "academic_articles": 5}'
+
+# Generate a tailored CV using the prompt-only approach with Claude and generate HTML too
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" \
+  --type resume --ai-service claude --use-prompt-only --html-too
+
+# Use a lower temperature for more deterministic/focused output
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" --temperature 0.2
+
+# Use a higher temperature for more creative output
+python ai_cv_generator.py --job-posting job_posting.txt --output-name "CompanyX_Resume" --temperature 0.9
 ```
 
 ### JSON to CSV Converter (`json_to_csv_converter.py`)
@@ -571,6 +750,73 @@ The `cv_database.json` file uses this structure:
 - **Company Targeting**: Entries can be associated with specific companies or industries
 - **Importance Ranking**: Entries have an importance score to prioritize them
 - **Structured Skills**: Skills are organized by category with proficiency levels
+
+### Tag System Between JSON and CSV Files
+
+The tagging system is a critical component that controls how entries in the master JSON database are filtered and included in the CSV files used for rendering documents. Here's how it works:
+
+#### How Tags Are Used in the JSON Database
+
+1. **Document Type Tags**: Each entry in `cv_database.json` has a `tags` array that includes values like:
+   - `"resume"` - Indicates the entry should appear in resume documents
+   - `"cv"` - Indicates the entry should appear in CV documents
+   - Some entries may have both tags if they should appear in both document types
+
+2. **Company-Specific Tags**: For tailored applications, entries can include company-specific tags:
+   - `"company_merck"`, `"company_dropletbiosciences"`, etc.
+   - These tags are used to include specialized versions of entries for specific companies
+
+3. **Category Tags**: Entries often include category tags:
+   - `"education"`, `"research"`, `"bioinformatics"`, etc.
+   - These can be used for focused filtering based on job requirements
+
+#### How Text Blocks Use Tags
+
+Text blocks (like introductions or summaries) also use the tag system:
+
+```json
+{
+  "id": "intro",
+  "content": "Post-doctoral research fellow developing computational tools...",
+  "tags": ["cv", "resume"]
+},
+{
+  "id": "company_dropletbiosciences",
+  "content": "Post-doctoral research fellow with expertise in circulating cell-free DNA...",
+  "tags": ["cv", "resume"]
+}
+```
+
+This allows for customized text blocks that target specific companies or document types.
+
+#### Tag-Based Filtering in JSON to CSV Conversion
+
+When you run the JSON to CSV converter:
+
+```bash
+python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume
+```
+
+The following happens:
+
+1. The `--type resume` parameter acts as a filter
+2. Only entries with the `"resume"` tag are included in the output CSV files
+3. If using `--type cv` instead, only entries with the `"cv"` tag would be included
+4. Additional tag filtering is possible with the `--filter-tag` parameter:
+   ```bash
+   python json_to_csv_converter.py --json cv_database.json --output-dir my_resume_data --type resume --filter-tag bioinformatics
+   ```
+   This would only include entries tagged with both `"resume"` AND `"bioinformatics"`
+
+#### Tags in Tailored JSON Files
+
+When the AI CV Generator creates a tailored JSON file for a specific job application:
+
+1. It preserves the original tags from selected entries
+2. It may add additional job-specific tags based on the analysis
+3. When this tailored JSON is converted to CSV, the same tag-based filtering applies
+
+This system ensures that your CSV files (and resulting documents) contain only the entries that are relevant to the specific document type and job application.
 
 ## CV Database Editor
 
@@ -991,6 +1237,9 @@ python ai_cv_generator.py --job-posting sample_job_posting.txt --output-name "Co
 
 # Using Claude API with comprehensive prompt approach
 python ai_cv_generator.py --job-posting sample_job_posting.txt --output-name "CompanyX_Resume" --type resume --ai-service claude --use-prompt-only
+
+# Control AI creativity with temperature parameter (0.0-1.0)
+python ai_cv_generator.py --job-posting sample_job_posting.txt --output-name "CompanyX_Resume" --temperature 0.4
 ```
 
 ### About the `--use-prompt-only` Flag

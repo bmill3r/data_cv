@@ -14,16 +14,18 @@ data_analysis,Gene set enrichment analysis,4
 data_analysis,Machine learning models,5
 data_analysis,Single-cell multi-omics,6
 data_analysis,Spatial transcriptomics,7
-software,R/RStudio,1
-software,Python,2
-software,Bash scripting,3
-software,Linux High-Performance Computing,4
-data_viz,ggplot2,1
-data_viz,jupyter notebook,2
-data_viz,markdown,3
-data_viz,matplotlib,4
-package_dev,Bioconductor,1
-package_dev,git/GitHub,2
-package_dev,PyPI,3
-sci_comm,High impact publications,1
-sci_comm,Invited conference speaker,2
+software_coding,R/RStudio,1
+software_coding,Python,2
+software_coding,Bash scripting,3
+software_coding,Linux High-Performance Computing,4
+data_visualization,ggplot2,1
+data_visualization,jupyter notebook,2
+data_visualization,markdown,3
+data_visualization,matplotlib,4
+package_development,Bioconductor,1
+package_development,git/GitHub,2
+package_development,PyPI,3
+scientific_communication,High impact publications,1
+scientific_communication,Invited conference speaker,2
+test,test1,1
+test,test2,2

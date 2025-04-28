@@ -25,6 +25,7 @@ dependencies:
   - r-scholar
   - r-ggplot2
   - r-base64enc
+  - r-crayon
   - phantomjs
   - python=3.10
   - pip
@@ -35,3 +36,5 @@ dependencies:
     - argparse
     - typing
     - datetime
+    - demjson3
+    - rich

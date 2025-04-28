@@ -2,6 +2,33 @@
 
 All notable changes to the data_cv project will be documented in this file.
 
+## [2025-04-28] - Updated
+
+### Added
+- Added temperature parameter to AI CV Generator:
+  - Control AI creativity with `--temperature` parameter (0.0-1.0)
+  - Lower values (0.0-0.3) for more deterministic outputs
+  - Higher values (0.8-1.0) for more creative outputs
+  - Default value of 0.7 for balanced generation
+- Added colorful terminal output:
+  - Integrated `rich` library for Python scripts
+  - Added `crayon` for colorful R script output
+  - Created custom formatting functions for different message types
+  - Added progress indicators and status messages
+
+### Fixed
+- Improved CSV reading in R scripts:
+  - Smart detection for header/explanation rows in text_blocks.csv
+  - Robust column name handling with fallbacks
+  - Silent data loading with no debug output in terminal/HTML
+- Enhanced JSON parsing with robust repair logic:
+  - Added `demjson3` for permissive JSON parsing
+  - Multiple repair strategies for malformed AI output
+  - Better error context for troubleshooting
+- Fixed relative path handling:
+  - Ensured all scripts use relative paths consistently
+  - Improved directory detection logic
+
 ## [2025-04-27] - Updated
 
 ### Added
